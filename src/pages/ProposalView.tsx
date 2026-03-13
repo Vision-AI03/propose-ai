@@ -94,7 +94,11 @@ export default function ProposalView() {
   };
 
   const handleExportPdf = async () => {
-    if (!previewRef.current) return;
+    const element = previewRef.current;
+    if (!element) {
+      toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
+      return;
+    }
     setPdfLoading(true);
     try {
       const canvas = await html2canvas(previewRef.current, {
