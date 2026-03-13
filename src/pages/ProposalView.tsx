@@ -217,7 +217,7 @@ export default function ProposalView() {
 
         {/* Preview */}
         <div className="lg:col-span-3">
-          <Card className="overflow-hidden">
+          <Card className="overflow-hidden" ref={previewRef}>
             <div
               className="h-16 flex items-center px-6 gap-3"
               style={{ backgroundColor: profile?.secondary_color || "#0F1724" }}
