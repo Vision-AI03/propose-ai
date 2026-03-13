@@ -126,17 +126,19 @@ O conteúdo de cada seção deve ser profissional, persuasivo e personalizado.
 Use parágrafos completos, não bullet points genéricos.
 Retorne APENAS o JSON, sem texto adicional, sem markdown.`;
 
-    // Call Lovable AI Gateway
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    // Call Claude API (Anthropic)
+    const aiResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${lovableApiKey}`,
+        "x-api-key": anthropicApiKey,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "claude-sonnet-4-6-20250514",
+        max_tokens: 4096,
+        system: "Você é um assistente especializado em criar propostas comerciais profissionais em português brasileiro. Responda APENAS com JSON válido.",
         messages: [
-          { role: "system", content: "Você é um assistente especializado em criar propostas comerciais profissionais em português brasileiro. Responda APENAS com JSON válido." },
           { role: "user", content: prompt },
         ],
       }),
@@ -150,19 +152,21 @@ Retorne APENAS o JSON, sem texto adicional, sem markdown.`;
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (status === 402) {
-        return new Response(JSON.stringify({ error: "Payment required. Please add credits." }), {
-          status: 402,
+      if (status === 402 || status === 400) {
+        const errorText = await aiResponse.text();
+        console.error("Claude API error:", status, errorText);
+        return new Response(JSON.stringify({ error: "Erro na API do Claude. Verifique sua chave." }), {
+          status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       const errorText = await aiResponse.text();
-      console.error("AI Gateway error:", status, errorText);
-      throw new Error(`AI Gateway error: ${status}`);
+      console.error("Claude API error:", status, errorText);
+      throw new Error(`Claude API error: ${status}`);
     }
 
     const aiData = await aiResponse.json();
-    let aiContent = aiData.choices?.[0]?.message?.content || "";
+    let aiContent = aiData.content?.[0]?.text || "";
 
     // Clean markdown code blocks if present
     aiContent = aiContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
