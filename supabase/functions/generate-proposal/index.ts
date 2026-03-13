@@ -23,7 +23,7 @@ serve(async (req) => {
     }
 
     // Get user from auth header
-    const supabaseClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!, {
+    const supabaseClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
       auth: { persistSession: false },
       global: { headers: { authorization: authHeader || "" } },
     });
