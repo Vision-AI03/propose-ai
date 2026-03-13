@@ -9,7 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/hooks/use-toast";
 import { Pencil, Download, Copy, Trash2, ArrowLeft, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -20,6 +22,7 @@ export default function ProposalView() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [pdfLoading, setPdfLoading] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const { data: proposal, isLoading } = useQuery({
     queryKey: ["proposal", id],
@@ -91,16 +94,35 @@ export default function ProposalView() {
   };
 
   const handleExportPdf = async () => {
+    if (!previewRef.current) return;
     setPdfLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-pdf", {
-        body: { proposalId: id },
+      const canvas = await html2canvas(previewRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
       });
-      if (error) throw error;
-      if (data?.pdfUrl) {
-        window.open(data.pdfUrl, "_blank");
-        toast({ title: "PDF gerado!" });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      let heightLeft = pdfHeight;
+      let position = 0;
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
       }
+
+      pdf.save(`${proposal?.title || "proposta"}.pdf`);
+      toast({ title: "PDF baixado com sucesso!" });
     } catch (err: any) {
       toast({ title: "Erro ao gerar PDF", description: err.message, variant: "destructive" });
     } finally {
@@ -195,7 +217,7 @@ export default function ProposalView() {
 
         {/* Preview */}
         <div className="lg:col-span-3">
-          <Card className="overflow-hidden">
+          <Card className="overflow-hidden" ref={previewRef}>
             <div
               className="h-16 flex items-center px-6 gap-3"
               style={{ backgroundColor: profile?.secondary_color || "#0F1724" }}
