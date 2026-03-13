@@ -1,1 +1,7 @@
 project_id = "vxwaopbvzxpnkgfvychh"
+
+[functions.generate-proposal]
+verify_jwt = false
+
+[functions.generate-pdf]
+verify_jwt = false
