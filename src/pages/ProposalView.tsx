@@ -94,10 +94,14 @@ export default function ProposalView() {
   };
 
   const handleExportPdf = async () => {
-    if (!previewRef.current) return;
+    const element = previewRef.current;
+    if (!element) {
+      toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
+      return;
+    }
     setPdfLoading(true);
     try {
-      const canvas = await html2canvas(previewRef.current, {
+      const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
@@ -217,7 +221,8 @@ export default function ProposalView() {
 
         {/* Preview */}
         <div className="lg:col-span-3">
-          <Card className="overflow-hidden" ref={previewRef}>
+          <div ref={previewRef}>
+          <Card className="overflow-hidden">
             <div
               className="h-16 flex items-center px-6 gap-3"
               style={{ backgroundColor: profile?.secondary_color || "#0F1724" }}
@@ -248,6 +253,7 @@ export default function ProposalView() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </div>
       </div>
     </motion.div>
