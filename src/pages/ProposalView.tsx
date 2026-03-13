@@ -101,7 +101,7 @@ export default function ProposalView() {
     }
     setPdfLoading(true);
     try {
-      const canvas = await html2canvas(previewRef.current, {
+      const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
