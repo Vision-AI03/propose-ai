@@ -22,6 +22,7 @@ export default function ProposalView() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [pdfLoading, setPdfLoading] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const { data: proposal, isLoading } = useQuery({
     queryKey: ["proposal", id],
