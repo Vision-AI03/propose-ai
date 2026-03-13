@@ -14,7 +14,188 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          company_address: string | null
+          company_document: string | null
+          company_email: string | null
+          company_name: string | null
+          company_phone: string | null
+          company_website: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          logo_url: string | null
+          niche: string | null
+          onboarding_completed: boolean | null
+          primary_color: string | null
+          secondary_color: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          company_address?: string | null
+          company_document?: string | null
+          company_email?: string | null
+          company_name?: string | null
+          company_phone?: string | null
+          company_website?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          logo_url?: string | null
+          niche?: string | null
+          onboarding_completed?: boolean | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          company_address?: string | null
+          company_document?: string | null
+          company_email?: string | null
+          company_name?: string | null
+          company_phone?: string | null
+          company_website?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          logo_url?: string | null
+          niche?: string | null
+          onboarding_completed?: boolean | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      proposal_sections: {
+        Row: {
+          content: string | null
+          id: string
+          order_index: number | null
+          proposal_id: string
+          section_key: string | null
+          section_title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          id?: string
+          order_index?: number | null
+          proposal_id: string
+          section_key?: string | null
+          section_title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          id?: string
+          order_index?: number | null
+          proposal_id?: string
+          section_key?: string | null
+          section_title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proposal_sections_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      proposals: {
+        Row: {
+          client_company: string | null
+          client_email: string | null
+          client_name: string | null
+          client_phone: string | null
+          content: Json | null
+          created_at: string | null
+          deadline_days: number | null
+          deliverables: string | null
+          id: string
+          niche: string | null
+          payment_terms: string | null
+          pdf_url: string | null
+          service_description: string | null
+          status: string | null
+          title: string | null
+          total_value: number | null
+          updated_at: string | null
+          user_id: string
+          validity_days: number | null
+        }
+        Insert: {
+          client_company?: string | null
+          client_email?: string | null
+          client_name?: string | null
+          client_phone?: string | null
+          content?: Json | null
+          created_at?: string | null
+          deadline_days?: number | null
+          deliverables?: string | null
+          id?: string
+          niche?: string | null
+          payment_terms?: string | null
+          pdf_url?: string | null
+          service_description?: string | null
+          status?: string | null
+          title?: string | null
+          total_value?: number | null
+          updated_at?: string | null
+          user_id: string
+          validity_days?: number | null
+        }
+        Update: {
+          client_company?: string | null
+          client_email?: string | null
+          client_name?: string | null
+          client_phone?: string | null
+          content?: Json | null
+          created_at?: string | null
+          deadline_days?: number | null
+          deliverables?: string | null
+          id?: string
+          niche?: string | null
+          payment_terms?: string | null
+          pdf_url?: string | null
+          service_description?: string | null
+          status?: string | null
+          title?: string | null
+          total_value?: number | null
+          updated_at?: string | null
+          user_id?: string
+          validity_days?: number | null
+        }
+        Relationships: []
+      }
+      user_usage: {
+        Row: {
+          id: string
+          period_start: string | null
+          proposals_count: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          period_start?: string | null
+          proposals_count?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          period_start?: string | null
+          proposals_count?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
