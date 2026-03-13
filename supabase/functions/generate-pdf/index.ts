@@ -29,12 +29,23 @@ function generateProposalHtml(proposal: any, sections: any[], profile: any) {
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>${proposal.title || "Proposta Comercial"} - ${companyName}</title>
   <style>
-    @page { margin: 0; size: A4; }
-    body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; }
+    @page { margin: 20mm; size: A4; }
+    body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @media print {
+      .no-print { display: none !important; }
+    }
   </style>
 </head>
 <body>
+  <div class="no-print" style="background: #f3f4f6; padding: 12px 24px; text-align: center; font-size: 14px; color: #555;">
+    Use <strong>Ctrl+P</strong> (ou Cmd+P) e selecione <strong>"Salvar como PDF"</strong> para baixar.
+    <button onclick="window.print()" style="margin-left: 16px; padding: 8px 20px; background: ${primaryColor}; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+      Salvar como PDF
+    </button>
+  </div>
+
   <div style="background: ${secondaryColor}; padding: 24px 40px; display: flex; align-items: center; gap: 16px;">
     ${logoUrl ? `<img src="${logoUrl}" style="height: 48px; width: 48px; object-fit: cover; border-radius: 8px;" />` : ""}
     <span style="color: white; font-size: 20px; font-weight: 700;">${companyName}</span>
@@ -52,6 +63,12 @@ function generateProposalHtml(proposal: any, sections: any[], profile: any) {
       Proposta válida por ${proposal.validity_days || 15} dias • ${companyName} • Gerada com PropostaAI
     </div>
   </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() { window.print(); }, 500);
+    };
+  </script>
 </body>
 </html>`;
 }
