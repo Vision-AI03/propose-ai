@@ -16,14 +16,20 @@ serve(async (req) => {
     const authHeader = req.headers.get("authorization");
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabaseAnonKey =
+      Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY");
     const anthropicApiKey = Deno.env.get("ANTHROPIC_API_KEY");
+
+    if (!supabaseAnonKey) {
+      throw new Error("SUPABASE_ANON_KEY (or SUPABASE_PUBLISHABLE_KEY) is not configured");
+    }
 
     if (!anthropicApiKey) {
       throw new Error("ANTHROPIC_API_KEY is not configured");
     }
 
     // Get user from auth header
-    const supabaseClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
       auth: { persistSession: false },
       global: { headers: { authorization: authHeader || "" } },
     });
