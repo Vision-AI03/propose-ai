@@ -149,7 +149,7 @@ Retorne APENAS o JSON, sem texto adicional, sem markdown.`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6-20250514",
+        model: "claude-sonnet-4-20250514",
         max_tokens: 4096,
         system: "Você é um assistente especializado em criar propostas comerciais profissionais em português brasileiro. Responda APENAS com JSON válido.",
         messages: [
