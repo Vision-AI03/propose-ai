@@ -140,43 +140,67 @@ O conteúdo de cada seção deve ser profissional, persuasivo e personalizado.
 Use parágrafos completos, não bullet points genéricos.
 Retorne APENAS o JSON, sem texto adicional, sem markdown.`;
 
-    // Call Claude API (Anthropic)
-    const aiResponse = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": anthropicApiKey,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 4096,
-        system: "Você é um assistente especializado em criar propostas comerciais profissionais em português brasileiro. Responda APENAS com JSON válido.",
-        messages: [
-          { role: "user", content: prompt },
-        ],
-      }),
-    });
+    // Call Claude API (Anthropic) with model fallback
+    const anthropicModels = [
+      Deno.env.get("ANTHROPIC_MODEL")?.trim(),
+      "claude-sonnet-4-20250514",
+      "claude-3-7-sonnet-latest",
+      "claude-3-5-sonnet-20241022",
+    ].filter((model): model is string => Boolean(model));
 
-    if (!aiResponse.ok) {
-      const status = aiResponse.status;
+    let aiResponse: Response | null = null;
+    let lastClaudeError = "";
+
+    for (const model of anthropicModels) {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "x-api-key": anthropicApiKey,
+          "anthropic-version": "2023-06-01",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 4096,
+          system: "Você é um assistente especializado em criar propostas comerciais profissionais em português brasileiro. Responda APENAS com JSON válido.",
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+
+      if (response.ok) {
+        aiResponse = response;
+        break;
+      }
+
+      const errorText = await response.text();
+      const status = response.status;
+      lastClaudeError = `[${model}] ${errorText}`;
+      console.error(`Claude API error (${model}):`, status, errorText);
+
       if (status === 429) {
         return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
           status: 429,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      if (status === 402 || status === 400) {
-        const errorText = await aiResponse.text();
-        console.error("Claude API error:", status, errorText);
-        return new Response(JSON.stringify({ error: "Erro na API do Claude. Verifique sua chave." }), {
-          status: 500,
+
+      if (status === 402) {
+        return new Response(JSON.stringify({ error: "Créditos insuficientes na API do Claude." }), {
+          status: 402,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      const errorText = await aiResponse.text();
-      console.error("Claude API error:", status, errorText);
-      throw new Error(`Claude API error: ${status}`);
+
+      if (status !== 400 && status !== 404) {
+        throw new Error(`Claude API error: ${status}`);
+      }
+    }
+
+    if (!aiResponse) {
+      return new Response(JSON.stringify({ error: "Erro na API do Claude. Modelo inválido ou indisponível.", details: lastClaudeError }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const aiData = await aiResponse.json();
