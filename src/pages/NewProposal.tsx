@@ -1,0 +1,262 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { Sparkles, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+} from "@/components/ui/dialog";
+
+export default function NewProposal() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [limitModal, setLimitModal] = useState(false);
+
+  const [clientName, setClientName] = useState("");
+  const [clientCompany, setClientCompany] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [niche, setNiche] = useState("");
+  const [serviceDescription, setServiceDescription] = useState("");
+  const [deliverables, setDeliverables] = useState("");
+  const [deadlineDays, setDeadlineDays] = useState("");
+  const [totalValue, setTotalValue] = useState("");
+  const [paymentTerms, setPaymentTerms] = useState("a_vista");
+  const [validityDays, setValidityDays] = useState("15");
+  const [additionalInfo, setAdditionalInfo] = useState("");
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase.from("profiles").select("*").eq("id", user!.id).single();
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  // Set niche from profile
+  useState(() => {
+    if (profile?.niche) setNiche(profile.niche);
+  });
+
+  const paymentLabels: Record<string, string> = {
+    a_vista: "À vista",
+    "50_50": "50% entrada + 50% na entrega",
+    parcelado: "Parcelado",
+    mensal: "Mensal (recorrente)",
+  };
+
+  const handleGenerate = async () => {
+    if (!clientName || !serviceDescription) {
+      toast({ title: "Campos obrigatórios", description: "Preencha o nome do cliente e descrição do serviço.", variant: "destructive" });
+      return;
+    }
+    if (!user) return;
+
+    setLoading(true);
+
+    try {
+      // Check usage
+      const { data: usage } = await supabase
+        .from("user_usage")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (usage) {
+        const firstOfMonth = new Date();
+        firstOfMonth.setDate(1);
+        firstOfMonth.setHours(0, 0, 0, 0);
+
+        if (new Date(usage.period_start) < firstOfMonth) {
+          await supabase
+            .from("user_usage")
+            .update({ proposals_count: 0, period_start: firstOfMonth.toISOString().split("T")[0] })
+            .eq("user_id", user.id);
+          usage.proposals_count = 0;
+        }
+
+        if (usage.proposals_count >= 250) {
+          setLimitModal(true);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Call edge function
+      const { data: result, error: fnError } = await supabase.functions.invoke("generate-proposal", {
+        body: {
+          clientName,
+          clientCompany,
+          clientEmail,
+          clientPhone,
+          niche: niche || profile?.niche || "",
+          serviceDescription,
+          deliverables,
+          deadlineDays: parseInt(deadlineDays) || 30,
+          totalValue: parseFloat(totalValue) || 0,
+          paymentTerms: paymentLabels[paymentTerms] || paymentTerms,
+          validityDays: parseInt(validityDays) || 15,
+          additionalInfo,
+        },
+      });
+
+      if (fnError) throw fnError;
+
+      if (result?.proposalId) {
+        toast({ title: "Proposta gerada com sucesso!" });
+        navigate(`/proposals/${result.proposalId}`);
+      } else {
+        throw new Error("Falha ao gerar proposta");
+      }
+    } catch (err: any) {
+      console.error(err);
+      if (err?.message?.includes("429")) {
+        toast({ title: "Muitas requisições", description: "Aguarde um momento e tente novamente.", variant: "destructive" });
+      } else if (err?.message?.includes("402")) {
+        toast({ title: "Créditos insuficientes", description: "Adicione créditos à sua conta.", variant: "destructive" });
+      } else {
+        toast({ title: "Erro ao gerar proposta", description: err.message, variant: "destructive" });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-6xl mx-auto">
+      <h1 className="font-heading text-2xl font-bold mb-6">Nova Proposta</h1>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left column */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-heading">Dados do cliente</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Nome do cliente *</Label>
+                <Input value={clientName} onChange={(e) => setClientName(e.target.value)} placeholder="Nome do cliente" />
+              </div>
+              <div className="space-y-2">
+                <Label>Empresa do cliente</Label>
+                <Input value={clientCompany} onChange={(e) => setClientCompany(e.target.value)} placeholder="Empresa" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} placeholder="email@cliente.com" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Telefone</Label>
+                  <Input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} placeholder="(11) 99999-9999" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-heading">Serviço</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Nicho / tipo de serviço</Label>
+                <Input value={niche} onChange={(e) => setNiche(e.target.value)} placeholder={profile?.niche || "Tipo de serviço"} />
+              </div>
+              <div className="space-y-2">
+                <Label>Descrição do serviço *</Label>
+                <Textarea value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} placeholder="Descreva o que será feito..." rows={4} />
+              </div>
+              <div className="space-y-2">
+                <Label>Principais entregáveis</Label>
+                <Textarea value={deliverables} onChange={(e) => setDeliverables(e.target.value)} placeholder="O que o cliente receberá..." rows={3} />
+              </div>
+              <div className="space-y-2">
+                <Label>Prazo de entrega (dias)</Label>
+                <Input type="number" value={deadlineDays} onChange={(e) => setDeadlineDays(e.target.value)} placeholder="30" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right column */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-heading">Valores e condições</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Valor total (R$)</Label>
+                <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
+              </div>
+              <div className="space-y-2">
+                <Label>Forma de pagamento</Label>
+                <Select value={paymentTerms} onValueChange={setPaymentTerms}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="a_vista">À vista</SelectItem>
+                    <SelectItem value="50_50">50% entrada + 50% na entrega</SelectItem>
+                    <SelectItem value="parcelado">Parcelado</SelectItem>
+                    <SelectItem value="mensal">Mensal (recorrente)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Validade da proposta (dias)</Label>
+                <Input type="number" value={validityDays} onChange={(e) => setValidityDays(e.target.value)} placeholder="15" />
+              </div>
+              <div className="space-y-2">
+                <Label>Informações adicionais</Label>
+                <Textarea value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} placeholder="Observações extras..." rows={3} />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Button
+            onClick={handleGenerate}
+            disabled={loading}
+            className="w-full h-14 text-lg gap-3"
+            size="lg"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Gerando sua proposta...
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-5 w-5" />
+                Gerar Proposta com IA
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      <Dialog open={limitModal} onOpenChange={setLimitModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="font-heading">Limite atingido</DialogTitle>
+            <DialogDescription>
+              Você atingiu o limite de 250 propostas neste mês. Seu limite será renovado no dia 1º do próximo mês.
+            </DialogDescription>
+          </DialogHeader>
+          <Button onClick={() => setLimitModal(false)}>Entendi</Button>
+        </DialogContent>
+      </Dialog>
+    </motion.div>
+  );
+}
