@@ -253,6 +253,7 @@ export default function ProposalView() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </div>
       </div>
     </motion.div>
