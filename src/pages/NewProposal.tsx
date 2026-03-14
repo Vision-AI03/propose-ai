@@ -26,6 +26,8 @@ export default function NewProposal() {
   const [clientCompany, setClientCompany] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
+  const [clientNiche, setClientNiche] = useState("");
+  const [templateId, setTemplateId] = useState("moderno");
   const [niche, setNiche] = useState("");
   const [serviceDescription, setServiceDescription] = useState("");
   const [deliverables, setDeliverables] = useState("");
