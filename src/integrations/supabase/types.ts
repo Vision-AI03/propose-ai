@@ -116,12 +116,14 @@ export type Database = {
           created_at: string | null
           deadline_days: number | null
           deliverables: string | null
+          html_content: string | null
           id: string
           niche: string | null
           payment_terms: string | null
           pdf_url: string | null
           service_description: string | null
           status: string | null
+          template_id: string | null
           title: string | null
           total_value: number | null
           updated_at: string | null
@@ -137,12 +139,14 @@ export type Database = {
           created_at?: string | null
           deadline_days?: number | null
           deliverables?: string | null
+          html_content?: string | null
           id?: string
           niche?: string | null
           payment_terms?: string | null
           pdf_url?: string | null
           service_description?: string | null
           status?: string | null
+          template_id?: string | null
           title?: string | null
           total_value?: number | null
           updated_at?: string | null
@@ -158,12 +162,14 @@ export type Database = {
           created_at?: string | null
           deadline_days?: number | null
           deliverables?: string | null
+          html_content?: string | null
           id?: string
           niche?: string | null
           payment_terms?: string | null
           pdf_url?: string | null
           service_description?: string | null
           status?: string | null
+          template_id?: string | null
           title?: string | null
           total_value?: number | null
           updated_at?: string | null
