@@ -406,7 +406,7 @@ serve(async (req) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-sonnet-4-5-20250929',
         max_tokens: 8000,
         system: `Você é um designer expert em propostas comerciais de alto impacto para o mercado brasileiro. 
 Sua especialidade é criar HTML/CSS profissional que impressiona clientes e fecha negócios.
