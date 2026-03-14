@@ -360,7 +360,7 @@ serve(async (req) => {
         usage.proposals_count = 0
       }
 
-      if (usage.proposals_count >= 250) {
+      if (usage.proposals_count >= 50) {
         return new Response(
           JSON.stringify({ error: 'LIMIT_REACHED' }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 429 }
