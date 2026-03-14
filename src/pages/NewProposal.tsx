@@ -167,6 +167,10 @@ export default function NewProposal() {
                   <Input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} placeholder="(11) 99999-9999" />
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label>Segmento do cliente</Label>
+                <Input value={clientNiche} onChange={(e) => setClientNiche(e.target.value)} placeholder="Ex: Tecnologia, Saúde, Construção..." />
+              </div>
             </CardContent>
           </Card>
 
