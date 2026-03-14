@@ -1,13 +1,12 @@
-import { LayoutDashboard, FilePlus, History, Settings, LogOut, Sparkles } from "lucide-react";
+import { LayoutDashboard, FilePlus, History, Settings, LogOut, Zap } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -36,10 +35,10 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-2">
+      <SidebarHeader className="p-4 border-b border-border">
+        <div className="flex items-center gap-2.5">
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-            <Sparkles className="h-4 w-4 text-primary-foreground" />
+            <Zap className="h-4 w-4 text-primary-foreground" />
           </div>
           {!collapsed && (
             <span className="font-heading font-bold text-lg text-foreground">
@@ -49,9 +48,8 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="pt-4">
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
@@ -60,10 +58,10 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end={item.url === "/dashboard"}
-                      className="hover:bg-sidebar-accent/50"
-                      activeClassName="bg-sidebar-accent text-primary font-medium"
+                      className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-muted-foreground transition-all duration-150 hover:bg-card hover:text-foreground [&>svg]:h-[18px] [&>svg]:w-[18px]"
+                      activeClassName="bg-sidebar-accent text-foreground font-medium border-l-[3px] border-l-primary [&>svg]:text-primary"
                     >
-                      <item.icon className="mr-2 h-4 w-4" />
+                      <item.icon />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -74,11 +72,14 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-2 border-t border-border">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleSignOut} className="hover:bg-destructive/10 hover:text-destructive">
-              <LogOut className="mr-2 h-4 w-4" />
+            <SidebarMenuButton
+              onClick={handleSignOut}
+              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-muted-foreground transition-all duration-150 hover:bg-destructive/10 hover:text-destructive"
+            >
+              <LogOut className="h-[18px] w-[18px]" />
               {!collapsed && <span>Sair</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>

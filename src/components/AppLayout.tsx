@@ -37,7 +37,7 @@ export function AppLayout() {
   });
 
   const proposalsCount = usage?.proposals_count ?? 0;
-  const maxProposals = 250;
+  const maxProposals = 50;
   const progressPercent = (proposalsCount / maxProposals) * 100;
 
   return (
@@ -45,17 +45,21 @@ export function AppLayout() {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center justify-between border-b border-border px-4 bg-card/50 backdrop-blur-sm">
+          <header className="h-14 flex items-center justify-between border-b border-border px-4 bg-[hsl(var(--sidebar-background))]">
             <div className="flex items-center gap-3">
               <SidebarTrigger />
             </div>
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{proposalsCount} / {maxProposals} propostas</span>
-                <Progress value={progressPercent} className="w-24 h-2" />
+              <div className="hidden md:flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-1.5">
+                  <span className="text-sm text-muted-foreground">
+                    {proposalsCount} / {maxProposals} propostas
+                  </span>
+                </div>
+                <Progress value={progressPercent} className="w-24 h-1.5" />
               </div>
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-primary-foreground text-xs font-heading">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-primary-foreground text-xs font-heading font-semibold">
                   {profile?.full_name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>

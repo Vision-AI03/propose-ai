@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { Sparkles, Loader2 } from "lucide-react";
@@ -15,6 +15,34 @@ import { motion } from "framer-motion";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+
+const templates = [
+  {
+    id: "moderno",
+    name: "Moderno",
+    colors: ["hsl(217,91%,60%)", "hsl(221,39%,11%)", "hsl(215,28%,17%)"],
+  },
+  {
+    id: "impacto",
+    name: "Impacto",
+    colors: ["hsl(0,84%,60%)", "hsl(224,54%,8%)", "hsl(215,28%,17%)"],
+  },
+  {
+    id: "narrativo",
+    name: "Narrativo",
+    colors: ["hsl(160,64%,40%)", "hsl(221,39%,11%)", "hsl(215,28%,17%)"],
+  },
+  {
+    id: "minimalista",
+    name: "Minimalista",
+    colors: ["hsl(210,20%,98%)", "hsl(224,54%,8%)", "hsl(221,39%,11%)"],
+  },
+  {
+    id: "bold",
+    name: "Bold",
+    colors: ["hsl(45,96%,64%)", "hsl(224,54%,8%)", "hsl(215,28%,17%)"],
+  },
+];
 
 export default function NewProposal() {
   const { user } = useAuth();
@@ -46,7 +74,6 @@ export default function NewProposal() {
     enabled: !!user,
   });
 
-  // Set niche from profile
   useState(() => {
     if (profile?.niche) setNiche(profile.niche);
   });
@@ -68,7 +95,6 @@ export default function NewProposal() {
     setLoading(true);
 
     try {
-      // Check usage
       const { data: usage } = await supabase
         .from("user_usage")
         .select("*")
@@ -88,14 +114,13 @@ export default function NewProposal() {
           usage.proposals_count = 0;
         }
 
-        if (usage.proposals_count >= 250) {
+        if (usage.proposals_count >= 50) {
           setLimitModal(true);
           setLoading(false);
           return;
         }
       }
 
-      // Call edge function
       const { data: result, error: fnError } = await supabase.functions.invoke("generate-proposal", {
         body: {
           clientName,
@@ -139,60 +164,60 @@ export default function NewProposal() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-6xl mx-auto">
-      <h1 className="font-heading text-2xl font-bold mb-6">Nova Proposta</h1>
+      <h1 className="font-heading text-2xl font-bold mb-6 border-l-[3px] border-l-primary pl-4">Nova Proposta</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left column */}
         <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-heading">Dados do cliente</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <Card className="border-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border">
+              <h3 className="font-heading text-[15px] font-semibold text-foreground">Dados do cliente</h3>
+            </div>
+            <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
-                <Label>Nome do cliente *</Label>
+                <Label className="text-muted-foreground text-sm">Nome do cliente *</Label>
                 <Input value={clientName} onChange={(e) => setClientName(e.target.value)} placeholder="Nome do cliente" />
               </div>
               <div className="space-y-2">
-                <Label>Empresa do cliente</Label>
+                <Label className="text-muted-foreground text-sm">Empresa do cliente</Label>
                 <Input value={clientCompany} onChange={(e) => setClientCompany(e.target.value)} placeholder="Empresa" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Email</Label>
+                  <Label className="text-muted-foreground text-sm">Email</Label>
                   <Input type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} placeholder="email@cliente.com" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Telefone</Label>
+                  <Label className="text-muted-foreground text-sm">Telefone</Label>
                   <Input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} placeholder="(11) 99999-9999" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Segmento do cliente</Label>
+                <Label className="text-muted-foreground text-sm">Segmento do cliente</Label>
                 <Input value={clientNiche} onChange={(e) => setClientNiche(e.target.value)} placeholder="Ex: Tecnologia, Saúde, Construção..." />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-heading">Serviço</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <Card className="border-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border">
+              <h3 className="font-heading text-[15px] font-semibold text-foreground">Serviço</h3>
+            </div>
+            <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
-                <Label>Nicho / tipo de serviço</Label>
+                <Label className="text-muted-foreground text-sm">Nicho / tipo de serviço</Label>
                 <Input value={niche} onChange={(e) => setNiche(e.target.value)} placeholder={profile?.niche || "Tipo de serviço"} />
               </div>
               <div className="space-y-2">
-                <Label>Descrição do serviço *</Label>
+                <Label className="text-muted-foreground text-sm">Descrição do serviço *</Label>
                 <Textarea value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} placeholder="Descreva o que será feito..." rows={4} />
               </div>
               <div className="space-y-2">
-                <Label>Principais entregáveis</Label>
+                <Label className="text-muted-foreground text-sm">Principais entregáveis</Label>
                 <Textarea value={deliverables} onChange={(e) => setDeliverables(e.target.value)} placeholder="O que o cliente receberá..." rows={3} />
               </div>
               <div className="space-y-2">
-                <Label>Prazo de entrega (dias)</Label>
+                <Label className="text-muted-foreground text-sm">Prazo de entrega (dias)</Label>
                 <Input type="number" value={deadlineDays} onChange={(e) => setDeadlineDays(e.target.value)} placeholder="30" />
               </div>
             </CardContent>
@@ -201,17 +226,17 @@ export default function NewProposal() {
 
         {/* Right column */}
         <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-heading">Valores e condições</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <Card className="border-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border">
+              <h3 className="font-heading text-[15px] font-semibold text-foreground">Valores e condições</h3>
+            </div>
+            <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
-                <Label>Valor total (R$)</Label>
+                <Label className="text-muted-foreground text-sm">Valor total (R$)</Label>
                 <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
               </div>
               <div className="space-y-2">
-                <Label>Forma de pagamento</Label>
+                <Label className="text-muted-foreground text-sm">Forma de pagamento</Label>
                 <Select value={paymentTerms} onValueChange={setPaymentTerms}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -223,38 +248,59 @@ export default function NewProposal() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Validade da proposta (dias)</Label>
+                <Label className="text-muted-foreground text-sm">Validade da proposta (dias)</Label>
                 <Input type="number" value={validityDays} onChange={(e) => setValidityDays(e.target.value)} placeholder="15" />
               </div>
               <div className="space-y-2">
-                <Label>Informações adicionais</Label>
+                <Label className="text-muted-foreground text-sm">Informações adicionais</Label>
                 <Textarea value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} placeholder="Observações extras..." rows={3} />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-heading">Template da proposta</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Select value={templateId} onValueChange={setTemplateId}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="moderno">Moderno com Cards</SelectItem>
-                  <SelectItem value="impacto">Impacto com Dados</SelectItem>
-                  <SelectItem value="narrativo">Narrativo com Foto</SelectItem>
-                  <SelectItem value="minimalista">Minimalista Elegante</SelectItem>
-                  <SelectItem value="bold">Bold Impactante</SelectItem>
-                </SelectContent>
-              </Select>
+          <Card className="border-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border">
+              <h3 className="font-heading text-[15px] font-semibold text-foreground">Template da proposta</h3>
+            </div>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {templates.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setTemplateId(t.id)}
+                    className={`group relative h-[140px] rounded-[10px] border-[1.5px] p-3 flex flex-col justify-between transition-all duration-150 cursor-pointer ${
+                      templateId === t.id
+                        ? "border-primary bg-sidebar-accent"
+                        : "border-border bg-background hover:border-secondary-foreground/20"
+                    }`}
+                  >
+                    {/* Mini preview */}
+                    <div className="flex-1 flex flex-col gap-1.5 pt-1">
+                      <div className="h-2 w-full rounded-sm" style={{ backgroundColor: t.colors[0] }} />
+                      <div className="flex gap-1 flex-1">
+                        <div className="w-1/3 rounded-sm" style={{ backgroundColor: t.colors[1] }} />
+                        <div className="flex-1 flex flex-col gap-1">
+                          <div className="h-1.5 w-3/4 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
+                          <div className="h-1.5 w-1/2 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
+                          <div className="h-1.5 w-2/3 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
+                        </div>
+                      </div>
+                    </div>
+                    <span className={`text-[13px] font-medium mt-2 ${
+                      templateId === t.id ? "text-primary" : "text-muted-foreground"
+                    }`}>
+                      {t.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </CardContent>
           </Card>
 
           <Button
             onClick={handleGenerate}
             disabled={loading}
-            className="w-full h-14 text-lg gap-3"
+            className="w-full h-14 text-[15px] font-heading font-bold gap-3 rounded-[10px] btn-primary-hover bg-primary hover:bg-primary-hover"
             size="lg"
           >
             {loading ? (
@@ -264,7 +310,7 @@ export default function NewProposal() {
               </>
             ) : (
               <>
-                <Sparkles className="h-5 w-5" />
+                <Sparkles className="h-5 w-5 animate-spin-slow" />
                 Gerar Proposta com IA
               </>
             )}
@@ -277,7 +323,7 @@ export default function NewProposal() {
           <DialogHeader>
             <DialogTitle className="font-heading">Limite atingido</DialogTitle>
             <DialogDescription>
-              Você atingiu o limite de 250 propostas neste mês. Seu limite será renovado no dia 1º do próximo mês.
+              Você atingiu o limite de 50 propostas neste mês. Seu limite será renovado no dia 1º do próximo mês.
             </DialogDescription>
           </DialogHeader>
           <Button onClick={() => setLimitModal(false)}>Entendi</Button>
