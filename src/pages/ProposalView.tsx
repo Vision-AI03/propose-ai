@@ -91,50 +91,46 @@ export default function ProposalView() {
   };
 
   const handleExportPdf = async () => {
-    // If we have html_content, use the iframe's print functionality
-    const htmlContent = (proposal as any)?.html_content;
-    if (htmlContent) {
-      setPdfLoading(true);
-      try {
-        const iframe = iframeRef.current;
-        if (iframe?.contentWindow) {
-          iframe.contentWindow.print();
-          toast({ title: "Use 'Salvar como PDF' na janela de impressão" });
-        } else {
-          // Fallback: open in new window
-          const printWindow = window.open('', '_blank');
-          if (printWindow) {
-            printWindow.document.write(htmlContent);
-            printWindow.document.close();
-            printWindow.onload = () => {
-              printWindow.print();
-            };
-          }
-        }
-      } catch (err: any) {
-        toast({ title: "Erro ao exportar PDF", description: err.message, variant: "destructive" });
-      } finally {
-        setPdfLoading(false);
-      }
-      return;
-    }
-
-    // Fallback for old proposals without html_content
-    const { default: jsPDF } = await import("jspdf");
-    const { default: html2canvas } = await import("html2canvas");
-    
-    const element = document.getElementById("proposal-preview-fallback");
-    if (!element) {
-      toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
-      return;
-    }
     setPdfLoading(true);
     try {
+      const { default: jsPDF } = await import("jspdf");
+      const { default: html2canvas } = await import("html2canvas");
+
+      let element: HTMLElement | null = null;
+      let tempContainer: HTMLDivElement | null = null;
+
+      const htmlContent = proposal?.html_content;
+      if (htmlContent) {
+        // Render html_content into a temporary off-screen container
+        tempContainer = document.createElement("div");
+        tempContainer.style.position = "absolute";
+        tempContainer.style.left = "-9999px";
+        tempContainer.style.top = "0";
+        tempContainer.style.width = "794px"; // A4 width in px at 96dpi
+        tempContainer.style.background = "white";
+        tempContainer.innerHTML = htmlContent;
+        document.body.appendChild(tempContainer);
+        element = tempContainer;
+      } else {
+        element = document.getElementById("proposal-preview-fallback");
+      }
+
+      if (!element) {
+        toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
+        setPdfLoading(false);
+        return;
+      }
+
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
       });
+
+      if (tempContainer) {
+        document.body.removeChild(tempContainer);
+      }
+
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
