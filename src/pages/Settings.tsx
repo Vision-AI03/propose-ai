@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Upload } from "lucide-react";
 import { motion } from "framer-motion";
@@ -15,6 +14,7 @@ export default function SettingsPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -25,7 +25,6 @@ export default function SettingsPage() {
     enabled: !!user,
   });
 
-  // Profile fields
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyDocument, setCompanyDocument] = useState("");
@@ -35,13 +34,11 @@ export default function SettingsPage() {
   const [companyAddress, setCompanyAddress] = useState("");
   const [niche, setNiche] = useState("");
 
-  // Visual
   const [primaryColor, setPrimaryColor] = useState("#2563EB");
   const [secondaryColor, setSecondaryColor] = useState("#0F1724");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
-  // Password
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -128,149 +125,164 @@ export default function SettingsPage() {
     setSaving(false);
   };
 
+  const tabs = [
+    { id: "profile", label: "Perfil" },
+    { id: "visual", label: "Identidade Visual" },
+    { id: "account", label: "Conta" },
+  ];
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto">
-      <h1 className="font-heading text-2xl font-bold mb-6">Configurações</h1>
+      <h1 className="font-heading text-2xl font-bold mb-6 border-l-[3px] border-l-primary pl-4">Configurações</h1>
 
-      <Tabs defaultValue="profile">
-        <TabsList className="mb-6">
-          <TabsTrigger value="profile">Perfil</TabsTrigger>
-          <TabsTrigger value="visual">Identidade Visual</TabsTrigger>
-          <TabsTrigger value="account">Conta</TabsTrigger>
-        </TabsList>
+      {/* Custom pill tabs */}
+      <div className="flex gap-2 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
+              activeTab === tab.id
+                ? "bg-sidebar-accent text-primary"
+                : "bg-card text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-        <TabsContent value="profile">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Dados da empresa</CardTitle>
-              <CardDescription>Informações que aparecerão nas suas propostas</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nome completo</Label>
-                  <Input value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nome da empresa</Label>
-                  <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>CNPJ / CPF</Label>
-                  <Input value={companyDocument} onChange={(e) => setCompanyDocument(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Telefone</Label>
-                  <Input value={companyPhone} onChange={(e) => setCompanyPhone(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Email comercial</Label>
-                  <Input value={companyEmail} onChange={(e) => setCompanyEmail(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Site</Label>
-                  <Input value={companyWebsite} onChange={(e) => setCompanyWebsite(e.target.value)} />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label>Endereço</Label>
-                  <Input value={companyAddress} onChange={(e) => setCompanyAddress(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nicho</Label>
-                  <Input value={niche} onChange={(e) => setNiche(e.target.value)} />
-                </div>
-              </div>
-              <Button onClick={handleSaveProfile} disabled={saving}>
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Salvar
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="visual">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Identidade Visual</CardTitle>
-              <CardDescription>Personalize suas propostas</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
+      {activeTab === "profile" && (
+        <Card className="border-border overflow-hidden">
+          <div className="px-6 py-4 border-b border-border">
+            <h3 className="font-heading text-[15px] font-semibold text-foreground">Dados da empresa</h3>
+            <CardDescription className="mt-1">Informações que aparecerão nas suas propostas</CardDescription>
+          </div>
+          <CardContent className="p-6 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Logo</Label>
-                <div className="flex items-center gap-4">
-                  {logoPreview ? (
-                    <img src={logoPreview} alt="Logo" className="h-16 w-16 rounded-lg object-cover border border-border" />
-                  ) : (
-                    <div className="h-16 w-16 rounded-lg border-2 border-dashed border-border flex items-center justify-center">
-                      <Upload className="h-6 w-6 text-muted-foreground" />
-                    </div>
-                  )}
-                  <Input type="file" accept="image/*" onChange={handleLogoChange} className="max-w-xs" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Cor primária</Label>
-                  <div className="flex items-center gap-2">
-                    <input type="color" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="h-10 w-14 rounded cursor-pointer border border-border" />
-                    <Input value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="max-w-32" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Cor secundária</Label>
-                  <div className="flex items-center gap-2">
-                    <input type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="h-10 w-14 rounded cursor-pointer border border-border" />
-                    <Input value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="max-w-32" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Preview */}
-              <div className="rounded-lg border border-border p-4 bg-card">
-                <p className="text-xs text-muted-foreground mb-2">Preview:</p>
-                <div className="rounded-md overflow-hidden">
-                  <div className="h-12 flex items-center px-4 gap-3" style={{ backgroundColor: secondaryColor }}>
-                    {logoPreview && <img src={logoPreview} alt="" className="h-8 w-8 rounded object-cover" />}
-                    <span className="text-white font-heading font-semibold text-sm">{companyName || "Sua Empresa"}</span>
-                  </div>
-                  <div className="h-1" style={{ backgroundColor: primaryColor }} />
-                  <div className="p-3 bg-card">
-                    <div className="h-3 w-3/4 rounded bg-muted mb-2" />
-                    <div className="h-2 w-1/2 rounded bg-muted" />
-                  </div>
-                </div>
-              </div>
-
-              <Button onClick={handleSaveProfile} disabled={saving}>
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Salvar
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="account">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Alterar senha</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 max-w-md">
-              <div className="space-y-2">
-                <Label>Nova senha</Label>
-                <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Mínimo 6 caracteres" />
+                <Label className="text-muted-foreground text-sm">Nome completo</Label>
+                <Input value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label>Confirmar nova senha</Label>
-                <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                <Label className="text-muted-foreground text-sm">Nome da empresa</Label>
+                <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
               </div>
-              <Button onClick={handleChangePassword} disabled={saving || !newPassword}>
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Alterar senha
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">CNPJ / CPF</Label>
+                <Input value={companyDocument} onChange={(e) => setCompanyDocument(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Telefone</Label>
+                <Input value={companyPhone} onChange={(e) => setCompanyPhone(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Email comercial</Label>
+                <Input value={companyEmail} onChange={(e) => setCompanyEmail(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Site</Label>
+                <Input value={companyWebsite} onChange={(e) => setCompanyWebsite(e.target.value)} />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-muted-foreground text-sm">Endereço</Label>
+                <Input value={companyAddress} onChange={(e) => setCompanyAddress(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Nicho</Label>
+                <Input value={niche} onChange={(e) => setNiche(e.target.value)} />
+              </div>
+            </div>
+            <Button onClick={handleSaveProfile} disabled={saving} className="btn-primary-hover rounded-[10px]">
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Salvar
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {activeTab === "visual" && (
+        <Card className="border-border overflow-hidden">
+          <div className="px-6 py-4 border-b border-border">
+            <h3 className="font-heading text-[15px] font-semibold text-foreground">Identidade Visual</h3>
+            <CardDescription className="mt-1">Personalize suas propostas</CardDescription>
+          </div>
+          <CardContent className="p-6 space-y-6">
+            <div className="space-y-2">
+              <Label className="text-muted-foreground text-sm">Logo</Label>
+              <div className="flex items-center gap-4">
+                {logoPreview ? (
+                  <img src={logoPreview} alt="Logo" className="h-16 w-16 rounded-lg object-cover border border-border" />
+                ) : (
+                  <div className="h-16 w-16 rounded-lg border-2 border-dashed border-border flex items-center justify-center">
+                    <Upload className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                )}
+                <Input type="file" accept="image/*" onChange={handleLogoChange} className="max-w-xs" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Cor primária</Label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="h-10 w-14 rounded cursor-pointer border border-border" />
+                  <Input value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="max-w-32" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Cor secundária</Label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="h-10 w-14 rounded cursor-pointer border border-border" />
+                  <Input value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="max-w-32" />
+                </div>
+              </div>
+            </div>
+
+            {/* Preview */}
+            <div className="rounded-lg border border-border p-4 bg-background">
+              <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+              <div className="rounded-md overflow-hidden">
+                <div className="h-12 flex items-center px-4 gap-3" style={{ backgroundColor: secondaryColor }}>
+                  {logoPreview && <img src={logoPreview} alt="" className="h-8 w-8 rounded object-cover" />}
+                  <span className="text-white font-heading font-semibold text-sm">{companyName || "Sua Empresa"}</span>
+                </div>
+                <div className="h-1" style={{ backgroundColor: primaryColor }} />
+                <div className="p-3 bg-card">
+                  <div className="h-3 w-3/4 rounded bg-secondary mb-2" />
+                  <div className="h-2 w-1/2 rounded bg-secondary" />
+                </div>
+              </div>
+            </div>
+
+            <Button onClick={handleSaveProfile} disabled={saving} className="btn-primary-hover rounded-[10px]">
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Salvar
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {activeTab === "account" && (
+        <Card className="border-border overflow-hidden">
+          <div className="px-6 py-4 border-b border-border">
+            <h3 className="font-heading text-[15px] font-semibold text-foreground">Alterar senha</h3>
+          </div>
+          <CardContent className="p-6 space-y-4 max-w-md">
+            <div className="space-y-2">
+              <Label className="text-muted-foreground text-sm">Nova senha</Label>
+              <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Mínimo 6 caracteres" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-muted-foreground text-sm">Confirmar nova senha</Label>
+              <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            </div>
+            <Button onClick={handleChangePassword} disabled={saving || !newPassword} className="btn-primary-hover rounded-[10px]">
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Alterar senha
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </motion.div>
   );
 }
