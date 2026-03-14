@@ -26,6 +26,8 @@ export default function NewProposal() {
   const [clientCompany, setClientCompany] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
+  const [clientNiche, setClientNiche] = useState("");
+  const [templateId, setTemplateId] = useState("moderno");
   const [niche, setNiche] = useState("");
   const [serviceDescription, setServiceDescription] = useState("");
   const [deliverables, setDeliverables] = useState("");
@@ -100,6 +102,8 @@ export default function NewProposal() {
           clientCompany,
           clientEmail,
           clientPhone,
+          clientNiche,
+          templateId,
           niche: niche || profile?.niche || "",
           serviceDescription,
           deliverables,
@@ -163,6 +167,10 @@ export default function NewProposal() {
                   <Input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} placeholder="(11) 99999-9999" />
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label>Segmento do cliente</Label>
+                <Input value={clientNiche} onChange={(e) => setClientNiche(e.target.value)} placeholder="Ex: Tecnologia, Saúde, Construção..." />
+              </div>
             </CardContent>
           </Card>
 
@@ -222,6 +230,24 @@ export default function NewProposal() {
                 <Label>Informações adicionais</Label>
                 <Textarea value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} placeholder="Observações extras..." rows={3} />
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-heading">Template da proposta</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Select value={templateId} onValueChange={setTemplateId}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="moderno">Moderno com Cards</SelectItem>
+                  <SelectItem value="impacto">Impacto com Dados</SelectItem>
+                  <SelectItem value="narrativo">Narrativo com Foto</SelectItem>
+                  <SelectItem value="minimalista">Minimalista Elegante</SelectItem>
+                  <SelectItem value="bold">Bold Impactante</SelectItem>
+                </SelectContent>
+              </Select>
             </CardContent>
           </Card>
 
