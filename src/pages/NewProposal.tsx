@@ -233,6 +233,24 @@ export default function NewProposal() {
             </CardContent>
           </Card>
 
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-heading">Template da proposta</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Select value={templateId} onValueChange={setTemplateId}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="moderno">Moderno com Cards</SelectItem>
+                  <SelectItem value="impacto">Impacto com Dados</SelectItem>
+                  <SelectItem value="narrativo">Narrativo com Foto</SelectItem>
+                  <SelectItem value="minimalista">Minimalista Elegante</SelectItem>
+                  <SelectItem value="bold">Bold Impactante</SelectItem>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+
           <Button
             onClick={handleGenerate}
             disabled={loading}
