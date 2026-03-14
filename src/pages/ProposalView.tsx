@@ -10,8 +10,6 @@ import { toast } from "@/hooks/use-toast";
 import { Pencil, Download, Copy, Trash2, ArrowLeft, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -22,7 +20,7 @@ export default function ProposalView() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [pdfLoading, setPdfLoading] = useState(false);
-  const previewRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { data: proposal, isLoading } = useQuery({
     queryKey: ["proposal", id],
@@ -69,7 +67,6 @@ export default function ProposalView() {
       return;
     }
 
-    // Duplicate sections
     if (sections && sections.length > 0 && newP) {
       const newSections = sections.map(({ id: _, proposal_id, ...s }) => ({
         ...s,
@@ -94,7 +91,39 @@ export default function ProposalView() {
   };
 
   const handleExportPdf = async () => {
-    const element = previewRef.current;
+    // If we have html_content, use the iframe's print functionality
+    const htmlContent = (proposal as any)?.html_content;
+    if (htmlContent) {
+      setPdfLoading(true);
+      try {
+        const iframe = iframeRef.current;
+        if (iframe?.contentWindow) {
+          iframe.contentWindow.print();
+          toast({ title: "Use 'Salvar como PDF' na janela de impressão" });
+        } else {
+          // Fallback: open in new window
+          const printWindow = window.open('', '_blank');
+          if (printWindow) {
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            printWindow.onload = () => {
+              printWindow.print();
+            };
+          }
+        }
+      } catch (err: any) {
+        toast({ title: "Erro ao exportar PDF", description: err.message, variant: "destructive" });
+      } finally {
+        setPdfLoading(false);
+      }
+      return;
+    }
+
+    // Fallback for old proposals without html_content
+    const { default: jsPDF } = await import("jspdf");
+    const { default: html2canvas } = await import("html2canvas");
+    
+    const element = document.getElementById("proposal-preview-fallback");
     if (!element) {
       toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
       return;
@@ -110,7 +139,7 @@ export default function ProposalView() {
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
+
       let heightLeft = pdfHeight;
       let position = 0;
       const pageHeight = pdf.internal.pageSize.getHeight();
@@ -137,6 +166,7 @@ export default function ProposalView() {
   const statusBadge = (status: string) => {
     const map: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
       draft: { label: "Rascunho", variant: "secondary" },
+      generated: { label: "Gerada", variant: "default" },
       sent: { label: "Enviada", variant: "default" },
       approved: { label: "Aprovada", variant: "default" },
       rejected: { label: "Rejeitada", variant: "destructive" },
@@ -157,6 +187,9 @@ export default function ProposalView() {
   if (!proposal) {
     return <div className="text-center py-12 text-muted-foreground">Proposta não encontrada</div>;
   }
+
+  const htmlContent = (proposal as any)?.html_content;
+  const hasHtmlContent = !!htmlContent;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-6xl mx-auto">
@@ -221,39 +254,55 @@ export default function ProposalView() {
 
         {/* Preview */}
         <div className="lg:col-span-3">
-          <div ref={previewRef}>
-          <Card className="overflow-hidden">
-            <div
-              className="h-16 flex items-center px-6 gap-3"
-              style={{ backgroundColor: profile?.secondary_color || "#0F1724" }}
-            >
-              {profile?.logo_url && (
-                <img src={profile.logo_url} alt="Logo" className="h-10 w-10 rounded object-cover" />
-              )}
-              <span className="text-white font-heading font-semibold">
-                {profile?.company_name || "Sua Empresa"}
-              </span>
-            </div>
-            <div className="h-1" style={{ backgroundColor: profile?.primary_color || "#2563EB" }} />
-
-            <CardContent className="p-6 space-y-6">
-              <h2 className="font-heading text-xl font-bold text-center">{proposal.title}</h2>
-
-              {sections?.map((section) => (
-                <div key={section.id} className="space-y-2">
-                  <h3 className="font-heading font-semibold text-primary">{section.section_title}</h3>
-                  <div className="text-sm leading-relaxed whitespace-pre-wrap text-foreground/90">
-                    {section.content}
-                  </div>
+          {hasHtmlContent ? (
+            <iframe
+              ref={iframeRef}
+              srcDoc={htmlContent}
+              style={{
+                width: '100%',
+                height: '900px',
+                border: 'none',
+                borderRadius: '8px',
+                background: 'white',
+              }}
+              title="Preview da Proposta"
+              sandbox="allow-same-origin"
+            />
+          ) : (
+            <div id="proposal-preview-fallback">
+              <Card className="overflow-hidden">
+                <div
+                  className="h-16 flex items-center px-6 gap-3"
+                  style={{ backgroundColor: profile?.secondary_color || "#0F1724" }}
+                >
+                  {profile?.logo_url && (
+                    <img src={profile.logo_url} alt="Logo" className="h-10 w-10 rounded object-cover" />
+                  )}
+                  <span className="text-white font-heading font-semibold">
+                    {profile?.company_name || "Sua Empresa"}
+                  </span>
                 </div>
-              ))}
+                <div className="h-1" style={{ backgroundColor: profile?.primary_color || "#2563EB" }} />
 
-              <div className="border-t border-border pt-4 text-xs text-muted-foreground text-center">
-                Proposta válida por {proposal.validity_days || 15} dias • Gerada com PropostaAI
-              </div>
-            </CardContent>
-          </Card>
-          </div>
+                <CardContent className="p-6 space-y-6">
+                  <h2 className="font-heading text-xl font-bold text-center">{proposal.title}</h2>
+
+                  {sections?.map((section) => (
+                    <div key={section.id} className="space-y-2">
+                      <h3 className="font-heading font-semibold text-primary">{section.section_title}</h3>
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap text-foreground/90">
+                        {section.content}
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="border-t border-border pt-4 text-xs text-muted-foreground text-center">
+                    Proposta válida por {proposal.validity_days || 15} dias • Gerada com PropostaAI
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
