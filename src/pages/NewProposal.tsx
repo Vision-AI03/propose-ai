@@ -102,6 +102,8 @@ export default function NewProposal() {
           clientCompany,
           clientEmail,
           clientPhone,
+          clientNiche,
+          templateId,
           niche: niche || profile?.niche || "",
           serviceDescription,
           deliverables,
