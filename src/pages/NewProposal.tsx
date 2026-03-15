@@ -44,6 +44,22 @@ const templates = [
   },
 ];
 
+// Formata string para exibição como moeda BR (1234 → "1.234")
+function formatCurrencyInput(value: string): string {
+  // Remove tudo exceto dígitos
+  const digits = value.replace(/\D/g, "");
+  if (!digits) return "";
+  // Formata com pontos de milhar
+  return Number(digits).toLocaleString("pt-BR");
+}
+
+// Converte string formatada para número inteiro (reais)
+function parseCurrencyValue(formatted: string): number {
+  // Remove pontos de milhar, resultado é número inteiro em reais
+  const digits = formatted.replace(/\D/g, "");
+  return Number(digits) || 0;
+}
+
 export default function NewProposal() {
   const { user } = useAuth();
   const navigate = useNavigate();
