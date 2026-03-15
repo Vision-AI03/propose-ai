@@ -509,7 +509,9 @@ Segmento: ${clientNiche || 'não informado'}
 Descrição: ${serviceDescription}
 Entregáveis: ${deliverables}
 Prazo: ${deadlineDays} dias corridos
-Valor Total: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+${setupValue && monthlyValue
+              ? `Modelo de cobrança: Setup de R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + Mensalidade de R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
+              : `Valor Total: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
 Pagamento: ${paymentTerms}
 Validade: ${validityDays} dias
 Informações adicionais: ${additionalInfo || 'nenhuma'}
