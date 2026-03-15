@@ -83,8 +83,12 @@ export default function NewProposal() {
   const paymentLabels: Record<string, string> = {
     a_vista: "À vista",
     "50_50": "50% entrada + 50% na entrega",
-    parcelado: "Parcelado",
+    "2x": "Parcelado em 2x",
+    "3x": "Parcelado em 3x",
+    "5x": "Parcelado em 5x",
+    "10x": "Parcelado em 10x",
     mensal: "Mensal (recorrente)",
+    setup_mensal: "Setup + Mensal recorrente",
   };
 
   const handleGenerate = async () => {
