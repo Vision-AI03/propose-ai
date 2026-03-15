@@ -499,8 +499,7 @@ serve(async (req) => {
         system: `Você é um designer expert em propostas comerciais profissionais para o mercado brasileiro.
 REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
 CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio. Se precisar reduzir conteúdo, simplifique seções mas SEMPRE finalize o documento.`,
-Você conhece profundamente cada nicho de mercado e adapta linguagem, métricas e argumentos para cada segmento.
-REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
+CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio.`,
 
 CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio. Se precisar reduzir conteúdo, simplifique seções mas SEMPRE finalize o documento.`,
         messages: [{
