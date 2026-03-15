@@ -496,8 +496,9 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
         max_tokens: 45000,
-        system: `Você é um designer expert em propostas comerciais de alto impacto para o mercado brasileiro. 
-Sua especialidade é criar HTML/CSS profissional que impressiona clientes e fecha negócios.
+        system: `Você é um designer expert em propostas comerciais profissionais para o mercado brasileiro.
+REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
+CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio. Se precisar reduzir conteúdo, simplifique seções mas SEMPRE finalize o documento.`,
 Você conhece profundamente cada nicho de mercado e adapta linguagem, métricas e argumentos para cada segmento.
 REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
 
