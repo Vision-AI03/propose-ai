@@ -278,8 +278,7 @@ export default function ProposalView() {
                 />
               </div>
             );
-          })()
-          ) : (
+          }) : (
             <div id="proposal-preview-fallback">
               <Card className="overflow-hidden">
                 <div
