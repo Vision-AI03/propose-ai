@@ -61,6 +61,8 @@ export default function NewProposal() {
   const [deliverables, setDeliverables] = useState("");
   const [deadlineDays, setDeadlineDays] = useState("");
   const [totalValue, setTotalValue] = useState("");
+  const [setupValue, setSetupValue] = useState("");
+  const [monthlyValue, setMonthlyValue] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("a_vista");
   const [validityDays, setValidityDays] = useState("15");
   const [additionalInfo, setAdditionalInfo] = useState("");
