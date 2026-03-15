@@ -603,7 +603,7 @@ ${templateInstructions}
           niche: myNiche,
           service_description: serviceDescription,
           deliverables,
-          total_value: totalValue || null,
+          total_value: setupValue ? (Number(setupValue) + Number(monthlyValue)) : (totalValue || null),
           payment_terms: paymentTerms,
           deadline_days: deadlineDays || null,
           validity_days: validityDays || 15,
