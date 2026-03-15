@@ -275,17 +275,17 @@ export default function NewProposal() {
                 <>
                   <div className="space-y-2">
                     <Label className="text-muted-foreground text-sm">Valor do Setup (R$)</Label>
-                    <Input type="number" step="0.01" value={setupValue} onChange={(e) => setSetupValue(e.target.value)} placeholder="Ex: 2500" />
+                    <Input type="text" inputMode="numeric" value={setupValue} onChange={(e) => setSetupValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 2.500" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-muted-foreground text-sm">Valor Mensal (R$)</Label>
-                    <Input type="number" step="0.01" value={monthlyValue} onChange={(e) => setMonthlyValue(e.target.value)} placeholder="Ex: 750" />
+                    <Input type="text" inputMode="numeric" value={monthlyValue} onChange={(e) => setMonthlyValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 750" />
                   </div>
                 </>
               ) : (
                 <div className="space-y-2">
                   <Label className="text-muted-foreground text-sm">Valor total (R$)</Label>
-                  <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
+                  <Input type="text" inputMode="numeric" value={totalValue} onChange={(e) => setTotalValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 5.000" />
                 </div>
               )}
               <div className="space-y-2">
