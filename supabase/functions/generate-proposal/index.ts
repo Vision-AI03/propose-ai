@@ -107,6 +107,18 @@ function getPexelsQuery(myNiche: string, clientNiche: string): string {
   return `${clientNiche} professional business modern office`
 }
 
+// Formatar telefone brasileiro
+function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length === 11) {
+    return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`
+  }
+  if (digits.length === 10) {
+    return `(${digits.slice(0,2)}) ${digits.slice(2,6)}-${digits.slice(6)}`
+  }
+  return phone
+}
+
 // Paleta de cores por nicho do cliente
 function getNichePalette(clientNiche: string) {
   const n = clientNiche.toLowerCase()
@@ -484,186 +496,157 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
         max_tokens: 45000,
-        system: `Você é um designer expert em propostas comerciais de alto impacto para o mercado brasileiro. 
-Sua especialidade é criar HTML/CSS profissional que impressiona clientes e fecha negócios.
-Você conhece profundamente cada nicho de mercado e adapta linguagem, métricas e argumentos para cada segmento.
+        system: `Você é um designer expert em propostas comerciais profissionais para o mercado brasileiro.
 REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
-
 CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio. Se precisar reduzir conteúdo, simplifique seções mas SEMPRE finalize o documento.`,
         messages: [{
           role: 'user',
-          content: `Gere uma proposta comercial COMPLETA em HTML/CSS profissional de alto impacto.
+          content: `Gere uma proposta comercial COMPLETA em HTML dividida em páginas A4 fixas. Cada página é um div.pagina com dimensões exatas de 210mm × 297mm.
 
-=== EMPRESA QUE ENVIA A PROPOSTA ===
-Nome: ${companyName}
-Segmento: ${myNiche}
-Telefone: ${companyPhone || 'não informado'}
-Email: ${companyEmail || 'não informado'}
-Site: ${companyWebsite || 'não informado'}
-Logo: ${logoUrl ? `<img src="${logoUrl}" style="height:48px;object-fit:contain">` : `<span style="font-family:Sora;font-weight:700;font-size:22px;color:${finalPrimary}">${companyName}</span>`}
-
-=== CLIENTE ===
-Nome do contato: ${clientName}
-Empresa: ${clientCompany || 'não informada'}
-Segmento: ${clientNiche || 'não informado'}
-
-=== SERVIÇO PROPOSTO ===
-Descrição: ${serviceDescription}
+=== DADOS ===
+Empresa: ${companyName}
+Nicho: ${myNiche}
+Telefone: ${formatPhone(companyPhone)}
+Email: ${companyEmail}
+Site: ${companyWebsite}
+Logo: ${logoUrl ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">` : `<span style="font-weight:700;font-size:18px">${companyName}</span>`}
+Cliente: ${clientName} — ${clientCompany} (${clientNiche})
+Serviço: ${serviceDescription}
 Entregáveis: ${deliverables}
-Prazo: ${deadlineDays} dias corridos
+Prazo: ${deadlineDays} dias
 ${setupValue && monthlyValue
-              ? `Modelo de cobrança: Setup de R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + Mensalidade de R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
-              : `Valor Total: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+  ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', {minimumFractionDigits:2})} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', {minimumFractionDigits:2})}/mês`
+  : `Valor: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`}
 Pagamento: ${paymentTerms}
 Validade: ${validityDays} dias
-Informações adicionais: ${additionalInfo || 'nenhuma'}
+Foto contextual: ${photoUrl || ''}
 
 === IDENTIDADE VISUAL ===
 Cor Primária: ${finalPrimary}
 Cor Secundária: ${finalSecondary}
 Cor Accent: ${finalAccent}
-${photoUrl
-              ? `Imagem contextual: USE EXATAMENTE esta URL como src da imagem de capa: ${photoUrl}`
-              : `Sem foto disponível: crie header com gradiente CSS de ${finalPrimary} para ${finalSecondary} com padrão geométrico SVG decorativo sutil`
-            }
 
-=== INSTRUÇÕES DO TEMPLATE ESCOLHIDO ===
-${templateInstructions}
+=== CSS BASE OBRIGATÓRIO ===
 
-=== NOVA ABORDAGEM DE LAYOUT — PÁGINAS FIXAS A4 ===
+Inclua este CSS exato no <style>, sem alterações:
 
-Ao invés de gerar um HTML contínuo, gere o documento dividido em páginas A4 fixas usando esta estrutura:
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 
-<div class="pagina">
-  <!-- conteúdo da página 1 -->
-</div>
-<div class="pagina">
-  <!-- conteúdo da página 2 -->
-</div>
+@page { size: A4; margin: 0; }
 
-CSS obrigatório para as páginas (inclua no <style> do <head>):
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-@page {
-  size: A4;
-  margin: 0;
-}
+body { background: #E5E7EB; display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 0; font-family: 'Inter', sans-serif; font-size: 13px; }
 
-* {
-  box-sizing: border-box;
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
+.pagina { width: 794px; height: 1123px; background: white; overflow: hidden; position: relative; flex-shrink: 0; }
 
-body {
-  margin: 0;
-  padding: 20px 0;
-  background: #E5E7EB;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  font-family: 'Inter', sans-serif;
-}
+@media print { body { background: white; gap: 0; padding: 0; } .pagina { page-break-after: always; break-after: page; width: 210mm; height: 297mm; } .pagina:last-child { page-break-after: avoid; } }
 
-.pagina {
-  width: 210mm;
-  min-height: 297mm;
-  max-height: 297mm;
-  background: white;
-  overflow: hidden;
-  position: relative;
-  padding: 12mm 14mm;
-  display: flex;
-  flex-direction: column;
-}
+=== ESTRUTURA OBRIGATÓRIA DAS PÁGINAS ===
 
-@media print {
-  body {
-    background: white;
-    padding: 0;
-    gap: 0;
-  }
-  .pagina {
-    page-break-after: always;
-    break-after: page;
-    margin: 0;
-    padding: 12mm 14mm;
-    box-shadow: none;
-  }
-  .pagina:last-child {
-    page-break-after: avoid;
-    break-after: avoid;
-  }
-}
+PÁGINA 1 — CAPA:
 
-REGRAS DE DISTRIBUIÇÃO DO CONTEÚDO POR PÁGINA:
+Layout duas colunas 45%/55%:
 
-Página 1 — CAPA:
-- Header com logo e contatos
-- Badge "Proposta exclusiva para {cliente}"
-- Título principal grande
-- Subtítulo
-- Imagem de capa (max-height: 200px)
-- Deve preencher a página inteira visualmente
+Coluna esquerda (45%):
+- Se tiver foto: imagem cobrindo 100% da altura com object-fit:cover, sem bordas
+- Se não tiver foto: fundo gradiente com cor primária
 
-Página 2 — DESAFIOS + SOLUÇÃO:
-- Seção "Os Desafios" com 3-4 cards de problema
-- Seção "Nossa Solução" com título e subtítulo
-- Cards de solução em grid 2x2
+Coluna direita (55%): fundo branco, padding 40px 32px
+- Logo no topo (40px altura)
+- Linha divisória fina (1px, cor primária, opacity 0.3)
+- Badge pill "Proposta exclusiva para {cliente} • {empresa}" fundo levemente colorido, texto pequeno
+- Título principal: Sora 32px bold, cor #1a1a2e, palavra-chave em cor primária
+- Subtítulo: Inter 14px, cor #6b7280, line-height 1.6
+- Espaço generoso
+- Bloco de contatos no rodapé da coluna:
+  Linha 1: [ícone telefone svg 14px] {telefone formatado}
+  Linha 2: [ícone email svg 14px] {email}
+  Linha 3: [ícone globe svg 14px] {site}
 
-Página 3 — COMO FUNCIONA + DIFERENCIAIS:
-- Timeline do processo (4-5 etapas)
-- Seção de diferenciais ou entregáveis
+PÁGINA 2 — DESAFIOS + SOLUÇÃO:
 
-Página 4 — RESULTADOS + INVESTIMENTO:
-- Métricas de impacto ou gráfico SVG
-- Seção de investimento com valor destacado
-- Condições de pagamento
+- Título seção "Os Desafios de {nicho do cliente}" Sora 22px bold, cor #1a1a2e
+- Subtítulo cinza 13px
+- 4 items de desafio, cada um com:
+  border-left 3px cor primária, padding-left 16px
+  ícone SVG inline 16px na cor primária
+  título bold 14px + texto 13px cinza
+  margin-bottom 20px entre items
 
-Página 5 — PRÓXIMOS PASSOS + ENCERRAMENTO:
-- Próximos passos (3 etapas)
-- Dados de contato em texto simples
-- Validade da proposta
-- Espaço para assinatura
+- Divisória com linha fina + espaço 24px
 
-REGRAS IMPORTANTES:
-- Cada .pagina tem altura FIXA de 297mm — nunca ultrapassar
-- Distribuir o conteúdo de forma que cada página fique bem preenchida mas sem overflow
-- Nunca colocar conteúdo demais em uma página
-- Se um template tiver menos conteúdo, usar menos páginas
-- Imagens: max-height 180px, object-fit: cover
-- Gráficos SVG: max-height 160px
-- Fontes menores que no layout contínuo: corpo 13px, títulos de seção 20px, título principal 32px
-- Espaçamentos menores: padding de seção máximo 20px
+- Título "Nossa Solução" Sora 22px bold
+- Grid 2x2 de cards de solução:
+  cada card: padding 16px, border-radius 8px
+  fundo #f8fafc, border 1px #e2e8f0
+  ícone SVG 24px cor primária + título bold + texto 13px
 
-=== ELEMENTOS PROIBIDOS — nunca incluir no HTML da proposta ===
+PÁGINA 3 — PROCESSO + ENTREGÁVEIS:
 
-- Botões clicáveis de CTA ("Falar com Especialista", "Entre em Contato", "Agende uma Demo", etc)
-- Formulários de contato
-- Links externos clicáveis
-- Elementos de navegação
-- Menus ou headers de site
-- Qualquer elemento que só faz sentido em página web
+- Título "Como Funciona o Processo" Sora 22px
+- Timeline vertical: círculos numerados cor primária
+  conectados por linha vertical tracejada
+  4-5 etapas com título bold e descrição 13px
 
-A proposta é um DOCUMENTO PDF impresso, não uma landing page.
-Para encerrar use apenas:
-- Seção "Próximos Passos" em texto descritivo
-- Dados de contato em texto simples (telefone, email, site)
-- Validade da proposta + nome
+- Divisória
 
-=== REGRAS TÉCNICAS OBRIGATÓRIAS ===
-1. Comece com <!DOCTYPE html> e termine com </html>. NADA antes ou depois.
-2. No <head>: importe Sora e Inter via @import: @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;700&display=swap');
-3. Use a estrutura de páginas A4 fixas descrita acima — NÃO use layout contínuo.
-4. Todos os ícones em SVG inline puro — NUNCA use font-awesome ou similar.
-5. Todos os gráficos em SVG puro inline — NUNCA use Chart.js ou D3.
-6. CSS inline ou em <style> no head — NUNCA use arquivos externos além das fontes.
-7. Linguagem 100% em português brasileiro, tom profissional e persuasivo.
-8. Adapte TODA a linguagem ao nicho do cliente: use terminologia específica do segmento "${clientNiche || 'geral'}".
-9. Métricas e números nos cards/gráficos devem ser ESTIMATIVAS REALISTAS e COERENTES com o serviço descrito — não invente números absurdos.
-10. Rodapé SEMPRE inclui: "${companyName} • ${companyPhone || ''} • ${companyEmail || ''} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI"
-11. A proposta deve parecer criada por um designer humano profissional — não genérica.
-12. NUNCA inclua botões, CTAs clicáveis, formulários ou elementos de landing page.`
+- Título "O Que Está Incluído"
+- Grid 2 colunas de entregáveis:
+  cada item: ícone check SVG cor primária + texto
+
+PÁGINA 4 — INVESTIMENTO:
+
+- Título "Investimento" Sora 22px
+- Subtítulo descritivo cinza
+
+- Card principal de investimento:
+  fundo gradiente cor primária → cor secundária
+  border-radius 12px, padding 32px
+  label "SETUP INICIAL" ou "INVESTIMENTO TOTAL" em branco, 11px, uppercase, letter-spacing 2px
+  Valor em branco: Sora 48px bold
+  Condições de pagamento em branco 14px abaixo
+
+- Card secundário fundo #f8fafc:
+  "O que está incluído:"
+  lista de entregáveis com checks coloridos em 2 colunas
+
+- SE tiver gráfico relevante: SVG puro max-height 160px abaixo do card
+
+PÁGINA 5 — PRÓXIMOS PASSOS + ENCERRAMENTO:
+
+- Título "Próximos Passos" Sora 22px
+- 3 etapas em cards horizontais lado a lado:
+  número em círculo cor primária + título + descrição
+
+- Seção de contato (NÃO é botão, é informação):
+  fundo #f8fafc, border-radius 8px, padding 24px
+  título "Entre em Contato" centralizado
+  DOIS contatos por linha:
+  [ícone] {telefone}    [ícone] {email}
+  [ícone] {site}        [espaço]
+  Texto simples, sem botões, sem links clicáveis
+
+- Rodapé da página:
+  linha horizontal fina
+  texto centralizado 11px cinza:
+  "${companyName} • ${formatPhone(companyPhone)} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI"
+
+- Espaço para assinatura:
+  linha horizontal 200px centralizada
+  "${clientName} — ${clientCompany}"
+  "Assinatura e Data" em texto pequeno cinza
+
+=== REGRAS ABSOLUTAS ===
+1. Retorne APENAS o HTML começando com <!DOCTYPE html>
+2. Cada .pagina tem height FIXO 1123px — nunca ultrapassar
+3. Nenhum elemento com height maior que 200px exceto a imagem da capa
+4. Ícones SEMPRE SVG inline — nunca font-awesome
+5. Cores: usar as cores fornecidas em todo o documento
+6. Linguagem 100% adaptada ao nicho: ${clientNiche}
+7. Proibido: botões clicáveis, formulários, links externos, menus de navegação
+8. Contatos SEMPRE em texto simples nunca em botões
+9. Telefone SEMPRE formatado: (XX) XXXXX-XXXX`
         }]
       })
     })
