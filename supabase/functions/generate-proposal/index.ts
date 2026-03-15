@@ -397,7 +397,7 @@ serve(async (req) => {
       proposalId, templateId,
       clientName, clientCompany, clientEmail, clientPhone, clientNiche,
       niche, serviceDescription, deliverables, deadlineDays,
-      totalValue, paymentTerms, validityDays, additionalInfo,
+      totalValue, setupValue, monthlyValue, paymentTerms, validityDays, additionalInfo,
       regenerateId,
     } = body
 
