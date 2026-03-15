@@ -44,6 +44,22 @@ const templates = [
   },
 ];
 
+// Formata string para exibição como moeda BR (1234 → "1.234")
+function formatCurrencyInput(value: string): string {
+  // Remove tudo exceto dígitos
+  const digits = value.replace(/\D/g, "");
+  if (!digits) return "";
+  // Formata com pontos de milhar
+  return Number(digits).toLocaleString("pt-BR");
+}
+
+// Converte string formatada para número inteiro (reais)
+function parseCurrencyValue(formatted: string): number {
+  // Remove pontos de milhar, resultado é número inteiro em reais
+  const digits = formatted.replace(/\D/g, "");
+  return Number(digits) || 0;
+}
+
 export default function NewProposal() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -139,9 +155,9 @@ export default function NewProposal() {
           serviceDescription,
           deliverables,
           deadlineDays: parseInt(deadlineDays) || 30,
-          totalValue: paymentTerms === "setup_mensal" ? 0 : (parseFloat(totalValue) || 0),
-          setupValue: paymentTerms === "setup_mensal" ? (parseFloat(setupValue) || 0) : undefined,
-          monthlyValue: paymentTerms === "setup_mensal" ? (parseFloat(monthlyValue) || 0) : undefined,
+          totalValue: paymentTerms === "setup_mensal" ? 0 : parseCurrencyValue(totalValue),
+          setupValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(setupValue) : undefined,
+          monthlyValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(monthlyValue) : undefined,
           paymentTerms: paymentLabels[paymentTerms] || paymentTerms,
           validityDays: parseInt(validityDays) || 15,
           additionalInfo,
@@ -259,17 +275,17 @@ export default function NewProposal() {
                 <>
                   <div className="space-y-2">
                     <Label className="text-muted-foreground text-sm">Valor do Setup (R$)</Label>
-                    <Input type="number" step="0.01" value={setupValue} onChange={(e) => setSetupValue(e.target.value)} placeholder="Ex: 2500" />
+                    <Input type="text" inputMode="numeric" value={setupValue} onChange={(e) => setSetupValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 2.500" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-muted-foreground text-sm">Valor Mensal (R$)</Label>
-                    <Input type="number" step="0.01" value={monthlyValue} onChange={(e) => setMonthlyValue(e.target.value)} placeholder="Ex: 750" />
+                    <Input type="text" inputMode="numeric" value={monthlyValue} onChange={(e) => setMonthlyValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 750" />
                   </div>
                 </>
               ) : (
                 <div className="space-y-2">
                   <Label className="text-muted-foreground text-sm">Valor total (R$)</Label>
-                  <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
+                  <Input type="text" inputMode="numeric" value={totalValue} onChange={(e) => setTotalValue(formatCurrencyInput(e.target.value))} placeholder="Ex: 5.000" />
                 </div>
               )}
               <div className="space-y-2">
