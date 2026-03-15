@@ -530,19 +530,140 @@ ${photoUrl
 === INSTRUÇÕES DO TEMPLATE ESCOLHIDO ===
 ${templateInstructions}
 
+=== NOVA ABORDAGEM DE LAYOUT — PÁGINAS FIXAS A4 ===
+
+Ao invés de gerar um HTML contínuo, gere o documento dividido em páginas A4 fixas usando esta estrutura:
+
+<div class="pagina">
+  <!-- conteúdo da página 1 -->
+</div>
+<div class="pagina">
+  <!-- conteúdo da página 2 -->
+</div>
+
+CSS obrigatório para as páginas (inclua no <style> do <head>):
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+body {
+  margin: 0;
+  padding: 20px 0;
+  background: #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.pagina {
+  width: 210mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  background: white;
+  overflow: hidden;
+  position: relative;
+  padding: 12mm 14mm;
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  body {
+    background: white;
+    padding: 0;
+    gap: 0;
+  }
+  .pagina {
+    page-break-after: always;
+    break-after: page;
+    margin: 0;
+    padding: 12mm 14mm;
+    box-shadow: none;
+  }
+  .pagina:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+}
+
+REGRAS DE DISTRIBUIÇÃO DO CONTEÚDO POR PÁGINA:
+
+Página 1 — CAPA:
+- Header com logo e contatos
+- Badge "Proposta exclusiva para {cliente}"
+- Título principal grande
+- Subtítulo
+- Imagem de capa (max-height: 200px)
+- Deve preencher a página inteira visualmente
+
+Página 2 — DESAFIOS + SOLUÇÃO:
+- Seção "Os Desafios" com 3-4 cards de problema
+- Seção "Nossa Solução" com título e subtítulo
+- Cards de solução em grid 2x2
+
+Página 3 — COMO FUNCIONA + DIFERENCIAIS:
+- Timeline do processo (4-5 etapas)
+- Seção de diferenciais ou entregáveis
+
+Página 4 — RESULTADOS + INVESTIMENTO:
+- Métricas de impacto ou gráfico SVG
+- Seção de investimento com valor destacado
+- Condições de pagamento
+
+Página 5 — PRÓXIMOS PASSOS + ENCERRAMENTO:
+- Próximos passos (3 etapas)
+- Dados de contato em texto simples
+- Validade da proposta
+- Espaço para assinatura
+
+REGRAS IMPORTANTES:
+- Cada .pagina tem altura FIXA de 297mm — nunca ultrapassar
+- Distribuir o conteúdo de forma que cada página fique bem preenchida mas sem overflow
+- Nunca colocar conteúdo demais em uma página
+- Se um template tiver menos conteúdo, usar menos páginas
+- Imagens: max-height 180px, object-fit: cover
+- Gráficos SVG: max-height 160px
+- Fontes menores que no layout contínuo: corpo 13px, títulos de seção 20px, título principal 32px
+- Espaçamentos menores: padding de seção máximo 20px
+
+=== ELEMENTOS PROIBIDOS — nunca incluir no HTML da proposta ===
+
+- Botões clicáveis de CTA ("Falar com Especialista", "Entre em Contato", "Agende uma Demo", etc)
+- Formulários de contato
+- Links externos clicáveis
+- Elementos de navegação
+- Menus ou headers de site
+- Qualquer elemento que só faz sentido em página web
+
+A proposta é um DOCUMENTO PDF impresso, não uma landing page.
+Para encerrar use apenas:
+- Seção "Próximos Passos" em texto descritivo
+- Dados de contato em texto simples (telefone, email, site)
+- Validade da proposta + nome
+
 === REGRAS TÉCNICAS OBRIGATÓRIAS ===
 1. Comece com <!DOCTYPE html> e termine com </html>. NADA antes ou depois.
 2. No <head>: importe Sora e Inter via @import: @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;700&display=swap');
-3. Largura máxima do conteúdo: 900px, centralizado com margin auto.
+3. Use a estrutura de páginas A4 fixas descrita acima — NÃO use layout contínuo.
 4. Todos os ícones em SVG inline puro — NUNCA use font-awesome ou similar.
 5. Todos os gráficos em SVG puro inline — NUNCA use Chart.js ou D3.
 6. CSS inline ou em <style> no head — NUNCA use arquivos externos além das fontes.
-7. Otimizado para impressão: @media print { body { -webkit-print-color-adjust: exact } }
-8. Linguagem 100% em português brasileiro, tom profissional e persuasivo.
-9. Adapte TODA a linguagem ao nicho do cliente: use terminologia específica do segmento "${clientNiche || 'geral'}".
-10. Métricas e números nos cards/gráficos devem ser ESTIMATIVAS REALISTAS e COERENTES com o serviço descrito — não invente números absurdos.
-11. Rodapé SEMPRE inclui: "${companyName} • ${companyPhone || ''} • ${companyEmail || ''} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI"
-12. A proposta deve parecer criada por um designer humano profissional — não genérica.`
+7. Linguagem 100% em português brasileiro, tom profissional e persuasivo.
+8. Adapte TODA a linguagem ao nicho do cliente: use terminologia específica do segmento "${clientNiche || 'geral'}".
+9. Métricas e números nos cards/gráficos devem ser ESTIMATIVAS REALISTAS e COERENTES com o serviço descrito — não invente números absurdos.
+10. Rodapé SEMPRE inclui: "${companyName} • ${companyPhone || ''} • ${companyEmail || ''} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI"
+11. A proposta deve parecer criada por um designer humano profissional — não genérica.
+12. NUNCA inclua botões, CTAs clicáveis, formulários ou elementos de landing page.`
         }]
       })
     })

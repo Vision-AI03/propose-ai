@@ -251,19 +251,28 @@ export default function ProposalView() {
         {/* Preview */}
         <div className="lg:col-span-3">
           {hasHtmlContent ? (
-            <iframe
-              ref={iframeRef}
-              srcDoc={htmlContent}
+            <div
               style={{
-                width: '100%',
-                height: '900px',
-                border: 'none',
+                background: '#E5E7EB',
                 borderRadius: '8px',
-                background: 'white',
+                padding: '20px 0',
+                maxHeight: '900px',
+                overflowY: 'auto',
               }}
-              title="Preview da Proposta"
-              sandbox="allow-same-origin"
-            />
+            >
+              <iframe
+                ref={iframeRef}
+                srcDoc={htmlContent}
+                style={{
+                  width: '100%',
+                  height: '900px',
+                  border: 'none',
+                  background: 'transparent',
+                }}
+                title="Preview da Proposta"
+                sandbox="allow-same-origin"
+              />
+            </div>
           ) : (
             <div id="proposal-preview-fallback">
               <Card className="overflow-hidden">
