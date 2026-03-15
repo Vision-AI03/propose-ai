@@ -250,29 +250,35 @@ export default function ProposalView() {
 
         {/* Preview */}
         <div className="lg:col-span-3">
-          {hasHtmlContent ? (
-            <div
-              style={{
-                background: '#E5E7EB',
-                borderRadius: '8px',
-                padding: '20px 0',
-                maxHeight: '900px',
-                overflowY: 'auto',
-              }}
-            >
-              <iframe
-                ref={iframeRef}
-                srcDoc={htmlContent}
+          {hasHtmlContent ? (() => {
+            const pageCount = (htmlContent.match(/class="pagina"/g) || []).length || 5;
+            return (
+              <div
                 style={{
-                  width: '100%',
-                  height: '900px',
-                  border: 'none',
-                  background: 'transparent',
+                  background: '#E5E7EB',
+                  borderRadius: '8px',
+                  padding: '20px 0',
+                  maxHeight: '900px',
+                  overflowY: 'auto',
                 }}
-                title="Preview da Proposta"
-                sandbox="allow-same-origin"
-              />
-            </div>
+              >
+                <iframe
+                  ref={iframeRef}
+                  srcDoc={htmlContent}
+                  style={{
+                    width: '850px',
+                    height: `${pageCount * 1123 + (pageCount - 1) * 24 + 48}px`,
+                    border: 'none',
+                    background: 'transparent',
+                    transform: 'scale(0.55)',
+                    transformOrigin: 'top left',
+                  }}
+                  title="Preview da Proposta"
+                  sandbox="allow-same-origin"
+                />
+              </div>
+            );
+          })()
           ) : (
             <div id="proposal-preview-fallback">
               <Card className="overflow-hidden">
