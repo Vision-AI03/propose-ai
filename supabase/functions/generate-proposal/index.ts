@@ -9,26 +9,102 @@ const corsHeaders = {
 // Query Pexels por nicho
 function getPexelsQuery(myNiche: string, clientNiche: string): string {
   const combined = `${myNiche} ${clientNiche}`.toLowerCase()
+
   const queries: [string, string][] = [
-    ['transport', 'logistics truck highway professional'],
-    ['constru', 'construction building architecture professional'],
-    ['saúde|clínica|médic|fisio|odonto', 'modern clinic healthcare professional'],
-    ['tecnolog|software|sistema|dev', 'technology office modern workspace'],
-    ['educaç|escola|universidade|curso', 'education learning modern classroom'],
-    ['varejo|loja|comércio', 'modern retail store commerce'],
-    ['marketing|agência|publicidade', 'creative marketing agency office'],
-    ['financ|contábil|contabil', 'finance business professional meeting'],
-    ['aliment|restaurante|food', 'restaurant kitchen food professional'],
-    ['imobili|corretor|imóvel', 'modern real estate building architecture'],
-    ['jurídic|jurid|advocacia|advogado', 'law office professional business'],
-    ['logístic|logistic', 'logistics warehouse supply chain'],
+    // Transporte e Logística
+    ['transport|frete|logíst|entrega|frota',
+     'logistics truck fleet highway professional'],
+    ['mudança|mudanca',
+     'moving truck professional service'],
+
+    // Construção e Engenharia
+    ['constru|reforma|engenharia|arquitet',
+     'modern construction site architecture professional'],
+    ['interior|decoraç|decorac',
+     'modern interior design luxury apartment'],
+
+    // Saúde
+    ['estétic|estetica|beleza|cosmét|cosmetic|spa',
+     'aesthetic clinic beauty treatment room modern'],
+    ['odont|dentist|dental',
+     'modern dental clinic professional clean'],
+    ['fisio|reabilit',
+     'physiotherapy clinic rehabilitation professional'],
+    ['psicolog|terapia',
+     'modern therapy office calm professional'],
+    ['nutri',
+     'nutrition healthy food modern clinic'],
+    ['médic|medic|clínica|clinica',
+     'modern medical clinic professional healthcare'],
+
+    // Tecnologia
+    ['software|sistema|app|aplicativ',
+     'software development modern office technology'],
+    ['tecnolog|ti |t.i',
+     'modern tech office workspace professional'],
+
+    // Educação
+    ['escola|colégio|colegio|ensino fundamental',
+     'modern school classroom education professional'],
+    ['universidade|faculdade|graduaç',
+     'university campus modern education'],
+    ['curso|treinamento|capacitaç',
+     'professional training corporate education modern'],
+
+    // Marketing e Criativo
+    ['marketing|publicidade|propaganda',
+     'creative marketing agency modern office'],
+    ['social media|conteúdo|conteudo',
+     'content creator social media modern studio'],
+    ['design|criat',
+     'creative design studio modern workspace'],
+    ['foto|vídeo|video|film',
+     'professional photography studio modern equipment'],
+
+    // Financeiro e Jurídico
+    ['financ|contábil|contabil|contabilidade',
+     'modern finance office professional business meeting'],
+    ['banco|invest|segur',
+     'financial investment modern office professional'],
+    ['jurídic|jurid|advocacia|advogado|direito',
+     'modern law office professional elegant'],
+
+    // Varejo e Alimentação
+    ['restaurante|gastronomia|food|aliment',
+     'modern restaurant kitchen professional food'],
+    ['loja|varejo|retail|moda|roupa',
+     'modern retail store fashion professional'],
+    ['supermercado|mercearia',
+     'modern supermarket store professional'],
+
+    // Imobiliário
+    ['imobili|corretor|imóvel|imovel',
+     'modern real estate luxury property architecture'],
+
+    // Indústria
+    ['indústr|industr|manufatur|fabricaç',
+     'modern industrial factory professional manufacturing'],
+    ['agro|agrícol|agricol|fazenda',
+     'modern agriculture farm professional technology'],
+
+    // Serviços Gerais
+    ['limpeza|conservaç|facilities',
+     'professional cleaning service corporate modern'],
+    ['segurança|securit',
+     'professional security modern corporate'],
+    ['rh |recursos humanos|recrutamento',
+     'human resources professional corporate modern office'],
+    ['event|casamento|celebraç',
+     'elegant event wedding decoration professional'],
   ]
 
   for (const [pattern, query] of queries) {
     const regex = new RegExp(pattern, 'i')
     if (regex.test(combined)) return query
   }
-  return `${clientNiche} business professional modern office`
+
+  // Fallback genérico mas melhor que antes
+  return `${clientNiche} professional business modern office`
 }
 
 // Paleta de cores por nicho do cliente
@@ -321,7 +397,7 @@ serve(async (req) => {
       proposalId, templateId,
       clientName, clientCompany, clientEmail, clientPhone, clientNiche,
       niche, serviceDescription, deliverables, deadlineDays,
-      totalValue, paymentTerms, validityDays, additionalInfo,
+      totalValue, setupValue, monthlyValue, paymentTerms, validityDays, additionalInfo,
       regenerateId,
     } = body
 
@@ -433,7 +509,9 @@ Segmento: ${clientNiche || 'não informado'}
 Descrição: ${serviceDescription}
 Entregáveis: ${deliverables}
 Prazo: ${deadlineDays} dias corridos
-Valor Total: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+${setupValue && monthlyValue
+              ? `Modelo de cobrança: Setup de R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + Mensalidade de R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
+              : `Valor Total: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
 Pagamento: ${paymentTerms}
 Validade: ${validityDays} dias
 Informações adicionais: ${additionalInfo || 'nenhuma'}
@@ -525,7 +603,7 @@ ${templateInstructions}
           niche: myNiche,
           service_description: serviceDescription,
           deliverables,
-          total_value: totalValue || null,
+          total_value: setupValue ? (Number(setupValue) + Number(monthlyValue)) : (totalValue || null),
           payment_terms: paymentTerms,
           deadline_days: deadlineDays || null,
           validity_days: validityDays || 15,

@@ -61,6 +61,8 @@ export default function NewProposal() {
   const [deliverables, setDeliverables] = useState("");
   const [deadlineDays, setDeadlineDays] = useState("");
   const [totalValue, setTotalValue] = useState("");
+  const [setupValue, setSetupValue] = useState("");
+  const [monthlyValue, setMonthlyValue] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("a_vista");
   const [validityDays, setValidityDays] = useState("15");
   const [additionalInfo, setAdditionalInfo] = useState("");
@@ -81,8 +83,12 @@ export default function NewProposal() {
   const paymentLabels: Record<string, string> = {
     a_vista: "À vista",
     "50_50": "50% entrada + 50% na entrega",
-    parcelado: "Parcelado",
+    "2x": "Parcelado em 2x",
+    "3x": "Parcelado em 3x",
+    "5x": "Parcelado em 5x",
+    "10x": "Parcelado em 10x",
     mensal: "Mensal (recorrente)",
+    setup_mensal: "Setup + Mensal recorrente",
   };
 
   const handleGenerate = async () => {
@@ -133,7 +139,9 @@ export default function NewProposal() {
           serviceDescription,
           deliverables,
           deadlineDays: parseInt(deadlineDays) || 30,
-          totalValue: parseFloat(totalValue) || 0,
+          totalValue: paymentTerms === "setup_mensal" ? 0 : (parseFloat(totalValue) || 0),
+          setupValue: paymentTerms === "setup_mensal" ? (parseFloat(setupValue) || 0) : undefined,
+          monthlyValue: paymentTerms === "setup_mensal" ? (parseFloat(monthlyValue) || 0) : undefined,
           paymentTerms: paymentLabels[paymentTerms] || paymentTerms,
           validityDays: parseInt(validityDays) || 15,
           additionalInfo,
@@ -232,21 +240,38 @@ export default function NewProposal() {
             </div>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
-                <Label className="text-muted-foreground text-sm">Valor total (R$)</Label>
-                <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
-              </div>
-              <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm">Forma de pagamento</Label>
                 <Select value={paymentTerms} onValueChange={setPaymentTerms}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="a_vista">À vista</SelectItem>
                     <SelectItem value="50_50">50% entrada + 50% na entrega</SelectItem>
-                    <SelectItem value="parcelado">Parcelado</SelectItem>
+                    <SelectItem value="2x">Parcelado em 2x</SelectItem>
+                    <SelectItem value="3x">Parcelado em 3x</SelectItem>
+                    <SelectItem value="5x">Parcelado em 5x</SelectItem>
+                    <SelectItem value="10x">Parcelado em 10x</SelectItem>
                     <SelectItem value="mensal">Mensal (recorrente)</SelectItem>
+                    <SelectItem value="setup_mensal">Setup + Mensal recorrente</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+              {paymentTerms === "setup_mensal" ? (
+                <>
+                  <div className="space-y-2">
+                    <Label className="text-muted-foreground text-sm">Valor do Setup (R$)</Label>
+                    <Input type="number" step="0.01" value={setupValue} onChange={(e) => setSetupValue(e.target.value)} placeholder="Ex: 2500" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-muted-foreground text-sm">Valor Mensal (R$)</Label>
+                    <Input type="number" step="0.01" value={monthlyValue} onChange={(e) => setMonthlyValue(e.target.value)} placeholder="Ex: 750" />
+                  </div>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground text-sm">Valor total (R$)</Label>
+                  <Input type="number" step="0.01" value={totalValue} onChange={(e) => setTotalValue(e.target.value)} placeholder="5000.00" />
+                </div>
+              )}
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm">Validade da proposta (dias)</Label>
                 <Input type="number" value={validityDays} onChange={(e) => setValidityDays(e.target.value)} placeholder="15" />
