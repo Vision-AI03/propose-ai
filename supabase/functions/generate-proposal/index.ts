@@ -485,8 +485,14 @@ serve(async (req) => {
     // 4. Template e instruções
     const templateInstructions = getTemplateInstructions(templateId || 'moderno')
 
-    // 5. Chamar Claude para gerar HTML completo
-    const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
+    // === PASSO 1: Gerar conteúdo estruturado (JSON) ===
+    console.log('Passo 1: Gerando conteúdo estruturado...')
+    
+    const valorTexto = setupValue && monthlyValue
+      ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', {minimumFractionDigits:2})} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', {minimumFractionDigits:2})}/mês`
+      : `R$ ${Number(totalValue || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`
+
+    const step1Response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -495,193 +501,121 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 20000,
-        system: `Você é um designer expert em propostas comerciais profissionais para o mercado brasileiro.
-REGRA ABSOLUTA: Retorne APENAS o HTML completo começando com <!DOCTYPE html>. Nenhum texto antes ou depois. Nenhum markdown. Nenhum bloco de código.
-CRÍTICO: Você DEVE completar o HTML inteiramente até </html>. Nunca pare no meio. Se precisar reduzir conteúdo, simplifique seções mas SEMPRE finalize o documento.`,
+        max_tokens: 2000,
+        system: 'Você é especialista em propostas comerciais brasileiras. Retorne APENAS JSON válido, sem markdown.',
         messages: [{
           role: 'user',
-          content: `Gere uma proposta comercial COMPLETA em HTML dividida em páginas A4 fixas. Cada página é um div.pagina com dimensões exatas de 210mm × 297mm.
+          content: `Gere o conteúdo para uma proposta comercial. Dados:
+Empresa: ${companyName} | Nicho: ${myNiche} | Cliente: ${clientName} — ${clientCompany} (${clientNiche})
+Serviço: ${serviceDescription} | Entregáveis: ${deliverables} | Prazo: ${deadlineDays} dias
+Valor: ${valorTexto} | Pagamento: ${paymentTerms} | Validade: ${validityDays} dias
+${additionalInfo ? `Info adicional: ${additionalInfo}` : ''}
 
-=== DADOS ===
-Empresa: ${companyName}
-Nicho: ${myNiche}
-Telefone: ${formatPhone(companyPhone)}
-Email: ${companyEmail}
-Site: ${companyWebsite}
-Logo: ${logoUrl ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">` : `<span style="font-weight:700;font-size:18px">${companyName}</span>`}
-Cliente: ${clientName} — ${clientCompany} (${clientNiche})
-Serviço: ${serviceDescription}
-Entregáveis: ${deliverables}
-Prazo: ${deadlineDays} dias
-${setupValue && monthlyValue
-  ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', {minimumFractionDigits:2})} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', {minimumFractionDigits:2})}/mês`
-  : `Valor: R$ ${Number(totalValue || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`}
-Pagamento: ${paymentTerms}
-Validade: ${validityDays} dias
-Foto contextual: ${photoUrl || ''}
+Retorne JSON com esta estrutura exata:
+{"titulo":"string","subtitulo":"string","desafios":[{"titulo":"string","texto":"string"}],"solucao":[{"titulo":"string","texto":"string"}],"processo":[{"titulo":"string","texto":"string"}],"entregaveis":["string"],"proximos_passos":[{"titulo":"string","texto":"string"}]}
 
-=== IDENTIDADE VISUAL ===
-Cor Primária: ${finalPrimary}
-Cor Secundária: ${finalSecondary}
-Cor Accent: ${finalAccent}
-
-=== CSS BASE OBRIGATÓRIO ===
-
-Inclua este CSS exato no <style>, sem alterações:
-
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-
-@page { size: A4; margin: 0; }
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-
-body { background: #E5E7EB; display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 0; font-family: 'Inter', sans-serif; font-size: 13px; }
-
-.pagina { width: 794px; height: 1123px; background: white; overflow: hidden; position: relative; flex-shrink: 0; }
-
-@media print { body { background: white; gap: 0; padding: 0; } .pagina { page-break-after: always; break-after: page; width: 210mm; height: 297mm; } .pagina:last-child { page-break-after: avoid; } }
-
-=== ESTRUTURA OBRIGATÓRIA DAS PÁGINAS ===
-
-PÁGINA 1 — CAPA:
-
-Layout duas colunas 45%/55%:
-
-Coluna esquerda (45%):
-- Se tiver foto: imagem cobrindo 100% da altura com object-fit:cover, sem bordas
-- Se não tiver foto: fundo gradiente com cor primária
-
-Coluna direita (55%): fundo branco, padding 40px 32px
-- Logo no topo (40px altura)
-- Linha divisória fina (1px, cor primária, opacity 0.3)
-- Badge pill "Proposta exclusiva para {cliente} • {empresa}" fundo levemente colorido, texto pequeno
-- Título principal: Sora 32px bold, cor #1a1a2e, palavra-chave em cor primária
-- Subtítulo: Inter 14px, cor #6b7280, line-height 1.6
-- Espaço generoso
-- Bloco de contatos no rodapé da coluna:
-  Linha 1: [ícone telefone svg 14px] {telefone formatado}
-  Linha 2: [ícone email svg 14px] {email}
-  Linha 3: [ícone globe svg 14px] {site}
-
-PÁGINA 2 — DESAFIOS + SOLUÇÃO:
-
-- Título seção "Os Desafios de {nicho do cliente}" Sora 22px bold, cor #1a1a2e
-- Subtítulo cinza 13px
-- 4 items de desafio, cada um com:
-  border-left 3px cor primária, padding-left 16px
-  ícone SVG inline 16px na cor primária
-  título bold 14px + texto 13px cinza
-  margin-bottom 20px entre items
-
-- Divisória com linha fina + espaço 24px
-
-- Título "Nossa Solução" Sora 22px bold
-- Grid 2x2 de cards de solução:
-  cada card: padding 16px, border-radius 8px
-  fundo #f8fafc, border 1px #e2e8f0
-  ícone SVG 24px cor primária + título bold + texto 13px
-
-PÁGINA 3 — PROCESSO + ENTREGÁVEIS:
-
-- Título "Como Funciona o Processo" Sora 22px
-- Timeline vertical: círculos numerados cor primária
-  conectados por linha vertical tracejada
-  4-5 etapas com título bold e descrição 13px
-
-- Divisória
-
-- Título "O Que Está Incluído"
-- Grid 2 colunas de entregáveis:
-  cada item: ícone check SVG cor primária + texto
-
-PÁGINA 4 — INVESTIMENTO:
-
-- Título "Investimento" Sora 22px
-- Subtítulo descritivo cinza
-
-- Card principal de investimento:
-  fundo gradiente cor primária → cor secundária
-  border-radius 12px, padding 32px
-  label "SETUP INICIAL" ou "INVESTIMENTO TOTAL" em branco, 11px, uppercase, letter-spacing 2px
-  Valor em branco: Sora 48px bold
-  Condições de pagamento em branco 14px abaixo
-
-- Card secundário fundo #f8fafc:
-  "O que está incluído:"
-  lista de entregáveis com checks coloridos em 2 colunas
-
-- SE tiver gráfico relevante: SVG puro max-height 160px abaixo do card
-
-PÁGINA 5 — PRÓXIMOS PASSOS + ENCERRAMENTO:
-
-- Título "Próximos Passos" Sora 22px
-- 3 etapas em cards horizontais lado a lado:
-  número em círculo cor primária + título + descrição
-
-- Seção de contato (NÃO é botão, é informação):
-  fundo #f8fafc, border-radius 8px, padding 24px
-  título "Entre em Contato" centralizado
-  DOIS contatos por linha:
-  [ícone] {telefone}    [ícone] {email}
-  [ícone] {site}        [espaço]
-  Texto simples, sem botões, sem links clicáveis
-
-- Rodapé da página:
-  linha horizontal fina
-  texto centralizado 11px cinza:
-  "${companyName} • ${formatPhone(companyPhone)} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI"
-
-- Espaço para assinatura:
-  linha horizontal 200px centralizada
-  "${clientName} — ${clientCompany}"
-  "Assinatura e Data" em texto pequeno cinza
-
-=== REGRAS ABSOLUTAS ===
-1. Retorne APENAS o HTML começando com <!DOCTYPE html>
-2. Cada .pagina tem height FIXO 1123px — nunca ultrapassar
-3. Nenhum elemento com height maior que 200px exceto a imagem da capa
-4. Ícones SEMPRE SVG inline — nunca font-awesome
-5. Cores: usar as cores fornecidas em todo o documento
-6. Linguagem 100% adaptada ao nicho: ${clientNiche}
-7. Proibido: botões clicáveis, formulários, links externos, menus de navegação
-8. Contatos SEMPRE em texto simples nunca em botões
-9. Telefone SEMPRE formatado: (XX) XXXXX-XXXX`
+Gere 4 desafios, 4 soluções, 4-5 etapas de processo, lista de entregáveis e 3 próximos passos.
+Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo.`
         }]
       })
     })
 
-    if (!claudeResponse.ok) {
-      const errorText = await claudeResponse.text()
-      console.error('Claude API error:', claudeResponse.status, errorText)
-
-      if (claudeResponse.status === 429) {
+    if (!step1Response.ok) {
+      const errorText = await step1Response.text()
+      console.error('Claude Passo 1 erro:', step1Response.status, errorText)
+      if (step1Response.status === 429) {
         return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
-          status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
       }
-      throw new Error(`Claude API error: ${claudeResponse.status}`)
+      throw new Error(`Claude API error (passo 1): ${step1Response.status}`)
     }
 
-    const claudeData = await claudeResponse.json()
+    const step1Data = await step1Response.json()
+    if (!step1Data.content || !step1Data.content[0]) throw new Error('Claude não retornou conteúdo no passo 1')
 
-    if (!claudeData.content || !claudeData.content[0]) {
-      throw new Error('Claude não retornou conteúdo')
+    let conteudoJson = step1Data.content[0].text.trim()
+    conteudoJson = conteudoJson.replace(/^```json?\n?/, '').replace(/\n?```$/, '')
+    
+    let conteudo: any
+    try {
+      conteudo = JSON.parse(conteudoJson)
+    } catch {
+      console.error('JSON inválido do passo 1:', conteudoJson.substring(0, 200))
+      throw new Error('Falha ao parsear conteúdo gerado')
     }
 
-    let htmlContent = claudeData.content[0].text.trim()
+    console.log('Passo 1 concluído. Iniciando passo 2...')
 
-    // Garantir que começa com DOCTYPE
-    if (!htmlContent.startsWith('<!DOCTYPE')) {
-      const doctypeIndex = htmlContent.indexOf('<!DOCTYPE')
-      if (doctypeIndex > -1) {
-        htmlContent = htmlContent.substring(doctypeIndex)
+    // === PASSO 2: Gerar HTML com o conteúdo ===
+    const phoneFmt = formatPhone(companyPhone)
+    const logoHtml = logoUrl 
+      ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">` 
+      : `<span style="font-weight:700;font-size:18px">${companyName}</span>`
+
+    const step2Response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': anthropicApiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 6000,
+        system: 'Você é especialista em propostas comerciais brasileiras. Gere HTML completo com páginas A4 fixas (class="pagina", 794x1123px). Retorne APENAS o HTML, sem markdown.',
+        messages: [{
+          role: 'user',
+          content: `Gere o HTML completo da proposta usando este conteúdo e dados:
+
+CONTEÚDO: ${JSON.stringify(conteudo)}
+
+DADOS: Empresa: ${companyName} | Tel: ${phoneFmt} | Email: ${companyEmail} | Site: ${companyWebsite}
+Logo: ${logoHtml} | Cliente: ${clientName} — ${clientCompany}
+Valor: ${valorTexto} | Pagamento: ${paymentTerms} | Validade: ${validityDays} dias
+Foto: ${photoUrl || 'nenhuma'} | Cores: primária ${finalPrimary}, secundária ${finalSecondary}, accent ${finalAccent}
+
+CSS OBRIGATÓRIO no <style>:
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+@page{size:A4;margin:0}*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+body{background:#E5E7EB;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0;font-family:'Inter',sans-serif;font-size:13px}
+.pagina{width:794px;height:1123px;background:white;overflow:hidden;position:relative;flex-shrink:0}
+@media print{body{background:white;gap:0;padding:0}.pagina{page-break-after:always;width:210mm;height:297mm}.pagina:last-child{page-break-after:avoid}}
+
+PÁGINAS (5 divs .pagina):
+P1-CAPA: 2 colunas 45/55%. Esquerda: foto cover ou gradiente. Direita: logo, badge cliente, título Sora 32px, contatos com ícones SVG.
+P2-DESAFIOS+SOLUÇÃO: 4 desafios com border-left primária + grid 2x2 cards solução.
+P3-PROCESSO+ENTREGÁVEIS: Timeline vertical numerada + grid 2col entregáveis com checks SVG.
+P4-INVESTIMENTO: Card gradiente primária→secundária com valor Sora 48px branco + card lista inclusões.
+P5-ENCERRAMENTO: 3 cards próximos passos + contato texto simples + rodapé "${companyName} • ${phoneFmt} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI" + assinatura "${clientName} — ${clientCompany}".
+
+REGRAS: Apenas HTML (<!DOCTYPE html>). Height fixo 1123px por .pagina. Ícones SVG inline. Sem botões/links/formulários. Telefone: ${phoneFmt}. COMPLETE até </html>.`
+        }]
+      })
+    })
+
+    if (!step2Response.ok) {
+      const errorText = await step2Response.text()
+      console.error('Claude Passo 2 erro:', step2Response.status, errorText)
+      if (step2Response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
+          status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        })
       }
+      throw new Error(`Claude API error (passo 2): ${step2Response.status}`)
     }
 
-    // Remover possíveis blocos markdown
-    htmlContent = htmlContent.replace(/^```html\n?/, '').replace(/\n?```$/, '')
+    const step2Data = await step2Response.json()
+    if (!step2Data.content || !step2Data.content[0]) throw new Error('Claude não retornou HTML no passo 2')
+
+    let htmlContent = step2Data.content[0].text.trim()
+    htmlContent = htmlContent.replace(/^```html?\n?/, '').replace(/\n?```$/, '')
+    if (!htmlContent.startsWith('<!DOCTYPE')) {
+      const i = htmlContent.indexOf('<!DOCTYPE')
+      if (i > -1) htmlContent = htmlContent.substring(i)
+    }
+
+    console.log('Passo 2 concluído. HTML gerado com sucesso.')
 
     const targetProposalId = regenerateId || proposalId
 
