@@ -501,7 +501,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 2000,
+        max_tokens: 4000,
         system: 'Você é especialista em propostas comerciais brasileiras. Retorne APENAS JSON válido, sem markdown.',
         messages: [{
           role: 'user',
@@ -562,7 +562,7 @@ Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 6000,
+        max_tokens: 45000,
         system: 'Você é especialista em propostas comerciais brasileiras. Gere HTML completo com páginas A4 fixas (class="pagina", 794x1123px). Retorne APENAS o HTML, sem markdown.',
         messages: [{
           role: 'user',
