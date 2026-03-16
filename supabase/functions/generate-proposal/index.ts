@@ -684,9 +684,12 @@ REGRAS: Apenas HTML (<!DOCTYPE html>). Height fixo 1123px por .pagina. Ícones S
     )
 
   } catch (error) {
-    console.error('Erro:', error)
+    console.error('Erro detalhado:', error)
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        details: 'Tente novamente em alguns segundos'
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     )
   }
