@@ -456,21 +456,17 @@ serve(async (req) => {
       }
     }
 
-    // 2. Buscar foto no Pexels
+    // 2. Buscar foto no Pexels com payload enxuto
     let photoUrl = ''
-    if (pexelsApiKey) {
+    if (pexelsApiKey && (clientNiche || clientCompany || myNiche)) {
       try {
         const pexelsQuery = getPexelsQuery(myNiche, clientNiche || clientCompany || '')
         const pexelsRes = await fetch(
-          `https://api.pexels.com/v1/search?query=${encodeURIComponent(pexelsQuery)}&per_page=5&orientation=landscape&size=large`,
+          `https://api.pexels.com/v1/search?query=${encodeURIComponent(pexelsQuery)}&per_page=1&orientation=landscape&size=large`,
           { headers: { Authorization: pexelsApiKey } }
         )
         const pexelsData = await pexelsRes.json()
-        const photos = pexelsData?.photos || []
-        if (photos.length > 0) {
-          const randomIndex = Math.floor(Math.random() * Math.min(photos.length, 3))
-          photoUrl = photos[randomIndex]?.src?.large2x || photos[0]?.src?.large || ''
-        }
+        photoUrl = pexelsData?.photos?.[0]?.src?.large || ''
       } catch (e) {
         console.log('Pexels fallback para gradiente:', e)
       }
@@ -482,15 +478,12 @@ serve(async (req) => {
     const finalSecondary = secondaryColor || palette.secondary
     const finalAccent = palette.accent
 
-    // 4. Template e instruções
-    const templateInstructions = getTemplateInstructions(templateId || 'moderno')
-
     // === PASSO 1: Gerar conteúdo estruturado (JSON) ===
     console.log('Passo 1: Gerando conteúdo estruturado...')
-    
+
     const valorTexto = setupValue && monthlyValue
-      ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', {minimumFractionDigits:2})} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', {minimumFractionDigits:2})}/mês`
-      : `R$ ${Number(totalValue || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`
+      ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
+      : `R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
 
     const step1Response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -501,23 +494,36 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 4000,
-        system: 'Você é especialista em propostas comerciais brasileiras. Retorne APENAS JSON válido, sem markdown.',
+        max_tokens: 2200,
+        system: 'Você cria propostas comerciais brasileiras objetivas. Retorne APENAS JSON válido, sem markdown e sem texto fora do JSON.',
         messages: [{
           role: 'user',
-          content: `Gere o conteúdo para uma proposta comercial. Dados:
-Empresa: ${companyName} | Nicho: ${myNiche} | Cliente: ${clientName} — ${clientCompany} (${clientNiche})
-Serviço: ${serviceDescription} | Entregáveis: ${deliverables} | Prazo: ${deadlineDays} dias
-Valor: ${valorTexto} | Pagamento: ${paymentTerms} | Validade: ${validityDays} dias
-${additionalInfo ? `Info adicional: ${additionalInfo}` : ''}
+          content: `Crie um resumo estruturado e conciso para uma proposta comercial.
 
-Retorne JSON com esta estrutura exata:
+Empresa: ${companyName}
+Nicho da empresa: ${myNiche}
+Cliente: ${clientName} ${clientCompany ? `| ${clientCompany}` : ''} ${clientNiche ? `| ${clientNiche}` : ''}
+Serviço: ${serviceDescription}
+Entregáveis base: ${deliverables || 'Não informado'}
+Prazo: ${deadlineDays || 'Não informado'} dias
+Valor: ${valorTexto}
+Pagamento: ${paymentTerms || 'Não informado'}
+Validade: ${validityDays || 15} dias
+${additionalInfo ? `Informações adicionais: ${additionalInfo}` : ''}
+
+Retorne exatamente este formato JSON:
 {"titulo":"string","subtitulo":"string","desafios":[{"titulo":"string","texto":"string"}],"solucao":[{"titulo":"string","texto":"string"}],"processo":[{"titulo":"string","texto":"string"}],"entregaveis":["string"],"proximos_passos":[{"titulo":"string","texto":"string"}]}
 
-Gere 4 desafios, 4 soluções, 4-5 etapas de processo, lista de entregáveis e 3 próximos passos.
-Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo.`
-        }]
-      })
+Regras:
+- 3 desafios
+- 3 soluções
+- 4 etapas de processo
+- 4 a 6 entregáveis curtos
+- 3 próximos passos
+- textos curtos, claros e persuasivos
+- adapte ao nicho ${clientNiche || myNiche}`
+        }],
+      }),
     })
 
     if (!step1Response.ok) {
@@ -536,7 +542,7 @@ Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo
 
     let conteudoJson = step1Data.content[0].text.trim()
     conteudoJson = conteudoJson.replace(/^```json?\n?/, '').replace(/\n?```$/, '')
-    
+
     let conteudo: any
     try {
       conteudo = JSON.parse(conteudoJson)
@@ -549,8 +555,8 @@ Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo
 
     // === PASSO 2: Gerar HTML com o conteúdo ===
     const phoneFmt = formatPhone(companyPhone)
-    const logoHtml = logoUrl 
-      ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">` 
+    const logoHtml = logoUrl
+      ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">`
       : `<span style="font-weight:700;font-size:18px">${companyName}</span>`
 
     const step2Response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -562,36 +568,49 @@ Linguagem adaptada ao nicho: ${clientNiche}. Conteúdo profissional e persuasivo
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 45000,
-        system: 'Você é especialista em propostas comerciais brasileiras. Gere HTML completo com páginas A4 fixas (class="pagina", 794x1123px). Retorne APENAS o HTML, sem markdown.',
+        max_tokens: 14000,
+        system: 'Você gera propostas comerciais em HTML com visual forte e código enxuto. Retorne APENAS HTML completo, sem markdown, sem comentários e com conteúdo conciso.',
         messages: [{
           role: 'user',
-          content: `Gere o HTML completo da proposta usando este conteúdo e dados:
+          content: `Gere o HTML completo de uma proposta comercial com no máximo 4 páginas A4.
 
-CONTEÚDO: ${JSON.stringify(conteudo)}
+CONTEÚDO ESTRUTURADO:
+${JSON.stringify(conteudo)}
 
-DADOS: Empresa: ${companyName} | Tel: ${phoneFmt} | Email: ${companyEmail} | Site: ${companyWebsite}
-Logo: ${logoHtml} | Cliente: ${clientName} — ${clientCompany}
-Valor: ${valorTexto} | Pagamento: ${paymentTerms} | Validade: ${validityDays} dias
-Foto: ${photoUrl || 'nenhuma'} | Cores: primária ${finalPrimary}, secundária ${finalSecondary}, accent ${finalAccent}
+DADOS:
+Empresa: ${companyName}
+Telefone: ${phoneFmt}
+Email: ${companyEmail}
+Site: ${companyWebsite}
+Logo: ${logoHtml}
+Cliente: ${clientName} — ${clientCompany || 'Cliente'}
+Valor: ${valorTexto}
+Pagamento: ${paymentTerms}
+Validade: ${validityDays} dias
+Foto: ${photoUrl || 'usar gradiente'}
+Cores: primária ${finalPrimary}, secundária ${finalSecondary}, accent ${finalAccent}
 
-CSS OBRIGATÓRIO no <style>:
+Inclua no <style> apenas o necessário:
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-@page{size:A4;margin:0}*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-body{background:#E5E7EB;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0;font-family:'Inter',sans-serif;font-size:13px}
-.pagina{width:794px;height:1123px;background:white;overflow:hidden;position:relative;flex-shrink:0}
-@media print{body{background:white;gap:0;padding:0}.pagina{page-break-after:always;width:210mm;height:297mm}.pagina:last-child{page-break-after:avoid}}
+@page{size:A4;margin:0}*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{background:#E5E7EB;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0;font-family:'Inter',sans-serif;font-size:13px}.pagina{width:794px;height:1123px;background:#fff;overflow:hidden;position:relative;flex-shrink:0}@media print{body{background:#fff;gap:0;padding:0}.pagina{page-break-after:always;width:210mm;height:297mm}.pagina:last-child{page-break-after:avoid}}
 
-PÁGINAS (5 divs .pagina):
-P1-CAPA: 2 colunas 45/55%. Esquerda: foto cover ou gradiente. Direita: logo, badge cliente, título Sora 32px, contatos com ícones SVG.
-P2-DESAFIOS+SOLUÇÃO: 4 desafios com border-left primária + grid 2x2 cards solução.
-P3-PROCESSO+ENTREGÁVEIS: Timeline vertical numerada + grid 2col entregáveis com checks SVG.
-P4-INVESTIMENTO: Card gradiente primária→secundária com valor Sora 48px branco + card lista inclusões.
-P5-ENCERRAMENTO: 3 cards próximos passos + contato texto simples + rodapé "${companyName} • ${phoneFmt} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI" + assinatura "${clientName} — ${clientCompany}".
+Estrutura:
+- Página 1: capa com foto ou gradiente, logo, título, subtítulo e dados do cliente
+- Página 2: desafios e solução em cards
+- Página 3: processo e entregáveis
+- Página 4: investimento, próximos passos, contato e assinatura
 
-REGRAS: Apenas HTML (<!DOCTYPE html>). Height fixo 1123px por .pagina. Ícones SVG inline. Sem botões/links/formulários. Telefone: ${phoneFmt}. COMPLETE até </html>.`
-        }]
-      })
+Regras obrigatórias:
+- iniciar com <!DOCTYPE html> e terminar com </html>
+- usar HTML e CSS enxutos
+- parágrafos curtos
+- SVG inline simples
+- sem scripts, links, botões ou formulários
+- manter tudo legível e profissional
+- se faltar foto, usar gradiente
+- rodapé final com: ${companyName} • ${phoneFmt} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI`
+        }],
+      }),
     })
 
     if (!step2Response.ok) {
