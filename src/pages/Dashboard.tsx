@@ -31,7 +31,7 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (profile && !profile.onboarding_completed) {
+    if (profile && !profile.company_name && !profile.niche) {
       navigate("/onboarding");
     }
   }, [profile, navigate]);
