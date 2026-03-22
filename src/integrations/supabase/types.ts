@@ -27,7 +27,6 @@ export type Database = {
           id: string
           logo_url: string | null
           niche: string | null
-          onboarding_completed: boolean | null
           primary_color: string | null
           secondary_color: string | null
           updated_at: string | null
@@ -44,7 +43,6 @@ export type Database = {
           id: string
           logo_url?: string | null
           niche?: string | null
-          onboarding_completed?: boolean | null
           primary_color?: string | null
           secondary_color?: string | null
           updated_at?: string | null
@@ -61,7 +59,6 @@ export type Database = {
           id?: string
           logo_url?: string | null
           niche?: string | null
-          onboarding_completed?: boolean | null
           primary_color?: string | null
           secondary_color?: string | null
           updated_at?: string | null
@@ -73,7 +70,7 @@ export type Database = {
           content: string | null
           id: string
           order_index: number | null
-          proposal_id: string
+          proposal_id: string | null
           section_key: string | null
           section_title: string | null
           updated_at: string | null
@@ -82,7 +79,7 @@ export type Database = {
           content?: string | null
           id?: string
           order_index?: number | null
-          proposal_id: string
+          proposal_id?: string | null
           section_key?: string | null
           section_title?: string | null
           updated_at?: string | null
@@ -91,7 +88,7 @@ export type Database = {
           content?: string | null
           id?: string
           order_index?: number | null
-          proposal_id?: string
+          proposal_id?: string | null
           section_key?: string | null
           section_title?: string | null
           updated_at?: string | null
@@ -108,9 +105,11 @@ export type Database = {
       }
       proposals: {
         Row: {
+          additional_info: string | null
           client_company: string | null
           client_email: string | null
           client_name: string | null
+          client_niche: string | null
           client_phone: string | null
           content: Json | null
           created_at: string | null
@@ -118,22 +117,27 @@ export type Database = {
           deliverables: string | null
           html_content: string | null
           id: string
+          monthly_value: number | null
           niche: string | null
           payment_terms: string | null
           pdf_url: string | null
+          photo_url: string | null
           service_description: string | null
+          setup_value: number | null
           status: string | null
           template_id: string | null
           title: string | null
           total_value: number | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
           validity_days: number | null
         }
         Insert: {
+          additional_info?: string | null
           client_company?: string | null
           client_email?: string | null
           client_name?: string | null
+          client_niche?: string | null
           client_phone?: string | null
           content?: Json | null
           created_at?: string | null
@@ -141,22 +145,27 @@ export type Database = {
           deliverables?: string | null
           html_content?: string | null
           id?: string
+          monthly_value?: number | null
           niche?: string | null
           payment_terms?: string | null
           pdf_url?: string | null
+          photo_url?: string | null
           service_description?: string | null
+          setup_value?: number | null
           status?: string | null
           template_id?: string | null
           title?: string | null
           total_value?: number | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
           validity_days?: number | null
         }
         Update: {
+          additional_info?: string | null
           client_company?: string | null
           client_email?: string | null
           client_name?: string | null
+          client_niche?: string | null
           client_phone?: string | null
           content?: Json | null
           created_at?: string | null
@@ -164,16 +173,19 @@ export type Database = {
           deliverables?: string | null
           html_content?: string | null
           id?: string
+          monthly_value?: number | null
           niche?: string | null
           payment_terms?: string | null
           pdf_url?: string | null
+          photo_url?: string | null
           service_description?: string | null
+          setup_value?: number | null
           status?: string | null
           template_id?: string | null
           title?: string | null
           total_value?: number | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
           validity_days?: number | null
         }
         Relationships: []
@@ -184,21 +196,21 @@ export type Database = {
           period_start: string | null
           proposals_count: number | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           id?: string
           period_start?: string | null
           proposals_count?: number | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           id?: string
           period_start?: string | null
           proposals_count?: number | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
