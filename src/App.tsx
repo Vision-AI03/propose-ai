@@ -22,9 +22,10 @@ import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
 
-// MODO TESTE: redireciona direto ao dashboard
 function RootRedirect() {
-  return <Navigate to="/dashboard" replace />;
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return <Navigate to={user ? "/dashboard" : "/login"} replace />;
 }
 
 const App = () => (
