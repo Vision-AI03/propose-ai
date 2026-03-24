@@ -46,17 +46,14 @@ body{background:#0A0A0A;display:flex;flex-direction:column;align-items:center;ga
 
 <!-- SLIDE 2: SOBRE A EMPRESA -->
 <div class="slide" style="background:#0D0D0D">
-  <div style="position:absolute;left:0;top:0;width:3px;height:100%;background:{{COR_ACCENT}}"></div>
-  <div style="display:flex;height:100%">
-    <div style="flex:1;padding:64px 60px 64px 80px;display:flex;flex-direction:column;justify-content:center">
+  <div style="display:grid;grid-template-columns:1fr 1fr;height:100%">
+    <div style="padding:64px 60px 64px 80px;display:flex;flex-direction:column;justify-content:center;border-left:3px solid {{COR_ACCENT}}">
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;margin-bottom:14px">Sobre nós</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:#fff;text-transform:uppercase;line-height:1.1;margin-bottom:24px">Prazer,<br>{{CLIENTE}}</h2>
       <p style="font-size:15px;color:#bbb;line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
-    <div style="width:420px;height:100%;position:relative;flex-shrink:0">
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1C1C1C,#0A0A0A)"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D0D0D 0%,transparent 35%)"></div>
-      <div style="position:absolute;bottom:44px;right:44px;width:72px;height:72px;border:2px solid {{COR_ACCENT}};transform:rotate(45deg)"></div>
+    <div style="background:#111111;display:flex;align-items:flex-end;justify-content:flex-end;padding:44px">
+      <div style="width:72px;height:72px;border:2px solid {{COR_ACCENT}};transform:rotate(45deg)"></div>
     </div>
   </div>
 </div>
@@ -133,27 +130,27 @@ body{background:#0A0A0A;display:flex;flex-direction:column;align-items:center;ga
       <div style="display:flex;width:100%;position:relative;align-items:flex-start">
         <div style="position:absolute;top:24px;left:24px;right:24px;height:1px;background:#2a2a2a;z-index:0"></div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">1</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">1</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_1_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -322,16 +319,14 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
 <!-- SLIDE 2: SOBRE A EMPRESA -->
 <div class="slide" style="background:#0D1E35">
   <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#2563EB,transparent)"></div>
-  <div style="display:flex;height:100%">
-    <div style="flex:1;padding:64px 60px 64px 72px;display:flex;flex-direction:column;justify-content:center">
+  <div style="display:grid;grid-template-columns:1fr 1fr;height:100%">
+    <div style="padding:64px 60px 64px 72px;display:flex;flex-direction:column;justify-content:center">
       <p style="font-size:11px;color:#2563EB;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px">Sobre nós</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:22px">Prazer,<br>{{CLIENTE}}</h2>
       <p style="font-size:15px;color:#8ba3c4;line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
-    <div style="width:420px;height:100%;position:relative;flex-shrink:0">
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0D1E35,#06111f)"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D1E35 0%,transparent 35%)"></div>
-      <div style="position:absolute;bottom:40px;right:40px;padding:12px 20px;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);border-radius:4px">
+    <div style="background:#06111f;display:flex;align-items:flex-end;justify-content:flex-end;padding:40px">
+      <div style="padding:12px 20px;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);border-radius:4px">
         <span style="font-size:13px;color:#93b4d6;font-weight:500">{{EMPRESA}}</span>
       </div>
     </div>
@@ -413,27 +408,27 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
       <div style="display:flex;width:100%;position:relative;align-items:flex-start">
         <div style="position:absolute;top:24px;left:24px;right:24px;height:1px;background:#1a3a5c;z-index:0"></div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">1</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">1</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_1_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -601,16 +596,14 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
 <!-- SLIDE 2: SOBRE A EMPRESA -->
 <div class="slide">
   <div style="position:absolute;top:0;left:0;right:0;height:4px;background:{{COR_PRIMARIA}}"></div>
-  <div style="display:flex;height:100%">
-    <div style="flex:1;padding:64px 56px 64px 72px;display:flex;flex-direction:column;justify-content:center">
+  <div style="display:grid;grid-template-columns:1fr 1fr;height:100%">
+    <div style="padding:64px 56px 64px 72px;display:flex;flex-direction:column;justify-content:center">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:14px">Sobre nós</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:#111;line-height:1.1;margin-bottom:22px">Prazer,<br>{{CLIENTE}}</h2>
       <p style="font-size:15px;color:#555;line-height:1.9;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
-    <div style="width:440px;height:100%;position:relative;flex-shrink:0">
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8e8e8,#d0d0d0)"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(to right,#FAFAFA 0%,transparent 30%)"></div>
-      <div style="position:absolute;bottom:40px;left:40px;padding:10px 18px;background:{{COR_PRIMARIA}};border-radius:4px">
+    <div style="background:#f0f0f0;display:flex;align-items:flex-end;justify-content:flex-start;padding:40px">
+      <div style="padding:10px 18px;background:{{COR_PRIMARIA}};border-radius:4px">
         <span style="font-size:12px;color:#fff;font-weight:600;letter-spacing:.5px">{{EMPRESA}}</span>
       </div>
     </div>
@@ -692,27 +685,27 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
       <div style="display:flex;width:100%;position:relative;align-items:flex-start">
         <div style="position:absolute;top:18px;left:18px;right:18px;height:2px;background:#ebebeb;z-index:0"></div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">1</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};text-align:center;line-height:36px;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">1</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_1_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">2</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};text-align:center;line-height:36px;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">3</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};text-align:center;line-height:36px;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">4</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};text-align:center;line-height:36px;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">5</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};text-align:center;line-height:36px;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -877,16 +870,17 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:0
   </div>
 </div>
 
-<!-- SLIDE 2: SOBRE — layout dividido foto/conteúdo -->
-<div class="slide" style="background:#1a0808;display:flex">
-  <div style="width:480px;height:100%;position:relative;flex-shrink:0">
-    <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a1010,#1a0808)"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#1a0808 100%)"></div>
-  </div>
-  <div style="flex:1;padding:60px 60px 60px 48px;display:flex;flex-direction:column;justify-content:center">
-    <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:14px">Sobre nós</p>
-    <h2 style="font-family:'Sora',sans-serif;font-size:40px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:22px">Prazer,<br>{{CLIENTE}}</h2>
-    <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.85">{{SOBRE_EMPRESA}}</p>
+<!-- SLIDE 2: SOBRE — layout dividido -->
+<div class="slide" style="background:#1a0808">
+  <div style="display:grid;grid-template-columns:1fr 1fr;height:100%">
+    <div style="background:#2a1010;display:flex;align-items:center;justify-content:center">
+      <div style="width:80px;height:80px;border:2px solid {{COR_ACCENT}};transform:rotate(45deg)"></div>
+    </div>
+    <div style="padding:60px 60px 60px 48px;display:flex;flex-direction:column;justify-content:center">
+      <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:14px">Sobre nós</p>
+      <h2 style="font-family:'Sora',sans-serif;font-size:40px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:22px">Prazer,<br>{{CLIENTE}}</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.85">{{SOBRE_EMPRESA}}</p>
+    </div>
   </div>
 </div>
 
@@ -951,27 +945,27 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:0
       <div style="display:flex;width:100%;position:relative;align-items:flex-start">
         <div style="position:absolute;top:24px;left:24px;right:24px;height:2px;background:#2a1010;z-index:0"></div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">1</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">1</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_1_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -1147,17 +1141,14 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
 
 <!-- SLIDE 2: SOBRE -->
 <div class="slide">
-  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2" viewBox="0 0 1280 720"><circle cx="200" cy="600" r="400" fill="{{COR_PRIMARIA}}" opacity=".15"/></svg>
-  <div style="display:flex;height:100%;position:relative;z-index:1">
-    <div style="flex:1;padding:64px 56px 64px 72px;display:flex;flex-direction:column;justify-content:center">
+  <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;position:relative;z-index:1">
+    <div style="padding:64px 56px 64px 72px;display:flex;flex-direction:column;justify-content:center">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;margin-bottom:14px">Sobre nós</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:22px">Prazer,<br>{{CLIENTE}}</h2>
       <p style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
-    <div style="width:440px;height:100%;position:relative;flex-shrink:0">
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(13,10,30,.8))"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D0A1E 0%,transparent 35%)"></div>
-      <div style="position:absolute;bottom:40px;right:40px;padding:12px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;backdrop-filter:blur(10px)">
+    <div style="background:rgba(124,58,237,.1);display:flex;align-items:flex-end;justify-content:flex-end;padding:40px">
+      <div class="glass" style="padding:12px 18px;border-radius:6px">
         <span style="font-size:13px;color:rgba(255,255,255,.7);font-weight:500">{{EMPRESA}}</span>
       </div>
     </div>
@@ -1238,22 +1229,22 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
       <div style="display:flex;width:100%;position:relative;align-items:flex-start">
         <div style="position:absolute;top:24px;left:24px;right:24px;height:1px;background:rgba(255,255,255,.08);z-index:0"></div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">1</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">1</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_1_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});text-align:center;line-height:48px;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>

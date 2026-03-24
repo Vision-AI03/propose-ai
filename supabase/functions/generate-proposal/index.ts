@@ -292,6 +292,7 @@ Retorne APENAS este JSON:
         })
         const falData = await falRes.json()
         photoUrl = falData?.images?.[0]?.url || ''
+        console.log('photoUrl gerado:', photoUrl?.substring(0, 50))
         console.log('Fal.ai concluído. URL:', photoUrl ? 'ok' : 'vazia')
       } catch (e) {
         console.log('Fal.ai error (não crítico):', e)
@@ -334,7 +335,7 @@ Retorne APENAS este JSON:
       '{{SUBTITULO}}':         copy.subtitulo || '',
       '{{SOBRE_EMPRESA}}':     copy.sobre_empresa || '',
       '{{SOLUCAO_TITULO}}':    copy.solucao_titulo || '',
-      '{{CHAMADA_ACAO}}':      copy.chamada_acao || '',
+      '{{CHAMADA_ACAO}}':      (copy.chamada_acao || '').substring(0, 120),
       '{{DESAFIO_1_TITULO}}':  copy.desafios?.[0]?.titulo || '',
       '{{DESAFIO_1_DESC}}':    copy.desafios?.[0]?.descricao || '',
       '{{DESAFIO_2_TITULO}}':  copy.desafios?.[1]?.titulo || '',

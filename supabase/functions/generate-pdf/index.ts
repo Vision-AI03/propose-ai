@@ -7,72 +7,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-function generateProposalHtml(proposal: any, sections: any[], profile: any) {
-  const primaryColor = profile?.primary_color || "#2563EB";
-  const secondaryColor = profile?.secondary_color || "#0F1724";
-  const companyName = profile?.company_name || "";
-  const logoUrl = profile?.logo_url || "";
-
-  const sectionsHtml = sections
-    .sort((a: any, b: any) => a.order_index - b.order_index)
-    .map(
-      (s: any) => `
-      <div style="margin-bottom: 24px;">
-        <h2 style="color: ${primaryColor}; font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Helvetica Neue', Arial, sans-serif;">${s.section_title}</h2>
-        <p style="font-size: 14px; line-height: 1.8; color: #333; white-space: pre-wrap;">${s.content}</p>
-      </div>
-    `
-    )
-    .join("");
-
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>${proposal.title || "Proposta Comercial"} - ${companyName}</title>
-  <style>
-    @page { margin: 20mm; size: A4; }
-    body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    @media print {
-      .no-print { display: none !important; }
-    }
-  </style>
-</head>
-<body>
-  <div class="no-print" style="background: #f3f4f6; padding: 12px 24px; text-align: center; font-size: 14px; color: #555;">
-    Use <strong>Ctrl+P</strong> (ou Cmd+P) e selecione <strong>"Salvar como PDF"</strong> para baixar.
-    <button onclick="window.print()" style="margin-left: 16px; padding: 8px 20px; background: ${primaryColor}; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
-      Salvar como PDF
-    </button>
-  </div>
-
-  <div style="background: ${secondaryColor}; padding: 24px 40px; display: flex; align-items: center; gap: 16px;">
-    ${logoUrl ? `<img src="${logoUrl}" style="height: 48px; width: 48px; object-fit: cover; border-radius: 8px;" />` : ""}
-    <span style="color: white; font-size: 20px; font-weight: 700;">${companyName}</span>
-  </div>
-  <div style="height: 4px; background: ${primaryColor};"></div>
-  
-  <div style="padding: 40px;">
-    <h1 style="text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 32px; color: ${secondaryColor};">
-      ${proposal.title || "Proposta Comercial"}
-    </h1>
-    
-    ${sectionsHtml}
-    
-    <div style="border-top: 1px solid #e5e7eb; margin-top: 40px; padding-top: 16px; text-align: center; font-size: 11px; color: #999;">
-      Proposta válida por ${proposal.validity_days || 15} dias • ${companyName} • Gerada com PropostaAI
-    </div>
-  </div>
-
-  <script>
-    window.onload = function() {
-      setTimeout(function() { window.print(); }, 500);
-    };
-  </script>
-</body>
-</html>`;
-}
-
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -82,11 +16,11 @@ serve(async (req) => {
     const authHeader = req.headers.get("authorization");
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const browserlessApiKey = Deno.env.get("BROWSERLESS_API_KEY") ?? "";
 
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY");
-    if (!supabaseAnonKey) {
-      throw new Error("SUPABASE_ANON_KEY is not configured");
-    }
+    if (!supabaseAnonKey) throw new Error("SUPABASE_ANON_KEY is not configured");
+    if (!browserlessApiKey) throw new Error("BROWSERLESS_API_KEY is not configured");
 
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized - no token" }), {
@@ -102,7 +36,6 @@ serve(async (req) => {
 
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
     if (authError || !user) {
-      console.error("Auth error:", authError?.message);
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -119,7 +52,6 @@ serve(async (req) => {
 
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch proposal
     const { data: proposal, error: pError } = await adminClient
       .from("proposals")
       .select("*")
@@ -134,33 +66,73 @@ serve(async (req) => {
       });
     }
 
-    // Fetch sections
-    const { data: sections } = await adminClient
-      .from("proposal_sections")
-      .select("*")
-      .eq("proposal_id", proposalId)
-      .order("order_index");
+    if (!proposal.html_content) {
+      return new Response(JSON.stringify({ error: "Proposal has no HTML content" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    // Fetch profile
-    const { data: profile } = await adminClient
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+    console.log("Calling Browserless for proposal:", proposalId);
 
-    const html = generateProposalHtml(proposal, sections || [], profile);
+    const browserlessUrl = `https://chrome.browserless.io/pdf?token=${browserlessApiKey}`;
 
-    // Store HTML as a file in storage and return the URL
-    // Since we can't use Puppeteer in Deno edge functions, 
-    // we'll store the HTML and let the client handle rendering
-    const fileName = `${user.id}/${proposalId}.html`;
-    
-    const htmlBlob = new Blob([html], { type: "text/html" });
+    const pdfResponse = await fetch(browserlessUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        html: proposal.html_content,
+        options: {
+          landscape: true,
+          width: "1280px",
+          height: "720px",
+          margin: { top: "0", right: "0", bottom: "0", left: "0" },
+          printBackground: true,
+          preferCSSPageSize: true,
+          scale: 1,
+        },
+        gotoOptions: {
+          waitUntil: "networkidle0",
+          timeout: 30000,
+        },
+        addStyleTag: [
+          {
+            content: `
+              * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+              body { margin: 0 !important; padding: 0 !important; }
+              .slide {
+                page-break-after: always !important;
+                break-after: page !important;
+                width: 1280px !important;
+                height: 720px !important;
+                overflow: hidden !important;
+                position: relative !important;
+              }
+              .slide:last-child {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+              }
+            `,
+          },
+        ],
+      }),
+    });
+
+    if (!pdfResponse.ok) {
+      const errText = await pdfResponse.text();
+      console.error("Browserless error:", pdfResponse.status, errText);
+      throw new Error(`Browserless error: ${pdfResponse.status} - ${errText.substring(0, 200)}`);
+    }
+
+    const pdfBuffer = await pdfResponse.arrayBuffer();
+    console.log("PDF gerado, tamanho:", pdfBuffer.byteLength, "bytes");
+
+    const fileName = `${user.id}/${proposalId}.pdf`;
     const { error: uploadError } = await adminClient.storage
       .from("pdfs")
-      .upload(fileName, htmlBlob, { 
-        contentType: "text/html", 
-        upsert: true 
+      .upload(fileName, pdfBuffer, {
+        contentType: "application/pdf",
+        upsert: true,
       });
 
     if (uploadError) {
@@ -170,7 +142,6 @@ serve(async (req) => {
 
     const { data: urlData } = adminClient.storage.from("pdfs").getPublicUrl(fileName);
 
-    // Update proposal with PDF URL
     await adminClient
       .from("proposals")
       .update({ pdf_url: urlData.publicUrl })
