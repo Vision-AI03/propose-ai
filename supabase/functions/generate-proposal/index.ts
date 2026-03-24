@@ -276,16 +276,8 @@ Retorne APENAS este JSON:
         const imagePrompt = buildImagePrompt(clientNiche || myNiche, templateId || 'dark_premium', tone)
         const falRes = await fetch('https://fal.run/fal-ai/flux/schnell', {
           method: 'POST',
-          headers: {
-            'Authorization': `Key ${falApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            prompt: imagePrompt,
-            image_size: 'landscape_16_9',
-            num_inference_steps: 4,
-            num_images: 1,
-          }),
+          headers: { 'Authorization': `Key ${falApiKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: imagePrompt, image_size: 'landscape_16_9', num_inference_steps: 4, num_images: 1 }),
         })
         const falData = await falRes.json()
         photoUrl = falData?.images?.[0]?.url || ''
@@ -295,8 +287,8 @@ Retorne APENAS este JSON:
       }
     }
 
-    // === AGENTE 2: Preencher template ===
-    console.log('Agente 2: Preenchendo template...')
+    // === PREENCHIMENTO PROGRAMÁTICO DOS PLACEHOLDERS ===
+    console.log('Preenchendo template...')
 
     const templateMap: Record<string, string> = {
       dark_premium: DARK_PREMIUM,
@@ -305,108 +297,81 @@ Retorne APENAS este JSON:
       bold_impact: BOLD_IMPACT,
       gradient_modern: GRADIENT_MODERN,
     }
-    const templateBase = templateMap[templateId] ?? DARK_PREMIUM
 
     const phoneFmt = formatPhone(companyPhone)
     const logoHtml = logoUrl
       ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">`
       : `<span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px;color:currentColor">${companyName}</span>`
+    const fallbackPhoto = 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1280&h=720&fit=crop'
 
-    const agent2Response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': anthropicApiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 10000,
-        system: 'Você é um desenvolvedor front-end. Preencha os placeholders do template HTML com o conteúdo fornecido. Retorne APENAS o HTML completo começando com <!DOCTYPE html>.',
-        messages: [{
-          role: 'user',
-          content: `Preencha todos os {{PLACEHOLDERS}} do template abaixo com o conteúdo e variáveis fornecidos.
-
-REGRAS:
-1. NÃO altere estrutura, CSS, SVG, layout ou classes
-2. APENAS substitua os textos nos lugares marcados com {{}}
-3. Mantenha TODO o HTML original intacto
-4. Se um array tiver menos itens que os placeholders, repita ou adapte
-
-VARIÁVEIS FIXAS — substitua exatamente:
-{{FOTO_URL}} → ${photoUrl || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1280&h=720&fit=crop'}
-{{COR_PRIMARIA}} → ${finalPrimary}
-{{COR_SECUNDARIA}} → ${finalSecondary}
-{{COR_ACCENT}} → ${finalAccent}
-{{LOGO}} → ${logoHtml}
-{{EMPRESA}} → ${companyName}
-{{CLIENTE}} → ${clientName}
-{{EMPRESA_CLIENTE}} → ${clientCompany || clientName}
-{{TELEFONE}} → ${phoneFmt}
-{{EMAIL}} → ${companyEmail}
-{{SITE}} → ${companyWebsite}
-{{INVESTIMENTO_TEXTO}} → ${investimentoTexto}
-{{VALIDADE}} → ${validityDays || 15}
-{{PRAZO}} → ${deadlineDays || 'A definir'} dias
-
-CONTEÚDO DO AGENTE 1 — use para preencher os demais placeholders:
-${JSON.stringify(copy, null, 2)}
-
-Mapeamento:
-- {{TITULO}} → copy.titulo
-- {{SUBTITULO}} → copy.subtitulo
-- {{SOBRE_EMPRESA}} → copy.sobre_empresa
-- {{DESAFIO_1_TITULO}} / {{DESAFIO_1_DESC}} → copy.desafios[0]
-- {{DESAFIO_2_TITULO}} / {{DESAFIO_2_DESC}} → copy.desafios[1]
-- {{DESAFIO_3_TITULO}} / {{DESAFIO_3_DESC}} → copy.desafios[2]
-- {{SOLUCAO_TITULO}} → copy.solucao_titulo
-- {{BENEFICIO_1_TITULO}} / {{BENEFICIO_1_DESC}} → copy.beneficios[0]
-- {{BENEFICIO_2_TITULO}} / {{BENEFICIO_2_DESC}} → copy.beneficios[1]
-- {{BENEFICIO_3_TITULO}} / {{BENEFICIO_3_DESC}} → copy.beneficios[2]
-- {{BENEFICIO_4_TITULO}} / {{BENEFICIO_4_DESC}} → copy.beneficios[3]
-- {{ETAPA_1_TITULO}} / {{ETAPA_1_DESC}} → copy.processo[0]
-- {{ETAPA_2_TITULO}} / {{ETAPA_2_DESC}} → copy.processo[1]
-- {{ETAPA_3_TITULO}} / {{ETAPA_3_DESC}} → copy.processo[2]
-- {{ETAPA_4_TITULO}} / {{ETAPA_4_DESC}} → copy.processo[3]
-- {{ETAPA_5_TITULO}} / {{ETAPA_5_DESC}} → copy.processo[4]
-- {{ENTREGAVEL_1}} → copy.entregaveis[0]
-- {{ENTREGAVEL_2}} → copy.entregaveis[1]
-- {{ENTREGAVEL_3}} → copy.entregaveis[2]
-- {{ENTREGAVEL_4}} → copy.entregaveis[3]
-- {{METRICA_1_VALOR}} / {{METRICA_1_DESC}} → copy.metricas[0]
-- {{METRICA_2_VALOR}} / {{METRICA_2_DESC}} → copy.metricas[1]
-- {{METRICA_3_VALOR}} / {{METRICA_3_DESC}} → copy.metricas[2]
-- {{PASSO_1_TITULO}} / {{PASSO_1_DESC}} → copy.proximos_passos[0]
-- {{PASSO_2_TITULO}} / {{PASSO_2_DESC}} → copy.proximos_passos[1]
-- {{PASSO_3_TITULO}} / {{PASSO_3_DESC}} → copy.proximos_passos[2]
-- {{CHAMADA_ACAO}} → copy.chamada_acao
-
-TEMPLATE BASE:
-${templateBase}`
-        }],
-      }),
-    })
-
-    if (!agent2Response.ok) {
-      const err = await agent2Response.text()
-      console.error('Agente 2 erro:', agent2Response.status, err)
-      if (agent2Response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }), {
-          status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
-      }
-      throw new Error(`Claude Agente 2 error: ${agent2Response.status}`)
+    const replacements: Record<string, string> = {
+      '{{FOTO_URL}}':          photoUrl || fallbackPhoto,
+      '{{COR_PRIMARIA}}':      finalPrimary,
+      '{{COR_SECUNDARIA}}':    finalSecondary,
+      '{{COR_ACCENT}}':        finalAccent,
+      '{{LOGO}}':              logoHtml,
+      '{{EMPRESA}}':           companyName,
+      '{{CLIENTE}}':           clientName,
+      '{{EMPRESA_CLIENTE}}':   clientCompany || clientName,
+      '{{TELEFONE}}':          phoneFmt,
+      '{{EMAIL}}':             companyEmail,
+      '{{SITE}}':              companyWebsite,
+      '{{INVESTIMENTO_TEXTO}}': investimentoTexto,
+      '{{VALIDADE}}':          String(validityDays || 15),
+      '{{PRAZO}}':             `${deadlineDays || 'A definir'} dias`,
+      '{{TITULO}}':            copy.titulo || '',
+      '{{SUBTITULO}}':         copy.subtitulo || '',
+      '{{SOBRE_EMPRESA}}':     copy.sobre_empresa || '',
+      '{{SOLUCAO_TITULO}}':    copy.solucao_titulo || '',
+      '{{CHAMADA_ACAO}}':      copy.chamada_acao || '',
+      '{{DESAFIO_1_TITULO}}':  copy.desafios?.[0]?.titulo || '',
+      '{{DESAFIO_1_DESC}}':    copy.desafios?.[0]?.descricao || '',
+      '{{DESAFIO_2_TITULO}}':  copy.desafios?.[1]?.titulo || '',
+      '{{DESAFIO_2_DESC}}':    copy.desafios?.[1]?.descricao || '',
+      '{{DESAFIO_3_TITULO}}':  copy.desafios?.[2]?.titulo || '',
+      '{{DESAFIO_3_DESC}}':    copy.desafios?.[2]?.descricao || '',
+      '{{BENEFICIO_1_TITULO}}': copy.beneficios?.[0]?.titulo || '',
+      '{{BENEFICIO_1_DESC}}':  copy.beneficios?.[0]?.descricao || '',
+      '{{BENEFICIO_2_TITULO}}': copy.beneficios?.[1]?.titulo || '',
+      '{{BENEFICIO_2_DESC}}':  copy.beneficios?.[1]?.descricao || '',
+      '{{BENEFICIO_3_TITULO}}': copy.beneficios?.[2]?.titulo || '',
+      '{{BENEFICIO_3_DESC}}':  copy.beneficios?.[2]?.descricao || '',
+      '{{BENEFICIO_4_TITULO}}': copy.beneficios?.[3]?.titulo || '',
+      '{{BENEFICIO_4_DESC}}':  copy.beneficios?.[3]?.descricao || '',
+      '{{ETAPA_1_TITULO}}':    copy.processo?.[0]?.titulo || '',
+      '{{ETAPA_1_DESC}}':      copy.processo?.[0]?.descricao || '',
+      '{{ETAPA_2_TITULO}}':    copy.processo?.[1]?.titulo || '',
+      '{{ETAPA_2_DESC}}':      copy.processo?.[1]?.descricao || '',
+      '{{ETAPA_3_TITULO}}':    copy.processo?.[2]?.titulo || '',
+      '{{ETAPA_3_DESC}}':      copy.processo?.[2]?.descricao || '',
+      '{{ETAPA_4_TITULO}}':    copy.processo?.[3]?.titulo || '',
+      '{{ETAPA_4_DESC}}':      copy.processo?.[3]?.descricao || '',
+      '{{ETAPA_5_TITULO}}':    copy.processo?.[4]?.titulo || '',
+      '{{ETAPA_5_DESC}}':      copy.processo?.[4]?.descricao || '',
+      '{{ENTREGAVEL_1}}':      copy.entregaveis?.[0] || '',
+      '{{ENTREGAVEL_2}}':      copy.entregaveis?.[1] || '',
+      '{{ENTREGAVEL_3}}':      copy.entregaveis?.[2] || '',
+      '{{ENTREGAVEL_4}}':      copy.entregaveis?.[3] || '',
+      '{{METRICA_1_VALOR}}':   copy.metricas?.[0]?.valor || '',
+      '{{METRICA_1_DESC}}':    copy.metricas?.[0]?.descricao || '',
+      '{{METRICA_2_VALOR}}':   copy.metricas?.[1]?.valor || '',
+      '{{METRICA_2_DESC}}':    copy.metricas?.[1]?.descricao || '',
+      '{{METRICA_3_VALOR}}':   copy.metricas?.[2]?.valor || '',
+      '{{METRICA_3_DESC}}':    copy.metricas?.[2]?.descricao || '',
+      '{{PASSO_1_TITULO}}':    copy.proximos_passos?.[0]?.titulo || '',
+      '{{PASSO_1_DESC}}':      copy.proximos_passos?.[0]?.descricao || '',
+      '{{PASSO_2_TITULO}}':    copy.proximos_passos?.[1]?.titulo || '',
+      '{{PASSO_2_DESC}}':      copy.proximos_passos?.[1]?.descricao || '',
+      '{{PASSO_3_TITULO}}':    copy.proximos_passos?.[2]?.titulo || '',
+      '{{PASSO_3_DESC}}':      copy.proximos_passos?.[2]?.descricao || '',
     }
 
-    const agent2Data = await agent2Response.json()
-    if (!agent2Data.content?.[0]) throw new Error('Agente 2 sem conteúdo')
+    let htmlContent = templateMap[templateId] ?? DARK_PREMIUM
+    for (const [placeholder, value] of Object.entries(replacements)) {
+      htmlContent = htmlContent.replaceAll(placeholder, value)
+    }
 
-    let htmlContent = agent2Data.content[0].text.trim()
-    htmlContent = htmlContent.replace(/^```html?\n?/, '').replace(/\n?```$/, '')
-    const doctypeIdx = htmlContent.indexOf('<!DOCTYPE')
-    if (doctypeIdx > 0) htmlContent = htmlContent.substring(doctypeIdx)
-
-    console.log('Agente 2 concluído. HTML gerado.')
+    console.log('Template preenchido.')
 
     const targetProposalId = regenerateId || proposalId
 
