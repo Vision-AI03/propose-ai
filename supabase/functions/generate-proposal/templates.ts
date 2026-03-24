@@ -5,9 +5,9 @@ export const DARK_PREMIUM = `<!DOCTYPE html>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;font-family:'Inter',sans-serif}
+body{background:#0A0A0A;display:flex;flex-direction:column;align-items:center;gap:0;padding:0;font-family:'Inter',sans-serif}
 .slide{width:1280px;height:720px;position:relative;overflow:hidden;flex-shrink:0}
-@media print{body{background:black;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
+@media print{body{background:#0A0A0A;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
 </style>
 </head>
 <body>
@@ -68,8 +68,8 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">Diagnóstico</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff;text-transform:uppercase">Os Desafios do Seu Negócio</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1">
-      <div style="background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:28px 24px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+      <div style="background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:28px 24px;min-height:160px;height:auto">
         <div style="width:38px;height:38px;border:1.5px solid {{COR_ACCENT}};border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px">
           <svg width="16" height="16" fill="none" stroke="{{COR_ACCENT}}" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
@@ -138,22 +138,22 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1C1C1C;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_ACCENT}}">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1C1C1C;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_ACCENT}}">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1C1C1C;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_ACCENT}}">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1C1C1C;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_ACCENT}}">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#000">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#666;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -164,28 +164,31 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
 
 <!-- SLIDE 6: ENTREGÁVEIS -->
 <div class="slide" style="background:#111111">
-  <div style="padding:56px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:36px">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;justify-content:center">
+    <div style="margin-bottom:32px">
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">O que você recebe</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff;text-transform:uppercase">Entregáveis do Projeto</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start">
-      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#ddd;font-weight:500">{{ENTREGAVEL_1}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#ddd;font-weight:500">{{ENTREGAVEL_2}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#ddd;font-weight:500">{{ENTREGAVEL_3}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1C1C1C;border:1px solid #2a2a2a;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#ddd;font-weight:500">{{ENTREGAVEL_4}}</span>
       </div>
+    </div>
+    <div style="margin-top:32px;padding:20px 28px;background:#1C1C1C;border-left:3px solid {{COR_ACCENT}};border-radius:4px">
+      <p style="font-size:15px;color:#aaa;font-style:italic;line-height:1.6">Tudo que você precisa para alcançar seus objetivos, com qualidade e prazo garantidos.</p>
     </div>
   </div>
 </div>
@@ -236,39 +239,39 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
 </div>
 
 <!-- SLIDE 9: PRÓXIMOS PASSOS -->
-<div class="slide" style="background:#0A0A0A">
-  <div style="padding:48px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:24px">
+<div class="slide" style="background:#0A0A0A;position:relative;overflow:hidden">
+  <div style="padding:44px 60px 0;height:100%;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="margin-bottom:20px">
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">Para começar</p>
-      <h2 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#fff;text-transform:uppercase">Próximos Passos</h2>
+      <h2 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;text-transform:uppercase">Próximos Passos</h2>
     </div>
-    <div style="display:flex;gap:18px;margin-bottom:28px">
-      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:8px;line-height:1">01</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_1_TITULO}}</h3>
-        <p style="font-size:12px;color:#777;line-height:1.55">{{PASSO_1_DESC}}</p>
+    <div style="display:flex;gap:18px">
+      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:6px;line-height:1">01</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_1_TITULO}}</h3>
+        <p style="font-size:11px;color:#777;line-height:1.5">{{PASSO_1_DESC}}</p>
       </div>
-      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:8px;line-height:1">02</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_2_TITULO}}</h3>
-        <p style="font-size:12px;color:#777;line-height:1.55">{{PASSO_2_DESC}}</p>
+      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:6px;line-height:1">02</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_2_TITULO}}</h3>
+        <p style="font-size:11px;color:#777;line-height:1.5">{{PASSO_2_DESC}}</p>
       </div>
-      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:8px;line-height:1">03</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_3_TITULO}}</h3>
-        <p style="font-size:12px;color:#777;line-height:1.55">{{PASSO_3_DESC}}</p>
+      <div style="flex:1;background:#1C1C1C;border:1px solid #2a2a2a;border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:6px;line-height:1">03</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_3_TITULO}}</h3>
+        <p style="font-size:11px;color:#777;line-height:1.5">{{PASSO_3_DESC}}</p>
       </div>
     </div>
-    <div style="border-top:1px solid #1c1c1c;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
-      </div>
-      <div style="text-align:right;padding-bottom:40px">
-        <div>{{LOGO}}</div>
-        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
-      </div>
+    <div style="margin-top:28px">
+      <h1 style="font-family:'Sora',sans-serif;font-size:56px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:-2px;line-height:1">OBRIGADO!</h1>
+      <p style="font-size:16px;color:#aaa;margin-top:8px;max-width:580px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{CHAMADA_ACAO}}</p>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:32px;left:60px;right:60px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end">
+    <div>{{LOGO}}</div>
+    <div style="text-align:right">
+      <p style="font-size:13px;color:#ccc">{{EMAIL}}</p>
+      <p style="font-size:12px;color:#666;margin-top:3px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
     </div>
   </div>
 </div>
@@ -283,7 +286,7 @@ export const CORPORATE_BLUE = `<!DOCTYPE html>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#070e1a;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;font-family:'Inter',sans-serif}
+body{background:#070e1a;display:flex;flex-direction:column;align-items:center;gap:0;padding:0;font-family:'Inter',sans-serif}
 .slide{width:1280px;height:720px;position:relative;overflow:hidden;flex-shrink:0}
 @media print{body{background:#070e1a;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
 </style>
@@ -343,8 +346,8 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:11px;color:#2563EB;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">Diagnóstico</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff">Os Desafios do Seu Negócio</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1">
-      <div style="background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:28px 22px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:28px 22px;min-height:160px;height:auto">
         <div style="width:36px;height:36px;background:rgba(37,99,235,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
           <svg width="16" height="16" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
@@ -415,22 +418,22 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#0D1E35;border:2px solid #2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#2563EB">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#0D1E35;border:2px solid #2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#2563EB">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#0D1E35;border:2px solid #2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#2563EB">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#0D1E35;border:2px solid #2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#2563EB">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#5a7a9a;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -442,28 +445,31 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
 <!-- SLIDE 6: ENTREGÁVEIS -->
 <div class="slide" style="background:#0D1E35">
   <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#2563EB,transparent)"></div>
-  <div style="padding:56px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:36px">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;justify-content:center">
+    <div style="margin-bottom:32px">
       <p style="font-size:11px;color:#2563EB;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">Escopo</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff">Entregáveis do Projeto</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start">
-      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#c8d9ec;font-weight:500">{{ENTREGAVEL_1}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#c8d9ec;font-weight:500">{{ENTREGAVEL_2}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#c8d9ec;font-weight:500">{{ENTREGAVEL_3}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#0A1628;border:1px solid #1a3a5c;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#c8d9ec;font-weight:500">{{ENTREGAVEL_4}}</span>
       </div>
+    </div>
+    <div style="margin-top:32px;padding:20px 28px;background:#0A1628;border-left:3px solid #2563EB;border-radius:4px">
+      <p style="font-size:15px;color:#6a8aaa;font-style:italic;line-height:1.6">Tudo que você precisa para alcançar seus objetivos, com qualidade e prazo garantidos.</p>
     </div>
   </div>
 </div>
@@ -512,40 +518,40 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
 </div>
 
 <!-- SLIDE 9: PRÓXIMOS PASSOS -->
-<div class="slide" style="background:#0A1628">
+<div class="slide" style="background:#0A1628;position:relative;overflow:hidden">
   <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#2563EB,transparent)"></div>
-  <div style="padding:48px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:24px">
+  <div style="padding:44px 60px 0;height:100%;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="margin-bottom:20px">
       <p style="font-size:11px;color:#2563EB;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">Para começar</p>
-      <h2 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#fff">Próximos Passos</h2>
+      <h2 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff">Próximos Passos</h2>
     </div>
-    <div style="display:flex;gap:18px;margin-bottom:28px">
-      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#2563EB;margin-bottom:8px">01</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_1_TITULO}}</h3>
-        <p style="font-size:12px;color:#5a7a9a;line-height:1.55">{{PASSO_1_DESC}}</p>
+    <div style="display:flex;gap:18px">
+      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#2563EB;margin-bottom:6px">01</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_1_TITULO}}</h3>
+        <p style="font-size:11px;color:#5a7a9a;line-height:1.5">{{PASSO_1_DESC}}</p>
       </div>
-      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#2563EB;margin-bottom:8px">02</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_2_TITULO}}</h3>
-        <p style="font-size:12px;color:#5a7a9a;line-height:1.55">{{PASSO_2_DESC}}</p>
+      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#2563EB;margin-bottom:6px">02</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_2_TITULO}}</h3>
+        <p style="font-size:11px;color:#5a7a9a;line-height:1.5">{{PASSO_2_DESC}}</p>
       </div>
-      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:20px">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#2563EB;margin-bottom:8px">03</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_3_TITULO}}</h3>
-        <p style="font-size:12px;color:#5a7a9a;line-height:1.55">{{PASSO_3_DESC}}</p>
+      <div style="flex:1;background:#0D1E35;border:1px solid #1a3a5c;border-top:3px solid #2563EB;border-radius:4px;padding:18px;max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#2563EB;margin-bottom:6px">03</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_3_TITULO}}</h3>
+        <p style="font-size:11px;color:#5a7a9a;line-height:1.5">{{PASSO_3_DESC}}</p>
       </div>
     </div>
-    <div style="border-top:1px solid #0d1e35;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
-      </div>
-      <div style="text-align:right;padding-bottom:40px">
-        <div>{{LOGO}}</div>
-        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
-      </div>
+    <div style="margin-top:28px">
+      <h1 style="font-family:'Sora',sans-serif;font-size:56px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1">OBRIGADO!</h1>
+      <p style="font-size:16px;color:#8ba3c4;margin-top:8px;max-width:580px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{CHAMADA_ACAO}}</p>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:32px;left:60px;right:60px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end">
+    <div>{{LOGO}}</div>
+    <div style="text-align:right">
+      <p style="font-size:13px;color:#93b4d6">{{EMAIL}}</p>
+      <p style="font-size:12px;color:#4a6a8a;margin-top:3px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
     </div>
   </div>
 </div>
@@ -559,9 +565,9 @@ export const CLEAN_LIGHT = `<!DOCTYPE html>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;font-family:'Inter',sans-serif}
+body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;gap:0;padding:0;font-family:'Inter',sans-serif}
 .slide{width:1280px;height:720px;position:relative;overflow:hidden;flex-shrink:0;background:#FAFAFA}
-@media print{body{background:#e0e0e0;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
+@media print{body{background:#e8e8e8;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
 </style>
 </head>
 <body>
@@ -619,8 +625,8 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Diagnóstico</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#111">Os Desafios do Seu Negócio</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1">
-      <div style="background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:28px 22px;box-shadow:0 2px 12px rgba(0,0,0,.05)">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:28px 22px;min-height:160px;height:auto;box-shadow:0 2px 12px rgba(0,0,0,.05)">
         <div style="width:38px;height:38px;background:{{COR_PRIMARIA}}1a;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
           <svg width="16" height="16" fill="none" stroke="{{COR_PRIMARIA}}" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
@@ -691,22 +697,22 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid {{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:{{COR_PRIMARIA}}">2</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid {{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:{{COR_PRIMARIA}}">3</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid {{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:{{COR_PRIMARIA}}">4</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid {{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:{{COR_PRIMARIA}}">5</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:#888;line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -718,36 +724,39 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
 <!-- SLIDE 6: ENTREGÁVEIS -->
 <div class="slide">
   <div style="position:absolute;top:0;left:0;right:0;height:4px;background:{{COR_PRIMARIA}}"></div>
-  <div style="padding:56px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:36px">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;justify-content:center">
+    <div style="margin-bottom:32px">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Escopo</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#111">Entregáveis do Projeto</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start">
-      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;min-height:60px;height:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)">
         <div style="width:26px;height:26px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:#333;font-weight:500">{{ENTREGAVEL_1}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;min-height:60px;height:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)">
         <div style="width:26px;height:26px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:#333;font-weight:500">{{ENTREGAVEL_2}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;min-height:60px;height:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)">
         <div style="width:26px;height:26px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:#333;font-weight:500">{{ENTREGAVEL_3}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #ebebeb;border-radius:8px;padding:18px 22px;min-height:60px;height:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)">
         <div style="width:26px;height:26px;border-radius:50%;background:{{COR_PRIMARIA}};display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:#333;font-weight:500">{{ENTREGAVEL_4}}</span>
       </div>
+    </div>
+    <div style="margin-top:32px;padding:20px 28px;background:#fff;border-left:3px solid {{COR_PRIMARIA}};border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <p style="font-size:15px;color:#666;font-style:italic;line-height:1.6">Tudo que você precisa para alcançar seus objetivos, com qualidade e prazo garantidos.</p>
     </div>
   </div>
 </div>
@@ -796,40 +805,40 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
 </div>
 
 <!-- SLIDE 9: PRÓXIMOS PASSOS -->
-<div class="slide">
+<div class="slide" style="position:relative;overflow:hidden">
   <div style="position:absolute;top:0;left:0;right:0;height:4px;background:{{COR_PRIMARIA}}"></div>
-  <div style="padding:48px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:24px">
+  <div style="padding:44px 60px 0;height:100%;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="margin-bottom:20px">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:6px">Para começar</p>
-      <h2 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#111">Próximos Passos</h2>
+      <h2 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#111">Próximos Passos</h2>
     </div>
-    <div style="display:flex;gap:18px;margin-bottom:28px">
-      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:8px">01</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#111;margin-bottom:6px">{{PASSO_1_TITULO}}</h3>
-        <p style="font-size:12px;color:#888;line-height:1.55">{{PASSO_1_DESC}}</p>
+    <div style="display:flex;gap:18px">
+      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:18px;max-height:150px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:6px">01</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-bottom:5px">{{PASSO_1_TITULO}}</h3>
+        <p style="font-size:11px;color:#888;line-height:1.5">{{PASSO_1_DESC}}</p>
       </div>
-      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:8px">02</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#111;margin-bottom:6px">{{PASSO_2_TITULO}}</h3>
-        <p style="font-size:12px;color:#888;line-height:1.55">{{PASSO_2_DESC}}</p>
+      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:18px;max-height:150px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:6px">02</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-bottom:5px">{{PASSO_2_TITULO}}</h3>
+        <p style="font-size:11px;color:#888;line-height:1.5">{{PASSO_2_DESC}}</p>
       </div>
-      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:8px">03</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#111;margin-bottom:6px">{{PASSO_3_TITULO}}</h3>
-        <p style="font-size:12px;color:#888;line-height:1.55">{{PASSO_3_DESC}}</p>
+      <div style="flex:1;background:#fff;border:1px solid #ebebeb;border-top:3px solid {{COR_PRIMARIA}};border-radius:8px;padding:18px;max-height:150px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:6px">03</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#111;margin-bottom:5px">{{PASSO_3_TITULO}}</h3>
+        <p style="font-size:11px;color:#888;line-height:1.5">{{PASSO_3_DESC}}</p>
       </div>
     </div>
-    <div style="border-top:2px solid #f0f0f0;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#111;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:16px;color:#333333;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
-      </div>
-      <div style="text-align:right;padding-bottom:40px">
-        <div>{{LOGO}}</div>
-        <p style="font-size:14px;color:#555555;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
-      </div>
+    <div style="margin-top:28px">
+      <h1 style="font-family:'Sora',sans-serif;font-size:56px;font-weight:800;color:#111;letter-spacing:-2px;line-height:1">OBRIGADO!</h1>
+      <p style="font-size:16px;color:#555;margin-top:8px;max-width:580px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{CHAMADA_ACAO}}</p>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:32px;left:60px;right:60px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end">
+    <div>{{LOGO}}</div>
+    <div style="text-align:right">
+      <p style="font-size:13px;color:#444">{{EMAIL}}</p>
+      <p style="font-size:12px;color:#999;margin-top:3px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
     </div>
   </div>
 </div>
@@ -843,7 +852,7 @@ export const BOLD_IMPACT = `<!DOCTYPE html>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;font-family:'Inter',sans-serif}
+body{background:#111;display:flex;flex-direction:column;align-items:center;gap:0;padding:0;font-family:'Inter',sans-serif}
 .slide{width:1280px;height:720px;position:relative;overflow:hidden;flex-shrink:0}
 @media print{body{background:#111;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
 </style>
@@ -888,8 +897,8 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px">O problema</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:40px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1">OS DESAFIOS<br>DO SEU NEGÓCIO</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1">
-      <div style="background:#1a0808;border:1px solid #2a1010;border-top:4px solid {{COR_ACCENT}};border-radius:4px;padding:28px 22px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#1a0808;border:1px solid #2a1010;border-top:4px solid {{COR_ACCENT}};border-radius:4px;padding:28px 22px;min-height:160px;height:auto">
         <h3 style="font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:10px;text-transform:uppercase">{{DESAFIO_1_TITULO}}</h3>
         <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.75">{{DESAFIO_1_DESC}}</p>
       </div>
@@ -947,22 +956,22 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1a0808;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:{{COR_ACCENT}}">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1a0808;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:{{COR_ACCENT}}">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1a0808;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:{{COR_ACCENT}}">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:#1a0808;border:2px solid {{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:{{COR_ACCENT}}">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:{{COR_ACCENT}};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-top:14px;margin-bottom:6px;text-transform:uppercase">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -973,28 +982,31 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
 
 <!-- SLIDE 6: ENTREGÁVEIS -->
 <div class="slide" style="background:#0d0d0d">
-  <div style="padding:56px 60px;height:100%;display:flex;flex-direction:column">
-    <div style="margin-bottom:36px">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;justify-content:center">
+    <div style="margin-bottom:32px">
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Escopo</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:40px;font-weight:900;color:#fff;text-transform:uppercase">ENTREGÁVEIS</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start">
-      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.3px">{{ENTREGAVEL_1}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.3px">{{ENTREGAVEL_2}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.3px">{{ENTREGAVEL_3}}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px">
+      <div style="display:flex;align-items:center;gap:16px;background:#1a0808;border:1px solid #2a1010;border-radius:4px;padding:18px 22px;min-height:60px;height:auto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="{{COR_ACCENT}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span style="font-size:14px;color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.3px">{{ENTREGAVEL_4}}</span>
       </div>
+    </div>
+    <div style="margin-top:32px;padding:20px 28px;background:#1a0808;border-left:3px solid {{COR_ACCENT}};border-radius:4px">
+      <p style="font-size:15px;color:rgba(255,255,255,.55);font-style:italic;line-height:1.6">Tudo que você precisa para alcançar seus objetivos, com qualidade e prazo garantidos.</p>
     </div>
   </div>
 </div>
@@ -1042,36 +1054,40 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
 </div>
 
 <!-- SLIDE 9: ENCERRAMENTO -->
-<div class="slide">
+<div class="slide" style="position:relative;overflow:hidden">
   <div style="position:absolute;inset:0;background:linear-gradient(to top,#000 0%,#1a0808 100%)"></div>
-  <div style="position:absolute;inset:0;padding:48px 60px;display:flex;flex-direction:column;justify-content:space-between">
+  <div style="position:absolute;inset:0;padding:44px 60px 0;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="margin-bottom:20px">
+      <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:6px">Para começar</p>
+      <h2 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;text-transform:uppercase">Próximos Passos</h2>
+    </div>
     <div style="display:flex;gap:18px">
-      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px;backdrop-filter:blur(8px)">
-        <div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:8px">01</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;text-transform:uppercase">{{PASSO_1_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.55">{{PASSO_1_DESC}}</p>
+      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden;backdrop-filter:blur(8px)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:6px">01</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:5px;text-transform:uppercase">{{PASSO_1_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.5">{{PASSO_1_DESC}}</p>
       </div>
-      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px;backdrop-filter:blur(8px)">
-        <div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:8px">02</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;text-transform:uppercase">{{PASSO_2_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.55">{{PASSO_2_DESC}}</p>
+      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden;backdrop-filter:blur(8px)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:6px">02</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:5px;text-transform:uppercase">{{PASSO_2_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.5">{{PASSO_2_DESC}}</p>
       </div>
-      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px;backdrop-filter:blur(8px)">
-        <div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:8px">03</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;text-transform:uppercase">{{PASSO_3_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.55">{{PASSO_3_DESC}}</p>
+      <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px;max-height:150px;overflow:hidden;backdrop-filter:blur(8px)">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:6px">03</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:5px;text-transform:uppercase">{{PASSO_3_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.5">{{PASSO_3_DESC}}</p>
       </div>
     </div>
-    <div style="display:flex;align-items:flex-end;justify-content:space-between">
-      <div>
-        <h1 style="font-family:'Sora',sans-serif;font-size:80px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-3px;line-height:1;text-shadow:0 4px 24px rgba(0,0,0,.5)">OBRIGADO!</h1>
-        <p style="font-size:16px;color:#FFFFFF;margin-top:8px;max-width:600px">{{CHAMADA_ACAO}}</p>
-      </div>
-      <div style="text-align:right;padding-bottom:40px">
-        <div>{{LOGO}}</div>
-        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
-      </div>
+    <div style="margin-top:28px">
+      <h1 style="font-family:'Sora',sans-serif;font-size:56px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-2px;line-height:1;text-shadow:0 4px 24px rgba(0,0,0,.5)">OBRIGADO!</h1>
+      <p style="font-size:16px;color:rgba(255,255,255,.75);margin-top:8px;max-width:580px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{CHAMADA_ACAO}}</p>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:32px;left:60px;right:60px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end">
+    <div>{{LOGO}}</div>
+    <div style="text-align:right">
+      <p style="font-size:13px;color:#ccc">{{EMAIL}}</p>
+      <p style="font-size:12px;color:#666;margin-top:3px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
     </div>
   </div>
 </div>
@@ -1085,7 +1101,7 @@ export const GRADIENT_MODERN = `<!DOCTYPE html>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#06040f;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;font-family:'Inter',sans-serif}
+body{background:#06040f;display:flex;flex-direction:column;align-items:center;gap:0;padding:0;font-family:'Inter',sans-serif}
 .slide{width:1280px;height:720px;position:relative;overflow:hidden;flex-shrink:0;background:#0D0A1E}
 .glass{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px);border-radius:8px}
 @media print{body{background:#06040f;gap:0;padding:0}.slide{page-break-after:always;break-after:page}.slide:last-child{page-break-after:avoid}}
@@ -1156,8 +1172,8 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">Diagnóstico</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff">Os Desafios do Seu Negócio</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1">
-      <div class="glass" style="padding:28px 22px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div class="glass" style="padding:28px 22px;min-height:160px;height:auto">
         <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;margin-bottom:16px">
           <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
@@ -1227,22 +1243,22 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_1_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_PRIMARIA}}">2</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">2</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_2_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_2_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_PRIMARIA}}">3</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">3</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_3_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_3_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_PRIMARIA}}">4</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">4</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_4_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_4_DESC}}</p>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;z-index:1">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:{{COR_PRIMARIA}}">5</div>
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff">5</div>
           <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-top:14px;margin-bottom:6px">{{ETAPA_5_TITULO}}</h3>
           <p style="font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55">{{ETAPA_5_DESC}}</p>
         </div>
@@ -1254,36 +1270,39 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
 <!-- SLIDE 6: ENTREGÁVEIS -->
 <div class="slide">
   <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.15" viewBox="0 0 1280 720"><circle cx="1100" cy="720" r="500" fill="{{COR_SECUNDARIA}}" opacity=".3"/></svg>
-  <div style="padding:56px 60px;height:100%;display:flex;flex-direction:column;position:relative;z-index:1">
-    <div style="margin-bottom:36px">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1">
+    <div style="margin-bottom:32px">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">Escopo</p>
       <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#fff">Entregáveis do Projeto</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start">
-      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px;min-height:60px;height:auto">
         <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:rgba(255,255,255,.8);font-weight:500">{{ENTREGAVEL_1}}</span>
       </div>
-      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px">
+      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px;min-height:60px;height:auto">
         <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:rgba(255,255,255,.8);font-weight:500">{{ENTREGAVEL_2}}</span>
       </div>
-      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px">
+      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px;min-height:60px;height:auto">
         <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:rgba(255,255,255,.8);font-weight:500">{{ENTREGAVEL_3}}</span>
       </div>
-      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px">
+      <div class="glass" style="display:flex;align-items:center;gap:16px;padding:18px 22px;min-height:60px;height:auto">
         <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <span style="font-size:14px;color:rgba(255,255,255,.8);font-weight:500">{{ENTREGAVEL_4}}</span>
       </div>
+    </div>
+    <div class="glass" style="margin-top:32px;padding:20px 28px;border-left:2px solid {{COR_PRIMARIA}}">
+      <p style="font-size:15px;color:rgba(255,255,255,.5);font-style:italic;line-height:1.6">Tudo que você precisa para alcançar seus objetivos, com qualidade e prazo garantidos.</p>
     </div>
   </div>
 </div>
@@ -1297,23 +1316,17 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;align-items:center">
       <div class="glass" style="text-align:center;padding:36px 24px">
-        <div style="display:inline-block;padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px;margin-bottom:12px">
-          <span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span>
-        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:16px"><div style="padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px"><span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span></div></div>
         <div style="font-family:'Sora',sans-serif;font-size:60px;font-weight:800;color:#fff;line-height:1;margin-bottom:12px">{{METRICA_1_VALOR}}</div>
         <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.5">{{METRICA_1_DESC}}</div>
       </div>
       <div class="glass" style="text-align:center;padding:36px 24px">
-        <div style="display:inline-block;padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px;margin-bottom:12px">
-          <span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span>
-        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:16px"><div style="padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px"><span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span></div></div>
         <div style="font-family:'Sora',sans-serif;font-size:60px;font-weight:800;color:#fff;line-height:1;margin-bottom:12px">{{METRICA_2_VALOR}}</div>
         <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.5">{{METRICA_2_DESC}}</div>
       </div>
       <div class="glass" style="text-align:center;padding:36px 24px">
-        <div style="display:inline-block;padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px;margin-bottom:12px">
-          <span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span>
-        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:16px"><div style="padding:4px 14px;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});border-radius:20px"><span style="font-size:10px;color:#fff;font-weight:600;letter-spacing:1px;text-transform:uppercase">Resultado</span></div></div>
         <div style="font-family:'Sora',sans-serif;font-size:60px;font-weight:800;color:#fff;line-height:1;margin-bottom:12px">{{METRICA_3_VALOR}}</div>
         <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.5">{{METRICA_3_DESC}}</div>
       </div>
@@ -1340,40 +1353,40 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
 </div>
 
 <!-- SLIDE 9: PRÓXIMOS PASSOS -->
-<div class="slide">
+<div class="slide" style="position:relative;overflow:hidden">
   <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.15" viewBox="0 0 1280 720"><circle cx="200" cy="100" r="400" fill="{{COR_PRIMARIA}}" opacity=".25"/><circle cx="1100" cy="600" r="350" fill="{{COR_SECUNDARIA}}" opacity=".2"/></svg>
-  <div style="padding:48px 60px;height:100%;display:flex;flex-direction:column;position:relative;z-index:1">
-    <div style="margin-bottom:24px">
+  <div style="padding:44px 60px 0;height:100%;display:flex;flex-direction:column;position:relative;z-index:1;box-sizing:border-box">
+    <div style="margin-bottom:20px">
       <p style="font-size:11px;color:{{COR_PRIMARIA}};letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">Para começar</p>
-      <h2 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#fff">Próximos Passos</h2>
+      <h2 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff">Próximos Passos</h2>
     </div>
-    <div style="display:flex;gap:18px;margin-bottom:28px">
-      <div class="glass" style="flex:1;padding:20px;border-top:2px solid {{COR_PRIMARIA}}">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">01</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_1_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.55">{{PASSO_1_DESC}}</p>
+    <div style="display:flex;gap:18px">
+      <div class="glass" style="flex:1;padding:18px;border-top:2px solid {{COR_PRIMARIA}};max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">01</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_1_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.5">{{PASSO_1_DESC}}</p>
       </div>
-      <div class="glass" style="flex:1;padding:20px;border-top:2px solid {{COR_PRIMARIA}}">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">02</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_2_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.55">{{PASSO_2_DESC}}</p>
+      <div class="glass" style="flex:1;padding:18px;border-top:2px solid {{COR_PRIMARIA}};max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">02</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_2_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.5">{{PASSO_2_DESC}}</p>
       </div>
-      <div class="glass" style="flex:1;padding:20px;border-top:2px solid {{COR_PRIMARIA}}">
-        <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">03</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{PASSO_3_TITULO}}</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.55">{{PASSO_3_DESC}}</p>
+      <div class="glass" style="flex:1;padding:18px;border-top:2px solid {{COR_PRIMARIA}};max-height:150px;overflow:hidden">
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px">03</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">{{PASSO_3_TITULO}}</h3>
+        <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.5">{{PASSO_3_DESC}}</p>
       </div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
-      </div>
-      <div style="text-align:right;padding-bottom:40px">
-        <div>{{LOGO}}</div>
-        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
-      </div>
+    <div style="margin-top:28px">
+      <h1 style="font-family:'Sora',sans-serif;font-size:56px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1">OBRIGADO!</h1>
+      <p style="font-size:16px;color:rgba(255,255,255,.7);margin-top:8px;max-width:580px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{CHAMADA_ACAO}}</p>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:32px;left:60px;right:60px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;z-index:2">
+    <div>{{LOGO}}</div>
+    <div style="text-align:right">
+      <p style="font-size:13px;color:rgba(255,255,255,.6)">{{EMAIL}}</p>
+      <p style="font-size:12px;color:rgba(255,255,255,.3);margin-top:3px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
     </div>
   </div>
 </div>

@@ -182,7 +182,7 @@ serve(async (req) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20250929',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 2000,
         system: 'Você é um copywriter estratégico especializado em propostas comerciais B2B brasileiras. Retorne APENAS JSON válido, sem markdown.',
         messages: [{
@@ -262,8 +262,19 @@ Retorne APENAS este JSON:
     try {
       copy = JSON.parse(copyJson)
     } catch {
-      console.error('JSON inválido agente 1:', copyJson.substring(0, 300))
-      throw new Error('Falha ao parsear conteúdo do Agente 1')
+      // Tenta extrair o JSON entre { e }
+      const match = copyJson.match(/\{[\s\S]*\}/)
+      if (match) {
+        try {
+          copy = JSON.parse(match[0])
+        } catch {
+          console.error('JSON inválido agente 1:', copyJson.substring(0, 500))
+          throw new Error('Falha ao parsear conteúdo do Agente 1')
+        }
+      } else {
+        console.error('JSON inválido agente 1:', copyJson.substring(0, 500))
+        throw new Error('Falha ao parsear conteúdo do Agente 1')
+      }
     }
 
     console.log('Agente 1 concluído.')
