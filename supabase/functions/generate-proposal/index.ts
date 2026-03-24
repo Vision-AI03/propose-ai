@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { decode } from 'https://deno.land/x/djwt@v2.8/mod.ts'
 import { DARK_PREMIUM, CORPORATE_BLUE, CLEAN_LIGHT, BOLD_IMPACT, GRADIENT_MODERN } from './templates.ts'
 
 const corsHeaders = {
@@ -93,21 +92,17 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    const authHeader = req.headers.get('authorization')
-    if (!authHeader?.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
+    const authHeader = req.headers.get('authorization') || req.headers.get('Authorization')
 
-    const token = authHeader.replace('Bearer ', '')
-    const [_header, payload] = decode(token)
-    const userId = (payload as any).sub
-
-    if (!userId) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+    let userId = 'anonymous'
+    if (authHeader?.startsWith('Bearer ')) {
+      try {
+        const token = authHeader.split('.')[1]
+        const decoded = JSON.parse(atob(token))
+        userId = decoded.sub || 'anonymous'
+      } catch {
+        userId = 'anonymous'
+      }
     }
 
     const body = await req.json()
