@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -39,6 +40,7 @@ export default function SettingsPage() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
+  const [companyDifferentials, setCompanyDifferentials] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -54,6 +56,7 @@ export default function SettingsPage() {
       setNiche(profile.niche || "");
       setPrimaryColor(profile.primary_color || "#2563EB");
       setSecondaryColor(profile.secondary_color || "#0F1724");
+      setCompanyDifferentials((profile as any).company_differentials || "");
       if (profile.logo_url) setLogoPreview(profile.logo_url);
     }
   }, [profile]);
@@ -88,6 +91,7 @@ export default function SettingsPage() {
         company_website: companyWebsite,
         company_address: companyAddress,
         niche,
+        company_differentials: companyDifferentials,
         primary_color: primaryColor,
         secondary_color: secondaryColor,
         logo_url: logoUrl,
@@ -191,6 +195,16 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm">Nicho</Label>
                 <Input value={niche} onChange={(e) => setNiche(e.target.value)} />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-muted-foreground text-sm">Diferenciais da empresa</Label>
+                <Textarea
+                  value={companyDifferentials}
+                  onChange={(e) => setCompanyDifferentials(e.target.value)}
+                  placeholder="Ex: Desde 2022, especialistas em IA para o interior de SP. Já automatizamos +20 empresas. Suporte contínuo pós-entrega..."
+                  rows={3}
+                />
+                <p className="text-xs text-muted-foreground">Aparecerá automaticamente no slide "Sobre nós" de todas as suas propostas</p>
               </div>
             </div>
             <Button onClick={handleSaveProfile} disabled={saving} className="btn-primary-hover rounded-[10px]">

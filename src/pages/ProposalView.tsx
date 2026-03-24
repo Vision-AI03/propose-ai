@@ -251,31 +251,38 @@ export default function ProposalView() {
         {/* Preview */}
         <div className="lg:col-span-3">
           {hasHtmlContent ? (() => {
-            const pageCount = (htmlContent.match(/class="pagina"/g) || []).length || 5;
+            const slideCount = (htmlContent.match(/class="slide"/g) || []).length || 9;
+            // Each slide is 720px + 8px gap. Scale iframe (1280px wide) to fit container (~560px).
+            const scale = 0.44;
+            const iframeH = slideCount * 720 + (slideCount - 1) * 8 + 32;
+            const containerH = Math.round(iframeH * scale) + 32;
             return (
               <div
                 style={{
-                  background: '#E5E7EB',
-                  borderRadius: '8px',
-                  padding: '20px 0',
-                  maxHeight: '900px',
+                  background: '#1a1a1a',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  maxHeight: '85vh',
                   overflowY: 'auto',
                 }}
               >
-                <iframe
-                  ref={iframeRef}
-                  srcDoc={htmlContent}
-                  style={{
-                    width: '850px',
-                    height: `${pageCount * 1123 + (pageCount - 1) * 24 + 48}px`,
-                    border: 'none',
-                    background: 'transparent',
-                    transform: 'scale(0.55)',
-                    transformOrigin: 'top left',
-                  }}
-                  title="Preview da Proposta"
-                  sandbox="allow-same-origin"
-                />
+                <div style={{ width: '100%', overflowX: 'hidden', height: `${containerH}px`, position: 'relative' }}>
+                  <iframe
+                    ref={iframeRef}
+                    srcDoc={htmlContent}
+                    style={{
+                      width: '1280px',
+                      height: `${iframeH}px`,
+                      border: 'none',
+                      background: 'transparent',
+                      transform: `scale(${scale})`,
+                      transformOrigin: 'top left',
+                      display: 'block',
+                    }}
+                    title="Preview da Proposta"
+                    sandbox="allow-same-origin"
+                  />
+                </div>
               </div>
             );
           })() : (

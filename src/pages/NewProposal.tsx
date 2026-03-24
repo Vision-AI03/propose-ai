@@ -18,46 +18,60 @@ import {
 
 const templates = [
   {
-    id: "moderno",
-    name: "Moderno",
-    colors: ["hsl(217,91%,60%)", "hsl(221,39%,11%)", "hsl(215,28%,17%)"],
+    id: "dark_premium",
+    name: "Dark Premium",
+    desc: "Executivo escuro",
+    badge: "Marketing · Agências · Tech",
+    bg: "#0A0A0A",
+    accent: "#ffffff",
+    mid: "#1C1C1C",
   },
   {
-    id: "impacto",
-    name: "Impacto",
-    colors: ["hsl(0,84%,60%)", "hsl(224,54%,8%)", "hsl(215,28%,17%)"],
+    id: "corporate_blue",
+    name: "Corporate Blue",
+    desc: "Corporativo azul",
+    badge: "Jurídico · Financeiro · B2B",
+    bg: "#0A1628",
+    accent: "#2563EB",
+    mid: "#0D1E35",
   },
   {
-    id: "narrativo",
-    name: "Narrativo",
-    colors: ["hsl(160,64%,40%)", "hsl(221,39%,11%)", "hsl(215,28%,17%)"],
+    id: "clean_light",
+    name: "Clean Light",
+    desc: "Limpo e elegante",
+    badge: "Saúde · Educação · Design",
+    bg: "#FAFAFA",
+    accent: "#1D9E75",
+    mid: "#F0F0F0",
   },
   {
-    id: "minimalista",
-    name: "Minimalista",
-    colors: ["hsl(210,20%,98%)", "hsl(224,54%,8%)", "hsl(221,39%,11%)"],
+    id: "bold_impact",
+    name: "Bold Impact",
+    desc: "Máximo impacto",
+    badge: "Imobiliário · Eventos",
+    bg: "#111111",
+    accent: "#EF4444",
+    mid: "#1a0808",
   },
   {
-    id: "bold",
-    name: "Bold",
-    colors: ["hsl(45,96%,64%)", "hsl(224,54%,8%)", "hsl(215,28%,17%)"],
+    id: "gradient_modern",
+    name: "Gradient Modern",
+    desc: "Moderno vibrante",
+    badge: "Startups · SaaS · Inovação",
+    bg: "#0D0A1E",
+    accent: "#7C3AED",
+    mid: "#1a1040",
   },
 ];
 
-// Formata string para exibição como moeda BR (1234 → "1.234")
 function formatCurrencyInput(value: string): string {
-  // Remove tudo exceto dígitos
   const digits = value.replace(/\D/g, "");
   if (!digits) return "";
-  // Formata com pontos de milhar
   return Number(digits).toLocaleString("pt-BR");
 }
 
-// Converte string formatada para número inteiro (reais)
 function parseCurrencyValue(formatted: string): number {
-  // Remove pontos de milhar, resultado é número inteiro em reais
-  const digits = formatted.replace(/\D/g, "");
-  return Number(digits) || 0;
+  return Number(formatted.replace(/\D/g, "")) || 0;
 }
 
 export default function NewProposal() {
@@ -71,11 +85,16 @@ export default function NewProposal() {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [clientNiche, setClientNiche] = useState("");
-  const [templateId, setTemplateId] = useState("moderno");
+  const [clientPain, setClientPain] = useState("");
+  const [clientGoal, setClientGoal] = useState("");
+  const [expectedMetrics, setExpectedMetrics] = useState("");
+
+  const [templateId, setTemplateId] = useState("dark_premium");
   const [niche, setNiche] = useState("");
   const [serviceDescription, setServiceDescription] = useState("");
   const [deliverables, setDeliverables] = useState("");
   const [deadlineDays, setDeadlineDays] = useState("");
+  const [proposalTone, setProposalTone] = useState("executivo");
   const [totalValue, setTotalValue] = useState("");
   const [setupValue, setSetupValue] = useState("");
   const [monthlyValue, setMonthlyValue] = useState("");
@@ -90,10 +109,6 @@ export default function NewProposal() {
       return data;
     },
     enabled: !!user,
-  });
-
-  useState(() => {
-    if (profile?.niche) setNiche(profile.niche);
   });
 
   const paymentLabels: Record<string, string> = {
@@ -129,8 +144,7 @@ export default function NewProposal() {
         firstOfMonth.setHours(0, 0, 0, 0);
 
         if (new Date(usage.period_start) < firstOfMonth) {
-          await supabase
-            .from("user_usage")
+          await supabase.from("user_usage")
             .update({ proposals_count: 0, period_start: firstOfMonth.toISOString().split("T")[0] })
             .eq("user_id", user.id);
           usage.proposals_count = 0;
@@ -150,7 +164,11 @@ export default function NewProposal() {
           clientEmail,
           clientPhone,
           clientNiche,
+          clientPain,
+          clientGoal,
+          expectedMetrics,
           templateId,
+          proposalTone,
           niche: niche || profile?.niche || "",
           serviceDescription,
           deliverables,
@@ -176,8 +194,6 @@ export default function NewProposal() {
       console.error(err);
       if (err?.message?.includes("429")) {
         toast({ title: "Muitas requisições", description: "Aguarde um momento e tente novamente.", variant: "destructive" });
-      } else if (err?.message?.includes("402")) {
-        toast({ title: "Créditos insuficientes", description: "Adicione créditos à sua conta.", variant: "destructive" });
       } else {
         toast({ title: "Erro ao gerar proposta", description: err.message, variant: "destructive" });
       }
@@ -193,6 +209,7 @@ export default function NewProposal() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left column */}
         <div className="space-y-4">
+          {/* Dados do cliente */}
           <Card className="border-border overflow-hidden">
             <div className="px-6 py-4 border-b border-border">
               <h3 className="font-heading text-[15px] font-semibold text-foreground">Dados do cliente</h3>
@@ -223,6 +240,43 @@ export default function NewProposal() {
             </CardContent>
           </Card>
 
+          {/* Contexto do cliente */}
+          <Card className="border-border overflow-hidden">
+            <div className="px-6 py-4 border-b border-border">
+              <h3 className="font-heading text-[15px] font-semibold text-foreground">Contexto do cliente</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Alimenta o argumento central da proposta</p>
+            </div>
+            <CardContent className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Principal dor / desafio do cliente</Label>
+                <Textarea
+                  value={clientPain}
+                  onChange={(e) => setClientPain(e.target.value)}
+                  placeholder="Ex: Perde leads fora do horário, atendimento sobrecarregado, inadimplência alta..."
+                  rows={2}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Objetivo principal do cliente</Label>
+                <Input
+                  value={clientGoal}
+                  onChange={(e) => setClientGoal(e.target.value)}
+                  placeholder="Ex: Aumentar faturamento 30%, contratar menos, atender mais rápido..."
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Métricas / resultados que sua solução entrega</Label>
+                <Input
+                  value={expectedMetrics}
+                  onChange={(e) => setExpectedMetrics(e.target.value)}
+                  placeholder="Ex: Reduz 40% do tempo de atendimento, recupera 25% dos inadimplentes..."
+                />
+                <p className="text-xs text-muted-foreground">Aparecerá no slide de resultados</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Serviço */}
           <Card className="border-border overflow-hidden">
             <div className="px-6 py-4 border-b border-border">
               <h3 className="font-heading text-[15px] font-semibold text-foreground">Serviço</h3>
@@ -244,12 +298,25 @@ export default function NewProposal() {
                 <Label className="text-muted-foreground text-sm">Prazo de entrega (dias)</Label>
                 <Input type="number" value={deadlineDays} onChange={(e) => setDeadlineDays(e.target.value)} placeholder="30" />
               </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground text-sm">Tom da proposta</Label>
+                <Select value={proposalTone} onValueChange={setProposalTone}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="executivo">Executivo — formal, dados, autoridade</SelectItem>
+                    <SelectItem value="agressivo">Agressivo / Impactante — direto, urgente</SelectItem>
+                    <SelectItem value="consultivo">Consultivo — educativo, parceiro, confiança</SelectItem>
+                    <SelectItem value="criativo">Criativo — inovador, moderno, diferenciado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Right column */}
         <div className="space-y-4">
+          {/* Valores */}
           <Card className="border-border overflow-hidden">
             <div className="px-6 py-4 border-b border-border">
               <h3 className="font-heading text-[15px] font-semibold text-foreground">Valores e condições</h3>
@@ -294,46 +361,66 @@ export default function NewProposal() {
               </div>
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm">Informações adicionais</Label>
-                <Textarea value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} placeholder="Observações extras..." rows={3} />
+                <Textarea value={additionalInfo} onChange={(e) => setAdditionalInfo(e.target.value)} placeholder="Observações extras..." rows={2} />
               </div>
             </CardContent>
           </Card>
 
+          {/* Template selector */}
           <Card className="border-border overflow-hidden">
             <div className="px-6 py-4 border-b border-border">
               <h3 className="font-heading text-[15px] font-semibold text-foreground">Template da proposta</h3>
             </div>
             <CardContent className="p-6">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {templates.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => setTemplateId(t.id)}
-                    className={`group relative h-[140px] rounded-[10px] border-[1.5px] p-3 flex flex-col justify-between transition-all duration-150 cursor-pointer ${
-                      templateId === t.id
-                        ? "border-primary bg-sidebar-accent"
-                        : "border-border bg-background hover:border-secondary-foreground/20"
-                    }`}
-                  >
-                    {/* Mini preview */}
-                    <div className="flex-1 flex flex-col gap-1.5 pt-1">
-                      <div className="h-2 w-full rounded-sm" style={{ backgroundColor: t.colors[0] }} />
-                      <div className="flex gap-1 flex-1">
-                        <div className="w-1/3 rounded-sm" style={{ backgroundColor: t.colors[1] }} />
-                        <div className="flex-1 flex flex-col gap-1">
-                          <div className="h-1.5 w-3/4 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
-                          <div className="h-1.5 w-1/2 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
-                          <div className="h-1.5 w-2/3 rounded-sm" style={{ backgroundColor: t.colors[2] }} />
+              <div className="grid grid-cols-1 gap-3">
+                {templates.map((t) => {
+                  const selected = templateId === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setTemplateId(t.id)}
+                      className={`group relative rounded-[10px] border-[1.5px] p-3 flex items-center gap-4 transition-all duration-150 cursor-pointer text-left ${
+                        selected
+                          ? "border-primary bg-sidebar-accent"
+                          : "border-border bg-background hover:border-secondary-foreground/20"
+                      }`}
+                    >
+                      {/* Mini preview */}
+                      <div
+                        className="w-20 h-12 rounded-md flex-shrink-0 overflow-hidden relative"
+                        style={{ background: t.bg }}
+                      >
+                        <div className="absolute inset-0 flex flex-col p-1.5 gap-1">
+                          <div className="h-1.5 w-full rounded-sm" style={{ background: t.accent, opacity: 0.9 }} />
+                          <div className="flex gap-1 flex-1">
+                            <div className="w-2/5 rounded-sm" style={{ background: t.mid }} />
+                            <div className="flex-1 flex flex-col gap-0.5">
+                              <div className="h-1 rounded-sm" style={{ background: t.accent, opacity: 0.5 }} />
+                              <div className="h-1 w-3/4 rounded-sm" style={{ background: t.mid, opacity: 0.7 }} />
+                              <div className="h-1 w-1/2 rounded-sm" style={{ background: t.mid, opacity: 0.5 }} />
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <span className={`text-[13px] font-medium mt-2 ${
-                      templateId === t.id ? "text-primary" : "text-muted-foreground"
-                    }`}>
-                      {t.name}
-                    </span>
-                  </button>
-                ))}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[13px] font-semibold ${selected ? "text-primary" : "text-foreground"}`}>
+                            {t.name}
+                          </span>
+                          <span className="text-[11px] text-muted-foreground">{t.desc}</span>
+                        </div>
+                        <span className="text-[11px] text-muted-foreground/60">{t.badge}</span>
+                      </div>
+                      {selected && (
+                        <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none">
+                            <polyline points="20 6 9 17 4 12" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

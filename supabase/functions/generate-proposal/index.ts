@@ -1,367 +1,79 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { DARK_PREMIUM, CORPORATE_BLUE, CLEAN_LIGHT, BOLD_IMPACT, GRADIENT_MODERN } from './templates.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 }
 
-// Query Pexels por nicho
-function getPexelsQuery(myNiche: string, clientNiche: string): string {
-  const combined = `${myNiche} ${clientNiche}`.toLowerCase()
-
-  const queries: [string, string][] = [
-    // Transporte e Logística
-    ['transport|frete|logíst|entrega|frota',
-     'logistics truck fleet highway professional'],
-    ['mudança|mudanca',
-     'moving truck professional service'],
-
-    // Construção e Engenharia
-    ['constru|reforma|engenharia|arquitet',
-     'modern construction site architecture professional'],
-    ['interior|decoraç|decorac',
-     'modern interior design luxury apartment'],
-
-    // Saúde
-    ['estétic|estetica|beleza|cosmét|cosmetic|spa',
-     'aesthetic clinic beauty treatment room modern'],
-    ['odont|dentist|dental',
-     'modern dental clinic professional clean'],
-    ['fisio|reabilit',
-     'physiotherapy clinic rehabilitation professional'],
-    ['psicolog|terapia',
-     'modern therapy office calm professional'],
-    ['nutri',
-     'nutrition healthy food modern clinic'],
-    ['médic|medic|clínica|clinica',
-     'modern medical clinic professional healthcare'],
-
-    // Tecnologia
-    ['software|sistema|app|aplicativ',
-     'software development modern office technology'],
-    ['tecnolog|ti |t.i',
-     'modern tech office workspace professional'],
-
-    // Educação
-    ['escola|colégio|colegio|ensino fundamental',
-     'modern school classroom education professional'],
-    ['universidade|faculdade|graduaç',
-     'university campus modern education'],
-    ['curso|treinamento|capacitaç',
-     'professional training corporate education modern'],
-
-    // Marketing e Criativo
-    ['marketing|publicidade|propaganda',
-     'creative marketing agency modern office'],
-    ['social media|conteúdo|conteudo',
-     'content creator social media modern studio'],
-    ['design|criat',
-     'creative design studio modern workspace'],
-    ['foto|vídeo|video|film',
-     'professional photography studio modern equipment'],
-
-    // Financeiro e Jurídico
-    ['financ|contábil|contabil|contabilidade',
-     'modern finance office professional business meeting'],
-    ['banco|invest|segur',
-     'financial investment modern office professional'],
-    ['jurídic|jurid|advocacia|advogado|direito',
-     'modern law office professional elegant'],
-
-    // Varejo e Alimentação
-    ['restaurante|gastronomia|food|aliment',
-     'modern restaurant kitchen professional food'],
-    ['loja|varejo|retail|moda|roupa',
-     'modern retail store fashion professional'],
-    ['supermercado|mercearia',
-     'modern supermarket store professional'],
-
-    // Imobiliário
-    ['imobili|corretor|imóvel|imovel',
-     'modern real estate luxury property architecture'],
-
-    // Indústria
-    ['indústr|industr|manufatur|fabricaç',
-     'modern industrial factory professional manufacturing'],
-    ['agro|agrícol|agricol|fazenda',
-     'modern agriculture farm professional technology'],
-
-    // Serviços Gerais
-    ['limpeza|conservaç|facilities',
-     'professional cleaning service corporate modern'],
-    ['segurança|securit',
-     'professional security modern corporate'],
-    ['rh |recursos humanos|recrutamento',
-     'human resources professional corporate modern office'],
-    ['event|casamento|celebraç',
-     'elegant event wedding decoration professional'],
-  ]
-
-  for (const [pattern, query] of queries) {
-    const regex = new RegExp(pattern, 'i')
-    if (regex.test(combined)) return query
-  }
-
-  // Fallback genérico mas melhor que antes
-  return `${clientNiche} professional business modern office`
-}
-
-// Formatar telefone brasileiro
 function formatPhone(phone: string): string {
   const digits = phone.replace(/\D/g, '')
-  if (digits.length === 11) {
-    return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`
-  }
-  if (digits.length === 10) {
-    return `(${digits.slice(0,2)}) ${digits.slice(2,6)}-${digits.slice(6)}`
-  }
+  if (digits.length === 11) return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`
+  if (digits.length === 10) return `(${digits.slice(0,2)}) ${digits.slice(2,6)}-${digits.slice(6)}`
   return phone
 }
 
-// Paleta de cores por nicho do cliente
 function getNichePalette(clientNiche: string) {
   const n = clientNiche.toLowerCase()
-  if (/transport|logístic|frete/.test(n))  return { primary: '#1B3A6B', secondary: '#E8650A', accent: '#F5A623' }
-  if (/constru|reforma|engenharia/.test(n)) return { primary: '#2D4A1E', secondary: '#C17F24', accent: '#E8A838' }
-  if (/saúde|clínica|médic|fisio/.test(n)) return { primary: '#0D4F8B', secondary: '#00A896', accent: '#02C39A' }
-  if (/tecnolog|software|sistema/.test(n)) return { primary: '#1A1A2E', secondary: '#6C63FF', accent: '#A78BFA' }
-  if (/educaç|escola|universidade/.test(n)) return { primary: '#1B4332', secondary: '#2D6A4F', accent: '#52B788' }
-  if (/marketing|agência|publicidade/.test(n)) return { primary: '#2D1B69', secondary: '#E91E8C', accent: '#FF6B9D' }
-  if (/financ|contábil|banco/.test(n))     return { primary: '#0A2342', secondary: '#1565C0', accent: '#42A5F5' }
-  if (/imobili|corretor/.test(n))          return { primary: '#1A1A1A', secondary: '#8B6914', accent: '#C9A227' }
-  if (/jurídic|advocacia/.test(n))         return { primary: '#1C1C2E', secondary: '#4A4E69', accent: '#9A8C98' }
+  if (/transport|logístic|frete/.test(n))    return { primary: '#1B3A6B', secondary: '#E8650A', accent: '#F5A623' }
+  if (/constru|reforma|engenharia/.test(n))  return { primary: '#2D4A1E', secondary: '#C17F24', accent: '#E8A838' }
+  if (/saúde|clínica|médic|fisio/.test(n))   return { primary: '#0D4F8B', secondary: '#00A896', accent: '#02C39A' }
+  if (/tecnolog|software|sistema/.test(n))   return { primary: '#1A1A2E', secondary: '#6C63FF', accent: '#A78BFA' }
+  if (/educa|escola|universidade/.test(n))   return { primary: '#1B4332', secondary: '#2D6A4F', accent: '#52B788' }
+  if (/market|agência|publicidade/.test(n))  return { primary: '#2D1B69', secondary: '#E91E8C', accent: '#FF6B9D' }
+  if (/financ|contábil|banco/.test(n))       return { primary: '#0A2342', secondary: '#1565C0', accent: '#42A5F5' }
+  if (/imobili|corretor/.test(n))            return { primary: '#1A1A1A', secondary: '#8B6914', accent: '#C9A227' }
+  if (/jurídic|advocacia/.test(n))           return { primary: '#1C1C2E', secondary: '#4A4E69', accent: '#9A8C98' }
+  if (/estétic|beleza|spa/.test(n))          return { primary: '#3D1A47', secondary: '#C06FAC', accent: '#E8A0D0' }
+  if (/restaurante|gastronomia|food/.test(n))return { primary: '#1A0A00', secondary: '#8B3A00', accent: '#D4751A' }
   return { primary: '#1B2A4A', secondary: '#2563EB', accent: '#60A5FA' }
 }
 
-// Instruções visuais por template
-function getTemplateInstructions(templateId: string): string {
-  const templates: Record<string, string> = {
-    impacto: `
-TEMPLATE: IMPACTO COM DADOS
+function buildImagePrompt(clientNiche: string, templateId: string, tone: string): string {
+  const n = clientNiche.toLowerCase()
 
-CAPA (header 220px):
-- Imagem de fundo com overlay gradiente da cor primária (opacity 0.75)
-- Logo da empresa no canto superior esquerdo (se disponível)
-- Título da proposta em branco, fonte Sora, 36px, bold
-- Nome do cliente em destaque com cor accent, 18px
-- Badge "Proposta Personalizada" com fundo accent
-
-MÉTRICAS (logo após capa):
-- 3 a 4 cards horizontais com números de impacto estimados e realistas para o serviço
-- Exemplos coerentes: "70% menos tempo manual", "ROI em 90 dias", "Suporte 24/7"
-- Cards com borda superior 4px na cor accent, fundo branco, sombra sutil
-
-GRÁFICO SVG OBRIGATÓRIO:
-- Gráfico de barras comparativo "Antes vs Depois" OU linha de projeção de ROI
-- Totalmente em SVG puro inline (sem bibliotecas)
-- Cores: barras com cor primary e accent
-- Eixos com labels relevantes ao serviço
-- Título do gráfico acima
-- Dados estimados realistas e coerentes com o serviço descrito
-
-PROBLEMA:
-- Grid 2x2 com cards de dor do cliente
-- Cada card: ícone SVG inline 32px + título bold + texto descritivo
-- Ícones temáticos para o nicho
-
-SOLUÇÃO:
-- Grid 2x2 de cards com fundo levemente colorido (accent opacity 0.08)
-- Borda esquerda 3px accent
-- Ícone SVG + título + descrição
-
-ENTREGÁVEIS:
-- Lista com checkmarks SVG coloridos na cor accent
-- Dois itens por linha em grid
-
-INVESTIMENTO:
-- Tabela estilizada, linhas alternadas (zebra)
-- Valor total em destaque com fonte grande e cor primary
-- Condições de pagamento abaixo
-
-PRÓXIMOS PASSOS:
-- Timeline horizontal com 3 etapas numeradas e conectadas por linha
-
-RODAPÉ:
-- Fundo cor primary, texto branco
-- Logo + dados de contato + validade`,
-
-    narrativo: `
-TEMPLATE: NARRATIVO COM FOTO
-
-CAPA (layout duas colunas, altura 280px):
-- Coluna esquerda (45%): imagem de fundo preenchendo toda a área com object-fit cover
-- Coluna direita (55%): fundo branco, logo no topo, título grande Sora 32px, subtítulo, dados de contato na base
-
-HISTÓRIA:
-- Parágrafo empático em primeira pessoa sobre os desafios do negócio do cliente
-- Texto rico, sem boxes, foco em narrativa
-- Destaque de palavras-chave em bold com cor primary
-
-SOLUÇÃO (duas colunas alternadas):
-- Seção texto + elemento visual alternado a cada bloco
-- Elemento visual: box colorido com ícone SVG grande centralizado e número de destaque
-
-DIFERENCIAIS:
-- Lista vertical com ícones SVG grandes (40px) na cor accent à esquerda
-- Título e texto à direita
-- Espaçamento generoso entre itens
-
-RESULTADOS:
-- Se houver dados numéricos: 3 números gigantes (72px) com cor primary e label abaixo
-- Fundo levemente colorido (primary opacity 0.04)
-
-GRÁFICO SVG SE HOUVER DADOS NUMÉRICOS:
-- Gráfico de linha mostrando crescimento ou melhoria esperada
-- Estilo clean, apenas linhas e pontos, sem grid pesado
-
-INVESTIMENTO:
-- Layout clean centralizado
-- Valor em tipografia grande
-- Condições em texto menor
-
-CTA FINAL:
-- Seção com fundo gradiente (primary → secondary)
-- Texto de chamada em branco bold
-- Dados de contato grandes
-
-RODAPÉ:
-- Fundo branco, linha superior accent
-- Dados da empresa centralizados`,
-
-    moderno: `
-TEMPLATE: MODERNO COM CARDS
-
-HEADER:
-- Barra superior fina com logo à esquerda e dados de contato à direita
-- Abaixo: título enorme Sora 52px, palavra-chave principal em cor accent
-- Badge pill "Proposta para {nome_cliente}" com fundo accent opacity 0.12
-
-PROBLEMA:
-- 3 a 4 cards com borda esquerda 4px primary
-- Ícone SVG 24px + título bold + texto curto
-- Fundo cards: branco com sombra box-shadow sutil
-
-SOLUÇÃO:
-- Grid 2x2 feature cards
-- Ícone SVG grande centralizado (40px) com fundo circular accent opacity 0.15
-- Título centralizado bold
-- Descrição centralizada text-secondary
-
-PROCESSO:
-- Timeline vertical
-- Círculos numerados com fundo primary
-- Conectados por linha vertical tracejada
-- Título e descrição à direita de cada etapa
-
-GRÁFICO SVG SE HOUVER DADOS:
-- Gráfico de pizza ou donut mostrando distribuição do escopo ou tempo
-- SVG puro inline com legendas
-
-ENTREGÁVEIS:
-- Duas colunas de pills/badges coloridas
-- Cada entregável é um badge com fundo accent opacity 0.1 e texto accent
-
-INVESTIMENTO:
-- Card central destacado com fundo gradiente primary → secondary
-- Valor em branco gigante
-- Lista de inclusões com checkmarks brancos
-
-RODAPÉ MODERNO:
-- Grid três colunas: logo | links | contato`,
-
-    minimalista: `
-TEMPLATE: MINIMALISTA ELEGANTE
-
-TIPOGRAFIA: Usar Playfair Display para títulos (importar do Google Fonts), Inter para corpo.
-
-HEADER:
-- Logo pequena superior esquerda (32px altura)
-- Linha horizontal fina (#E5E5E5)
-- Título da proposta em Playfair Display 40px, cor #1A1A1A
-- Data e validade alinhados à direita, texto pequeno cinza
-
-APRESENTAÇÃO:
-- Texto corrido elegante, sem boxes
-- Primeiro parágrafo em fonte levemente maior (18px)
-- Espaçamento entre linhas 1.8
-
-SOBRE O PROJETO:
-- Linha divisória fina
-- Título Playfair Display
-- Texto em parágrafos bem espaçados
-- Sem ícones, sem cards
-
-ESCOPO:
-- Lista numerada com hanging indent elegante
-- Números em cor primary, texto em cinza escuro
-- Espaçamento generoso entre itens
-
-CRONOGRAMA:
-- Tabela sem bordas excessivas
-- Apenas linha inferior em cada linha (border-bottom 1px #F0F0F0)
-- Header da tabela com texto pequeno maiúsculo espaçado (letter-spacing)
-
-GRÁFICO: Não incluir gráfico neste template — foge da estética minimalista.
-
-INVESTIMENTO:
-- Linha horizontal acima e abaixo do valor
-- Valor em Playfair Display 48px
-- Condições em texto pequeno elegante abaixo
-
-ASSINATURA:
-- Linha para assinatura com nome abaixo
-- "Proposta válida até {data}" em itálico
-
-RODAPÉ:
-- Dados de contato centralizados em fonte pequena
-- Linha superior fina`,
-
-    bold: `
-TEMPLATE: BOLD IMPACTANTE
-
-HERO (altura 320px):
-- Imagem de fundo 100% cobrindo a seção
-- Overlay escuro gradiente (rgba(0,0,0,0.65))
-- Título em branco maiúsculo Sora 52px bold, sombra de texto sutil
-- Subtítulo impactante em branco 20px
-- Badge pill com nome do cliente em cor accent
-
-PROBLEMA (fundo cor primary):
-- Título branco 28px
-- 3 a 4 pontos de dor em branco com ícones SVG brancos à esquerda
-- Fundo escuro cria contraste forte
-
-SOLUÇÃO (fundo branco):
-- Cards com fundo accent opacity 0.08
-- Borda 1px accent
-- Ícone SVG grande accent + título primary bold + texto
-
-IMPACTO (fundo gradiente primary → secondary):
-- 3 a 4 números gigantes em branco (64px) com label abaixo em branco
-- Separados por linhas verticais brancas com opacity 0.3
-- Números estimados coerentes com o serviço
-
-GRÁFICO SVG OBRIGATÓRIO:
-- Gráfico de barras horizontais "Comparativo de eficiência"
-- Barras na cor accent sobre fundo levemente escuro
-- Labels em branco
-
-ENTREGÁVEIS (fundo branco):
-- Duas colunas, checkmark SVG accent + texto
-
-INVESTIMENTO (fundo primary):
-- Valor gigante em accent (56px)
-- Condições em branco
-- Botão visual CTA com fundo accent
-
-RODAPÉ:
-- Fundo muito escuro (#0A0A0A)
-- Logo e dados em branco
-- Linha superior accent`
+  let style = ''
+  if (templateId === 'dark_premium' || templateId === 'bold_impact') {
+    style = 'dark moody cinematic, high contrast, dramatic lighting, professional photography, black and white tones'
+  } else if (templateId === 'corporate_blue') {
+    style = 'clean corporate professional, blue tones, modern office, sharp lighting'
+  } else if (templateId === 'clean_light') {
+    style = 'bright airy professional, soft natural lighting, minimalist clean, white tones'
+  } else if (templateId === 'gradient_modern') {
+    style = 'vibrant modern startup, dynamic composition, tech atmosphere, bold colors'
+  } else {
+    style = tone === 'agressivo'
+      ? 'dark dramatic cinematic, high contrast, powerful atmosphere'
+      : 'bright professional modern, clean workspace'
   }
 
-  return templates[templateId] || templates['moderno']
+  if (/estétic|estetica|beleza|spa|cabelo|nail/.test(n))
+    return `modern luxury aesthetic clinic reception, elegant interior design, soft lighting, ${style}`
+  if (/jurídic|advocacia|advogad|direito/.test(n))
+    return `elegant law office interior, dark wood bookshelves, professional atmosphere, ${style}`
+  if (/transport|logístic|frota|caminhão|frete/.test(n))
+    return `modern logistics operations center, fleet management, professional, ${style}`
+  if (/tecnolog|software|sistema|ti |tech|digital|saas/.test(n))
+    return `modern tech startup open office, multiple monitors, clean workspace, collaborative, ${style}`
+  if (/imobili|corretor|imóvel|construtora/.test(n))
+    return `luxury real estate property modern architecture exterior, upscale neighborhood, ${style}`
+  if (/restaurante|gastronomia|food|culinária|bar /.test(n))
+    return `upscale restaurant interior, elegant table setting, warm ambient lighting, ${style}`
+  if (/saúde|clínica|médic|hospital|odonto|fisio/.test(n))
+    return `modern medical clinic reception, clean white interior, professional healthcare, ${style}`
+  if (/financ|contábil|contabilidade|contador|invest/.test(n))
+    return `modern corporate finance office, professional meeting room, financial district, ${style}`
+  if (/constru|reforma|arquitet|engenharia/.test(n))
+    return `modern architecture construction project, professional building site, ${style}`
+  if (/educa|escola|universidade|cursinho|ensino/.test(n))
+    return `modern university campus, students studying, bright educational environment, ${style}`
+  if (/market|agência|publicidade|mídia|tráfego/.test(n))
+    return `creative marketing agency office, colorful workspace, digital screens, ${style}`
+  if (/varejo|loja|comércio|retail|ecommerce/.test(n))
+    return `modern retail store interior, clean product display, professional commercial space, ${style}`
+
+  return `modern professional business office interior, executive atmosphere, corporate environment, ${style}`
 }
 
 serve(async (req) => {
@@ -374,18 +86,14 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? Deno.env.get('SUPABASE_PUBLISHABLE_KEY') ?? ''
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY') ?? ''
-    const pexelsApiKey = Deno.env.get('PEXELS_API_KEY') ?? ''
+    const falApiKey = Deno.env.get('FAL_API_KEY') ?? ''
 
-    if (!anthropicApiKey) {
-      throw new Error('ANTHROPIC_API_KEY is not configured')
-    }
+    if (!anthropicApiKey) throw new Error('ANTHROPIC_API_KEY is not configured')
 
-    // Auth check
     const authHeader = req.headers.get('authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Unauthorized - no token' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
@@ -397,8 +105,7 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
@@ -410,6 +117,7 @@ serve(async (req) => {
       clientName, clientCompany, clientEmail, clientPhone, clientNiche,
       niche, serviceDescription, deliverables, deadlineDays,
       totalValue, setupValue, monthlyValue, paymentTerms, validityDays, additionalInfo,
+      clientPain, clientGoal, expectedMetrics, proposalTone,
       regenerateId,
     } = body
 
@@ -428,8 +136,9 @@ serve(async (req) => {
     const companyPhone = profile?.company_phone || ''
     const companyEmail = profile?.company_email || ''
     const companyWebsite = profile?.company_website || ''
+    const companyDifferentials = (profile as any)?.company_differentials || ''
 
-    // 1. Verificar limite de uso
+    // Verificar limite de uso
     const { data: usage } = await supabase
       .from('user_usage')
       .select('*')
@@ -456,36 +165,22 @@ serve(async (req) => {
       }
     }
 
-    // 2. Buscar foto no Pexels com payload enxuto
-    let photoUrl = ''
-    if (pexelsApiKey && (clientNiche || clientCompany || myNiche)) {
-      try {
-        const pexelsQuery = getPexelsQuery(myNiche, clientNiche || clientCompany || '')
-        const pexelsRes = await fetch(
-          `https://api.pexels.com/v1/search?query=${encodeURIComponent(pexelsQuery)}&per_page=1&orientation=landscape&size=large`,
-          { headers: { Authorization: pexelsApiKey } }
-        )
-        const pexelsData = await pexelsRes.json()
-        photoUrl = pexelsData?.photos?.[0]?.src?.large || ''
-      } catch (e) {
-        console.log('Pexels fallback para gradiente:', e)
-      }
-    }
-
-    // 3. Paleta de cores final
+    // Paleta de cores final
     const palette = getNichePalette(clientNiche || '')
     const finalPrimary = primaryColor || palette.primary
     const finalSecondary = secondaryColor || palette.secondary
     const finalAccent = palette.accent
+    const tone = proposalTone || 'executivo'
 
-    // === PASSO 1: Gerar conteúdo estruturado (JSON) ===
-    console.log('Passo 1: Gerando conteúdo estruturado...')
-
-    const valorTexto = setupValue && monthlyValue
-      ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + Mensalidade: R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
+    // Texto de investimento
+    const investimentoTexto = setupValue && monthlyValue
+      ? `Setup: R$ ${Number(setupValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} + R$ ${Number(monthlyValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês`
       : `R$ ${Number(totalValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
 
-    const step1Response = await fetch('https://api.anthropic.com/v1/messages', {
+    // === AGENTE 1: Copywriter Estratégico ===
+    console.log('Agente 1: Gerando conteúdo persuasivo...')
+
+    const agent1Response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -494,72 +189,136 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 2200,
-        system: 'Você cria propostas comerciais brasileiras objetivas. Retorne APENAS JSON válido, sem markdown e sem texto fora do JSON.',
+        max_tokens: 2000,
+        system: 'Você é um copywriter estratégico especializado em propostas comerciais B2B brasileiras. Retorne APENAS JSON válido, sem markdown.',
         messages: [{
           role: 'user',
-          content: `Crie um resumo estruturado e conciso para uma proposta comercial.
+          content: `Gere conteúdo PERSUASIVO e PERSONALIZADO para uma proposta comercial.
 
-Empresa: ${companyName}
-Nicho da empresa: ${myNiche}
-Cliente: ${clientName} ${clientCompany ? `| ${clientCompany}` : ''} ${clientNiche ? `| ${clientNiche}` : ''}
-Serviço: ${serviceDescription}
-Entregáveis base: ${deliverables || 'Não informado'}
-Prazo: ${deadlineDays || 'Não informado'} dias
-Valor: ${valorTexto}
-Pagamento: ${paymentTerms || 'Não informado'}
-Validade: ${validityDays || 15} dias
-${additionalInfo ? `Informações adicionais: ${additionalInfo}` : ''}
+DADOS DO CLIENTE:
+- Nome: ${clientName}
+- Empresa: ${clientCompany || 'não informada'}
+- Segmento: ${clientNiche || 'não informado'}
 
-Retorne exatamente este formato JSON:
-{"titulo":"string","subtitulo":"string","desafios":[{"titulo":"string","texto":"string"}],"solucao":[{"titulo":"string","texto":"string"}],"processo":[{"titulo":"string","texto":"string"}],"entregaveis":["string"],"proximos_passos":[{"titulo":"string","texto":"string"}]}
+CONTEXTO DA VENDA:
+- Dor principal: ${clientPain || 'não informada'}
+- Objetivo: ${clientGoal || 'não informado'}
+- Métricas esperadas: ${expectedMetrics || 'não informadas'}
 
-Regras:
-- 3 desafios
-- 3 soluções
-- 4 etapas de processo
-- 4 a 6 entregáveis curtos
-- 3 próximos passos
-- textos curtos, claros e persuasivos
-- adapte ao nicho ${clientNiche || myNiche}`
+SERVIÇO PROPOSTO:
+- Nicho: ${myNiche}
+- Descrição: ${serviceDescription}
+- Entregáveis: ${deliverables || 'não informados'}
+- Prazo: ${deadlineDays || 'não informado'} dias
+- Validade: ${validityDays || 15} dias
+- Investimento: ${investimentoTexto}
+
+SOBRE A EMPRESA PROPONENTE:
+${companyDifferentials || companyName + ' — especialistas em soluções para o segmento.'}
+
+TOM: ${tone}
+${tone === 'agressivo' ? '→ Linguagem direta, urgente, foco em resultados imediatos.' : ''}
+${tone === 'consultivo' ? '→ Linguagem educativa, posicionamento de parceiro, transformação a longo prazo.' : ''}
+${tone === 'criativo' ? '→ Linguagem inovadora, referências ao futuro, diferenciação.' : ''}
+${tone === 'executivo' ? '→ Linguagem formal, dados e métricas, autoridade.' : ''}
+
+INSTRUÇÕES:
+1. Use a DOR como argumento central nos desafios
+2. Conecte a solução ao OBJETIVO do cliente
+3. Use MÉTRICAS como prova no slide de resultados
+4. Cite DIFERENCIAIS naturalmente no sobre_empresa
+5. Seja específico — sem frases genéricas
+
+Retorne APENAS este JSON:
+{
+  "titulo": "string",
+  "subtitulo": "string",
+  "sobre_empresa": "string",
+  "desafios": [{"titulo":"string","descricao":"string"},{"titulo":"string","descricao":"string"},{"titulo":"string","descricao":"string"}],
+  "solucao_titulo": "string",
+  "beneficios": [{"titulo":"string","descricao":"string"},{"titulo":"string","descricao":"string"},{"titulo":"string","descricao":"string"},{"titulo":"string","descricao":"string"}],
+  "processo": [{"numero":1,"titulo":"string","descricao":"string"},{"numero":2,"titulo":"string","descricao":"string"},{"numero":3,"titulo":"string","descricao":"string"},{"numero":4,"titulo":"string","descricao":"string"},{"numero":5,"titulo":"string","descricao":"string"}],
+  "entregaveis": ["string","string","string","string"],
+  "metricas": [{"valor":"string","descricao":"string"},{"valor":"string","descricao":"string"},{"valor":"string","descricao":"string"}],
+  "proximos_passos": [{"numero":1,"titulo":"string","descricao":"string"},{"numero":2,"titulo":"string","descricao":"string"},{"numero":3,"titulo":"string","descricao":"string"}],
+  "chamada_acao": "string"
+}`
         }],
       }),
     })
 
-    if (!step1Response.ok) {
-      const errorText = await step1Response.text()
-      console.error('Claude Passo 1 erro:', step1Response.status, errorText)
-      if (step1Response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
+    if (!agent1Response.ok) {
+      const err = await agent1Response.text()
+      console.error('Agente 1 erro:', agent1Response.status, err)
+      if (agent1Response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }), {
           status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
       }
-      throw new Error(`Claude API error (passo 1): ${step1Response.status}`)
+      throw new Error(`Claude Agente 1 error: ${agent1Response.status}`)
     }
 
-    const step1Data = await step1Response.json()
-    if (!step1Data.content || !step1Data.content[0]) throw new Error('Claude não retornou conteúdo no passo 1')
+    const agent1Data = await agent1Response.json()
+    if (!agent1Data.content?.[0]) throw new Error('Agente 1 sem conteúdo')
 
-    let conteudoJson = step1Data.content[0].text.trim()
-    conteudoJson = conteudoJson.replace(/^```json?\n?/, '').replace(/\n?```$/, '')
+    let copyJson = agent1Data.content[0].text.trim()
+    copyJson = copyJson.replace(/^```json?\n?/, '').replace(/\n?```$/, '')
 
-    let conteudo: any
+    let copy: any
     try {
-      conteudo = JSON.parse(conteudoJson)
+      copy = JSON.parse(copyJson)
     } catch {
-      console.error('JSON inválido do passo 1:', conteudoJson.substring(0, 200))
-      throw new Error('Falha ao parsear conteúdo gerado')
+      console.error('JSON inválido agente 1:', copyJson.substring(0, 300))
+      throw new Error('Falha ao parsear conteúdo do Agente 1')
     }
 
-    console.log('Passo 1 concluído. Iniciando passo 2...')
+    console.log('Agente 1 concluído.')
 
-    // === PASSO 2: Gerar HTML com o conteúdo ===
+    // === FAL.AI: Gerar imagem ===
+    let photoUrl = ''
+    if (falApiKey) {
+      try {
+        console.log('Fal.ai: Gerando imagem...')
+        const imagePrompt = buildImagePrompt(clientNiche || myNiche, templateId || 'dark_premium', tone)
+        const falRes = await fetch('https://fal.run/fal-ai/flux/schnell', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Key ${falApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: imagePrompt,
+            image_size: 'landscape_16_9',
+            num_inference_steps: 4,
+            num_images: 1,
+          }),
+        })
+        const falData = await falRes.json()
+        photoUrl = falData?.images?.[0]?.url || ''
+        console.log('Fal.ai concluído. URL:', photoUrl ? 'ok' : 'vazia')
+      } catch (e) {
+        console.log('Fal.ai error (não crítico):', e)
+      }
+    }
+
+    // === AGENTE 2: Preencher template ===
+    console.log('Agente 2: Preenchendo template...')
+
+    const templateMap: Record<string, string> = {
+      dark_premium: DARK_PREMIUM,
+      corporate_blue: CORPORATE_BLUE,
+      clean_light: CLEAN_LIGHT,
+      bold_impact: BOLD_IMPACT,
+      gradient_modern: GRADIENT_MODERN,
+    }
+    const templateBase = templateMap[templateId] ?? DARK_PREMIUM
+
     const phoneFmt = formatPhone(companyPhone)
     const logoHtml = logoUrl
       ? `<img src="${logoUrl}" style="height:40px;object-fit:contain">`
-      : `<span style="font-weight:700;font-size:18px">${companyName}</span>`
+      : `<span style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px;color:currentColor">${companyName}</span>`
 
-    const step2Response = await fetch('https://api.anthropic.com/v1/messages', {
+    const agent2Response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -568,114 +327,139 @@ Regras:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5-20250929',
-        max_tokens: 14000,
-        system: 'Você gera propostas comerciais em HTML com visual forte e código enxuto. Retorne APENAS HTML completo, sem markdown, sem comentários e com conteúdo conciso.',
+        max_tokens: 10000,
+        system: 'Você é um desenvolvedor front-end. Preencha os placeholders do template HTML com o conteúdo fornecido. Retorne APENAS o HTML completo começando com <!DOCTYPE html>.',
         messages: [{
           role: 'user',
-          content: `Gere o HTML completo de uma proposta comercial com no máximo 4 páginas A4.
+          content: `Preencha todos os {{PLACEHOLDERS}} do template abaixo com o conteúdo e variáveis fornecidos.
 
-CONTEÚDO ESTRUTURADO:
-${JSON.stringify(conteudo)}
+REGRAS:
+1. NÃO altere estrutura, CSS, SVG, layout ou classes
+2. APENAS substitua os textos nos lugares marcados com {{}}
+3. Mantenha TODO o HTML original intacto
+4. Se um array tiver menos itens que os placeholders, repita ou adapte
 
-DADOS:
-Empresa: ${companyName}
-Telefone: ${phoneFmt}
-Email: ${companyEmail}
-Site: ${companyWebsite}
-Logo: ${logoHtml}
-Cliente: ${clientName} — ${clientCompany || 'Cliente'}
-Valor: ${valorTexto}
-Pagamento: ${paymentTerms}
-Validade: ${validityDays} dias
-Foto: ${photoUrl || 'usar gradiente'}
-Cores: primária ${finalPrimary}, secundária ${finalSecondary}, accent ${finalAccent}
+VARIÁVEIS FIXAS — substitua exatamente:
+{{FOTO_URL}} → ${photoUrl || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1280&h=720&fit=crop'}
+{{COR_PRIMARIA}} → ${finalPrimary}
+{{COR_SECUNDARIA}} → ${finalSecondary}
+{{COR_ACCENT}} → ${finalAccent}
+{{LOGO}} → ${logoHtml}
+{{EMPRESA}} → ${companyName}
+{{CLIENTE}} → ${clientName}
+{{EMPRESA_CLIENTE}} → ${clientCompany || clientName}
+{{TELEFONE}} → ${phoneFmt}
+{{EMAIL}} → ${companyEmail}
+{{SITE}} → ${companyWebsite}
+{{INVESTIMENTO_TEXTO}} → ${investimentoTexto}
+{{VALIDADE}} → ${validityDays || 15}
+{{PRAZO}} → ${deadlineDays || 'A definir'} dias
 
-Inclua no <style> apenas o necessário:
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-@page{size:A4;margin:0}*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{background:#E5E7EB;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0;font-family:'Inter',sans-serif;font-size:13px}.pagina{width:794px;height:1123px;background:#fff;overflow:hidden;position:relative;flex-shrink:0}@media print{body{background:#fff;gap:0;padding:0}.pagina{page-break-after:always;width:210mm;height:297mm}.pagina:last-child{page-break-after:avoid}}
+CONTEÚDO DO AGENTE 1 — use para preencher os demais placeholders:
+${JSON.stringify(copy, null, 2)}
 
-Estrutura:
-- Página 1: capa com foto ou gradiente, logo, título, subtítulo e dados do cliente
-- Página 2: desafios e solução em cards
-- Página 3: processo e entregáveis
-- Página 4: investimento, próximos passos, contato e assinatura
+Mapeamento:
+- {{TITULO}} → copy.titulo
+- {{SUBTITULO}} → copy.subtitulo
+- {{SOBRE_EMPRESA}} → copy.sobre_empresa
+- {{DESAFIO_1_TITULO}} / {{DESAFIO_1_DESC}} → copy.desafios[0]
+- {{DESAFIO_2_TITULO}} / {{DESAFIO_2_DESC}} → copy.desafios[1]
+- {{DESAFIO_3_TITULO}} / {{DESAFIO_3_DESC}} → copy.desafios[2]
+- {{SOLUCAO_TITULO}} → copy.solucao_titulo
+- {{BENEFICIO_1_TITULO}} / {{BENEFICIO_1_DESC}} → copy.beneficios[0]
+- {{BENEFICIO_2_TITULO}} / {{BENEFICIO_2_DESC}} → copy.beneficios[1]
+- {{BENEFICIO_3_TITULO}} / {{BENEFICIO_3_DESC}} → copy.beneficios[2]
+- {{BENEFICIO_4_TITULO}} / {{BENEFICIO_4_DESC}} → copy.beneficios[3]
+- {{ETAPA_1_TITULO}} / {{ETAPA_1_DESC}} → copy.processo[0]
+- {{ETAPA_2_TITULO}} / {{ETAPA_2_DESC}} → copy.processo[1]
+- {{ETAPA_3_TITULO}} / {{ETAPA_3_DESC}} → copy.processo[2]
+- {{ETAPA_4_TITULO}} / {{ETAPA_4_DESC}} → copy.processo[3]
+- {{ETAPA_5_TITULO}} / {{ETAPA_5_DESC}} → copy.processo[4]
+- {{ENTREGAVEL_1}} → copy.entregaveis[0]
+- {{ENTREGAVEL_2}} → copy.entregaveis[1]
+- {{ENTREGAVEL_3}} → copy.entregaveis[2]
+- {{ENTREGAVEL_4}} → copy.entregaveis[3]
+- {{METRICA_1_VALOR}} / {{METRICA_1_DESC}} → copy.metricas[0]
+- {{METRICA_2_VALOR}} / {{METRICA_2_DESC}} → copy.metricas[1]
+- {{METRICA_3_VALOR}} / {{METRICA_3_DESC}} → copy.metricas[2]
+- {{PASSO_1_TITULO}} / {{PASSO_1_DESC}} → copy.proximos_passos[0]
+- {{PASSO_2_TITULO}} / {{PASSO_2_DESC}} → copy.proximos_passos[1]
+- {{PASSO_3_TITULO}} / {{PASSO_3_DESC}} → copy.proximos_passos[2]
+- {{CHAMADA_ACAO}} → copy.chamada_acao
 
-Regras obrigatórias:
-- iniciar com <!DOCTYPE html> e terminar com </html>
-- usar HTML e CSS enxutos
-- parágrafos curtos
-- SVG inline simples
-- sem scripts, links, botões ou formulários
-- manter tudo legível e profissional
-- se faltar foto, usar gradiente
-- rodapé final com: ${companyName} • ${phoneFmt} • ${companyEmail} • Proposta válida por ${validityDays} dias • Gerada com PropostaAI`
+TEMPLATE BASE:
+${templateBase}`
         }],
       }),
     })
 
-    if (!step2Response.ok) {
-      const errorText = await step2Response.text()
-      console.error('Claude Passo 2 erro:', step2Response.status, errorText)
-      if (step2Response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
+    if (!agent2Response.ok) {
+      const err = await agent2Response.text()
+      console.error('Agente 2 erro:', agent2Response.status, err)
+      if (agent2Response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }), {
           status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
       }
-      throw new Error(`Claude API error (passo 2): ${step2Response.status}`)
+      throw new Error(`Claude Agente 2 error: ${agent2Response.status}`)
     }
 
-    const step2Data = await step2Response.json()
-    if (!step2Data.content || !step2Data.content[0]) throw new Error('Claude não retornou HTML no passo 2')
+    const agent2Data = await agent2Response.json()
+    if (!agent2Data.content?.[0]) throw new Error('Agente 2 sem conteúdo')
 
-    let htmlContent = step2Data.content[0].text.trim()
+    let htmlContent = agent2Data.content[0].text.trim()
     htmlContent = htmlContent.replace(/^```html?\n?/, '').replace(/\n?```$/, '')
-    if (!htmlContent.startsWith('<!DOCTYPE')) {
-      const i = htmlContent.indexOf('<!DOCTYPE')
-      if (i > -1) htmlContent = htmlContent.substring(i)
-    }
+    const doctypeIdx = htmlContent.indexOf('<!DOCTYPE')
+    if (doctypeIdx > 0) htmlContent = htmlContent.substring(doctypeIdx)
 
-    console.log('Passo 2 concluído. HTML gerado com sucesso.')
+    console.log('Agente 2 concluído. HTML gerado.')
 
     const targetProposalId = regenerateId || proposalId
 
     if (targetProposalId) {
-      // Update existing proposal with HTML
       await supabase.from('proposals')
         .update({
           html_content: htmlContent,
-          template_id: templateId || 'moderno',
+          template_id: templateId || 'dark_premium',
+          photo_url: photoUrl || null,
           status: 'generated',
           updated_at: new Date().toISOString(),
         })
         .eq('id', targetProposalId)
     } else {
-      // Create new proposal
       const { data: newProposal, error: insertError } = await supabase
         .from('proposals')
         .insert({
           user_id: user.id,
-          title: `Proposta para ${clientName}`,
+          title: copy.titulo || `Proposta para ${clientName}`,
           client_name: clientName,
           client_email: clientEmail,
           client_phone: clientPhone,
           client_company: clientCompany,
+          client_niche: clientNiche,
           niche: myNiche,
           service_description: serviceDescription,
           deliverables,
           total_value: setupValue ? (Number(setupValue) + Number(monthlyValue)) : (totalValue || null),
+          setup_value: setupValue || null,
+          monthly_value: monthlyValue || null,
           payment_terms: paymentTerms,
           deadline_days: deadlineDays || null,
           validity_days: validityDays || 15,
           html_content: htmlContent,
-          template_id: templateId || 'moderno',
+          template_id: templateId || 'dark_premium',
+          photo_url: photoUrl || null,
           status: 'generated',
-        })
+          client_pain: clientPain || null,
+          client_goal: clientGoal || null,
+          proposal_tone: tone,
+          expected_metrics: expectedMetrics || null,
+        } as any)
         .select()
         .single()
 
       if (insertError) throw insertError
 
-      // Incrementar contador de uso
       await supabase.from('user_usage')
         .update({
           proposals_count: (usage?.proposals_count || 0) + 1,
@@ -689,7 +473,6 @@ Regras obrigatórias:
       )
     }
 
-    // Incrementar contador de uso
     await supabase.from('user_usage')
       .update({
         proposals_count: (usage?.proposals_count || 0) + 1,
@@ -703,12 +486,9 @@ Regras obrigatórias:
     )
 
   } catch (error) {
-    console.error('Erro detalhado:', error)
+    console.error('Erro:', error)
     return new Response(
-      JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'Unknown error',
-        details: 'Tente novamente em alguns segundos'
-      }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     )
   }
