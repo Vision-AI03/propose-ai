@@ -91,7 +91,9 @@ serve(async (req) => {
     if (!anthropicApiKey) throw new Error('ANTHROPIC_API_KEY is not configured')
 
     const authHeader = req.headers.get('authorization')
+    console.log('authHeader raw:', authHeader?.substring(0, 40) ?? 'NULL')
     if (!authHeader?.startsWith('Bearer ')) {
+      console.log('REJEITADO: sem Bearer token')
       return new Response(JSON.stringify({ error: 'Unauthorized - no token' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
@@ -103,6 +105,9 @@ serve(async (req) => {
     })
 
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
+    console.log('authHeader:', authHeader?.substring(0, 30))
+    console.log('authError:', authError)
+    console.log('user:', user?.id)
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
