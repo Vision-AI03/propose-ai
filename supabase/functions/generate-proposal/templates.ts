@@ -54,7 +54,7 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:15px;color:#bbb;line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
     <div style="width:420px;height:100%;position:relative;flex-shrink:0">
-      <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(70%) contrast(1.1) brightness(.75)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1C1C1C,#0A0A0A)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D0D0D 0%,transparent 35%)"></div>
       <div style="position:absolute;bottom:44px;right:44px;width:72px;height:72px;border:2px solid {{COR_ACCENT}};transform:rotate(45deg)"></div>
     </div>
@@ -227,9 +227,9 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center">
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:52px 80px;text-align:center;min-width:520px">
-        <div style="font-family:'Sora',sans-serif;font-size:46px;font-weight:800;color:{{COR_ACCENT}};margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:700;color:#FFFFFF;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
         <div style="width:56px;height:2px;background:{{COR_ACCENT}};margin:0 auto 20px"></div>
-        <p style="font-size:14px;color:#666;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
+        <p style="font-size:14px;color:#AAAAAA;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
       </div>
     </div>
   </div>
@@ -262,12 +262,12 @@ body{background:#1a1a1a;display:flex;flex-direction:column;align-items:center;ga
     <div style="border-top:1px solid #1c1c1c;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
       <div>
         <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:13px;color:#555;margin-top:4px">{{CHAMADA_ACAO}}</p>
+        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;padding-bottom:40px">
         <div>{{LOGO}}</div>
-        <p style="font-size:12px;color:#555;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:11px;color:#3a3a3a;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
+        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
+        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
       </div>
     </div>
   </div>
@@ -326,7 +326,7 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:15px;color:#8ba3c4;line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
     <div style="width:420px;height:100%;position:relative;flex-shrink:0">
-      <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.55) saturate(.7)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0D1E35,#06111f)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D1E35 0%,transparent 35%)"></div>
       <div style="position:absolute;bottom:40px;right:40px;padding:12px 20px;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);border-radius:4px">
         <span style="font-size:13px;color:#93b4d6;font-weight:500">{{EMPRESA}}</span>
@@ -503,9 +503,9 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center">
       <div style="background:linear-gradient(135deg,#0D1E35,#0A1628);border:1px solid #1a3a5c;border-radius:8px;padding:52px 80px;text-align:center;min-width:520px">
-        <div style="font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:#2563EB;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:700;color:#FFFFFF;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
         <div style="width:56px;height:2px;background:#2563EB;margin:0 auto 20px"></div>
-        <p style="font-size:14px;color:#5a7a9a;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
+        <p style="font-size:14px;color:#AAAAAA;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
       </div>
     </div>
   </div>
@@ -539,12 +539,12 @@ body{background:#070e1a;display:flex;flex-direction:column;align-items:center;ga
     <div style="border-top:1px solid #0d1e35;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
       <div>
         <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:13px;color:#3a5a7a;margin-top:4px">{{CHAMADA_ACAO}}</p>
+        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;padding-bottom:40px">
         <div>{{LOGO}}</div>
-        <p style="font-size:12px;color:#3a5a7a;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:11px;color:#1a3a5c;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
+        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
+        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
       </div>
     </div>
   </div>
@@ -602,7 +602,7 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:15px;color:#555;line-height:1.9;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
     <div style="width:440px;height:100%;position:relative;flex-shrink:0">
-      <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.9) saturate(.9)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8e8e8,#d0d0d0)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(to right,#FAFAFA 0%,transparent 30%)"></div>
       <div style="position:absolute;bottom:40px;left:40px;padding:10px 18px;background:{{COR_PRIMARIA}};border-radius:4px">
         <span style="font-size:12px;color:#fff;font-weight:600;letter-spacing:.5px">{{EMPRESA}}</span>
@@ -787,9 +787,9 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center">
       <div style="background:#fff;border:1px solid #ebebeb;border-radius:12px;padding:52px 80px;text-align:center;min-width:520px;box-shadow:0 8px 40px rgba(0,0,0,.08)">
-        <div style="font-family:'Sora',sans-serif;font-size:46px;font-weight:800;color:{{COR_PRIMARIA}};margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:700;color:{{COR_PRIMARIA}};margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
         <div style="width:56px;height:3px;background:{{COR_PRIMARIA}};margin:0 auto 20px;border-radius:2px"></div>
-        <p style="font-size:14px;color:#888;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
+        <p style="font-size:14px;color:#AAAAAA;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
       </div>
     </div>
   </div>
@@ -823,12 +823,12 @@ body{background:#e8e8e8;display:flex;flex-direction:column;align-items:center;ga
     <div style="border-top:2px solid #f0f0f0;padding-top:22px;display:flex;align-items:center;justify-content:space-between">
       <div>
         <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#111;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:13px;color:#aaa;margin-top:4px">{{CHAMADA_ACAO}}</p>
+        <p style="font-size:16px;color:#333333;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;padding-bottom:40px">
         <div>{{LOGO}}</div>
-        <p style="font-size:12px;color:#aaa;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:11px;color:#ccc;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
+        <p style="font-size:14px;color:#555555;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
+        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
       </div>
     </div>
   </div>
@@ -871,7 +871,7 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
 <!-- SLIDE 2: SOBRE — layout dividido foto/conteúdo -->
 <div class="slide" style="background:#1a0808;display:flex">
   <div style="width:480px;height:100%;position:relative;flex-shrink:0">
-    <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.7)">
+    <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a1010,#1a0808)"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#1a0808 100%)"></div>
   </div>
   <div style="flex:1;padding:60px 60px 60px 48px;display:flex;flex-direction:column;justify-content:center">
@@ -905,12 +905,12 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
   </div>
 </div>
 
-<!-- SLIDE 4: SOLUÇÃO — foto lateral direita -->
-<div class="slide" style="background:#0d0d0d;display:flex">
-  <div style="flex:1;padding:56px 56px 56px 64px;display:flex;flex-direction:column;justify-content:center">
+<!-- SLIDE 4: SOLUÇÃO -->
+<div class="slide" style="background:#0d0d0d">
+  <div style="padding:56px 64px;height:100%;display:flex;flex-direction:column;justify-content:center">
     <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:12px">A solução</p>
-    <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:24px">{{SOLUCAO_TITULO}}</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <h2 style="font-family:'Sora',sans-serif;font-size:36px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:28px">{{SOLUCAO_TITULO}}</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
       <div style="background:#1a1a1a;border-left:3px solid {{COR_ACCENT}};border-radius:4px;padding:18px">
         <h3 style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">{{BENEFICIO_1_TITULO}}</h3>
         <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.6">{{BENEFICIO_1_DESC}}</p>
@@ -928,10 +928,6 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
         <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.6">{{BENEFICIO_4_DESC}}</p>
       </div>
     </div>
-  </div>
-  <div style="width:420px;height:100%;position:relative;flex-shrink:0">
-    <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.6)">
-    <div style="position:absolute;inset:0;background:linear-gradient(to right,#0d0d0d 0%,transparent 30%)"></div>
   </div>
 </div>
 
@@ -1027,10 +1023,9 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
   </div>
 </div>
 
-<!-- SLIDE 8: INVESTIMENTO — foto com overlay forte -->
+<!-- SLIDE 8: INVESTIMENTO -->
 <div class="slide">
-  <img src="{{FOTO_URL}}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.4)">
-  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0808 0%,#000 100%)"></div>
   <div style="position:absolute;inset:0;padding:56px 60px;display:flex;flex-direction:column">
     <div style="margin-bottom:32px">
       <p style="font-size:11px;color:{{COR_ACCENT}};letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Proposta Financeira</p>
@@ -1038,18 +1033,17 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center">
       <div style="background:rgba(0,0,0,.6);border:2px solid {{COR_ACCENT}};border-radius:4px;padding:52px 80px;text-align:center;min-width:520px;backdrop-filter:blur(10px)">
-        <div style="font-family:'Sora',sans-serif;font-size:50px;font-weight:900;color:{{COR_ACCENT}};margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:700;color:#FFFFFF;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
         <div style="width:56px;height:3px;background:{{COR_ACCENT}};margin:0 auto 20px"></div>
-        <p style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;text-transform:uppercase;letter-spacing:.5px">Prazo: {{PRAZO}} • Validade: {{VALIDADE}} dias</p>
+        <p style="font-size:14px;color:#AAAAAA;line-height:1.8">Prazo: {{PRAZO}} • Validade: {{VALIDADE}} dias</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 9: ENCERRAMENTO — foto full-screen -->
+<!-- SLIDE 9: ENCERRAMENTO -->
 <div class="slide">
-  <img src="{{FOTO_URL}}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.35)">
-  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.5) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to top,#000 0%,#1a0808 100%)"></div>
   <div style="position:absolute;inset:0;padding:48px 60px;display:flex;flex-direction:column;justify-content:space-between">
     <div style="display:flex;gap:18px">
       <div style="flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-top:3px solid {{COR_ACCENT}};border-radius:4px;padding:20px;backdrop-filter:blur(8px)">
@@ -1071,12 +1065,12 @@ body{background:#111;display:flex;flex-direction:column;align-items:center;gap:8
     <div style="display:flex;align-items:flex-end;justify-content:space-between">
       <div>
         <h1 style="font-family:'Sora',sans-serif;font-size:80px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-3px;line-height:1;text-shadow:0 4px 24px rgba(0,0,0,.5)">OBRIGADO!</h1>
-        <p style="font-size:14px;color:rgba(255,255,255,.5);margin-top:6px">{{CHAMADA_ACAO}}</p>
+        <p style="font-size:16px;color:#FFFFFF;margin-top:8px;max-width:600px">{{CHAMADA_ACAO}}</p>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;padding-bottom:40px">
         <div>{{LOGO}}</div>
-        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
+        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
+        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
       </div>
     </div>
   </div>
@@ -1145,7 +1139,7 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
       <p style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.85;max-width:500px">{{SOBRE_EMPRESA}}</p>
     </div>
     <div style="width:440px;height:100%;position:relative;flex-shrink:0">
-      <img src="{{FOTO_URL}}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.6)">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(13,10,30,.8))"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(to right,#0D0A1E 0%,transparent 35%)"></div>
       <div style="position:absolute;bottom:40px;right:40px;padding:12px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;backdrop-filter:blur(10px)">
         <span style="font-size:13px;color:rgba(255,255,255,.7);font-weight:500">{{EMPRESA}}</span>
@@ -1337,9 +1331,9 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center">
       <div class="glass" style="padding:52px 80px;text-align:center;min-width:520px;border:1px solid rgba(255,255,255,.12)">
-        <div style="font-family:'Sora',sans-serif;font-size:46px;font-weight:800;background:linear-gradient(135deg,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:700;color:#FFFFFF;margin-bottom:16px;line-height:1.1">{{INVESTIMENTO_TEXTO}}</div>
         <div style="width:56px;height:2px;background:linear-gradient(to right,{{COR_PRIMARIA}},{{COR_SECUNDARIA}});margin:0 auto 20px;border-radius:2px"></div>
-        <p style="font-size:14px;color:rgba(255,255,255,.4);line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
+        <p style="font-size:14px;color:#AAAAAA;line-height:1.8">Prazo de entrega: {{PRAZO}}<br>Validade da proposta: {{VALIDADE}} dias</p>
       </div>
     </div>
   </div>
@@ -1373,12 +1367,12 @@ body{background:#06040f;display:flex;flex-direction:column;align-items:center;ga
     <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;align-items:center;justify-content:space-between">
       <div>
         <h1 style="font-family:'Sora',sans-serif;font-size:50px;font-weight:800;color:#fff;letter-spacing:-2px">OBRIGADO!</h1>
-        <p style="font-size:13px;color:rgba(255,255,255,.3);margin-top:4px">{{CHAMADA_ACAO}}</p>
+        <p style="font-size:16px;color:#FFFFFF;margin-top:6px;max-width:600px">{{CHAMADA_ACAO}}</p>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;padding-bottom:40px">
         <div>{{LOGO}}</div>
-        <p style="font-size:12px;color:rgba(255,255,255,.35);margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
-        <p style="font-size:11px;color:rgba(255,255,255,.2);margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
+        <p style="font-size:14px;color:#CCCCCC;margin-top:10px">{{TELEFONE}} • {{EMAIL}}</p>
+        <p style="font-size:13px;color:#888888;margin-top:4px">Proposta válida por {{VALIDADE}} dias • PropostaAI</p>
       </div>
     </div>
   </div>

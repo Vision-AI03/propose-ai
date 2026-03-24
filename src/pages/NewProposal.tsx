@@ -399,27 +399,52 @@ export default function NewProposal() {
                       key={t.id}
                       onClick={() => setTemplateId(t.id)}
                       className={`group relative rounded-[10px] border-[1.5px] p-3 flex items-center gap-4 transition-all duration-150 cursor-pointer text-left ${
-                        selected
-                          ? "border-primary bg-sidebar-accent"
-                          : "border-border bg-background hover:border-secondary-foreground/20"
+                        selected ? "bg-sidebar-accent" : "bg-background hover:border-secondary-foreground/20"
                       }`}
+                      style={{ borderColor: selected ? t.accent : undefined }}
                     >
                       {/* Mini preview */}
-                      <div
-                        className="w-20 h-12 rounded-md flex-shrink-0 overflow-hidden relative"
-                        style={{ background: t.bg }}
-                      >
-                        <div className="absolute inset-0 flex flex-col p-1.5 gap-1">
-                          <div className="h-1.5 w-full rounded-sm" style={{ background: t.accent, opacity: 0.9 }} />
-                          <div className="flex gap-1 flex-1">
-                            <div className="w-2/5 rounded-sm" style={{ background: t.mid }} />
-                            <div className="flex-1 flex flex-col gap-0.5">
-                              <div className="h-1 rounded-sm" style={{ background: t.accent, opacity: 0.5 }} />
-                              <div className="h-1 w-3/4 rounded-sm" style={{ background: t.mid, opacity: 0.7 }} />
-                              <div className="h-1 w-1/2 rounded-sm" style={{ background: t.mid, opacity: 0.5 }} />
-                            </div>
+                      <div className="w-20 h-12 rounded-md flex-shrink-0 overflow-hidden relative" style={{ background: t.bg }}>
+                        {t.id === "dark_premium" && (<>
+                          <svg width="80" height="48" viewBox="0 0 80 48" style={{ position:"absolute", inset:0, opacity:0.25 }}><polygon points="0,48 26,0 0,0" fill="white"/><polygon points="80,0 54,48 80,48" fill="white"/></svg>
+                          <div style={{ position:"absolute", bottom:6, left:8, right:8 }}>
+                            <div style={{ height:2, width:20, background:t.accent, marginBottom:3, borderRadius:1 }}/>
+                            <div style={{ height:6, width:46, background:"#fff", opacity:0.9, borderRadius:1 }}/>
+                            <div style={{ height:2, width:30, background:"#fff", opacity:0.35, borderRadius:1, marginTop:3 }}/>
                           </div>
-                        </div>
+                        </>)}
+                        {t.id === "corporate_blue" && (<>
+                          <div style={{ position:"absolute", left:0, top:0, bottom:0, width:3, background:t.accent }}/>
+                          <div style={{ position:"absolute", inset:0, padding:"6px 8px 6px 10px" }}>
+                            <div style={{ height:2, width:36, background:t.accent, marginBottom:5, borderRadius:1 }}/>
+                            <div style={{ height:6, width:50, background:"#fff", opacity:0.85, borderRadius:1 }}/>
+                            <div style={{ height:2, width:32, background:"#8ba3c4", borderRadius:1, marginTop:4, opacity:0.7 }}/>
+                          </div>
+                        </>)}
+                        {t.id === "clean_light" && (<>
+                          <div style={{ position:"absolute", top:13, left:0, right:0, height:1, background:"#ddd" }}/>
+                          <div style={{ position:"absolute", inset:0, padding:"6px 8px", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+                            <div style={{ height:2, width:14, background:t.accent, marginBottom:3, borderRadius:1 }}/>
+                            <div style={{ height:6, width:50, background:"#111", opacity:0.8, borderRadius:1 }}/>
+                            <div style={{ height:2, width:34, background:"#666", opacity:0.5, borderRadius:1, marginTop:3 }}/>
+                          </div>
+                        </>)}
+                        {t.id === "bold_impact" && (<>
+                          <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:3 }}>
+                            <div style={{ height:2, width:22, background:t.accent, borderRadius:1 }}/>
+                            <div style={{ height:7, width:50, background:"#fff", opacity:0.95, borderRadius:1 }}/>
+                            <div style={{ height:7, width:38, background:"#fff", opacity:0.95, borderRadius:1 }}/>
+                            <div style={{ height:2, width:22, background:t.accent, borderRadius:1 }}/>
+                          </div>
+                        </>)}
+                        {t.id === "gradient_modern" && (<>
+                          <svg width="80" height="48" viewBox="0 0 80 48" style={{ position:"absolute", inset:0 }}><circle cx="62" cy="8" r="22" fill="none" stroke={t.accent} strokeWidth="0.6" opacity="0.5"/><circle cx="18" cy="42" r="16" fill={t.accent} opacity="0.07"/></svg>
+                          <div style={{ position:"absolute", inset:0, padding:"8px 8px" }}>
+                            <div style={{ height:6, width:46, background:"#fff", opacity:0.85, borderRadius:1 }}/>
+                            <div style={{ height:2, width:28, background:t.accent, opacity:0.7, borderRadius:1, marginTop:4 }}/>
+                            <div style={{ height:2, width:20, background:"#fff", opacity:0.3, borderRadius:1, marginTop:3 }}/>
+                          </div>
+                        </>)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">

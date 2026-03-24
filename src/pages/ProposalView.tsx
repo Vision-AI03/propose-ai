@@ -96,61 +96,50 @@ export default function ProposalView() {
       const { default: jsPDF } = await import("jspdf");
       const { default: html2canvas } = await import("html2canvas");
 
-      let element: HTMLElement | null = null;
-      let tempContainer: HTMLDivElement | null = null;
-
       const htmlContent = proposal?.html_content;
+
       if (htmlContent) {
-        // Render html_content into a temporary off-screen container
-        tempContainer = document.createElement("div");
+        const slideCount = (htmlContent.match(/class="slide"/g) || []).length || 9;
+        const tempContainer = document.createElement("div");
         tempContainer.style.position = "absolute";
         tempContainer.style.left = "-9999px";
         tempContainer.style.top = "0";
-        tempContainer.style.width = "794px"; // A4 width in px at 96dpi
-        tempContainer.style.background = "white";
+        tempContainer.style.width = "1280px";
         tempContainer.innerHTML = htmlContent;
         document.body.appendChild(tempContainer);
-        element = tempContainer;
-      } else {
-        element = document.getElementById("proposal-preview-fallback");
-      }
 
-      if (!element) {
-        toast({ title: "Erro", description: "Elemento de preview não encontrado", variant: "destructive" });
-        setPdfLoading(false);
-        return;
-      }
-
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
-
-      if (tempContainer) {
+        const canvas = await html2canvas(tempContainer, {
+          scale: 1,
+          useCORS: true,
+          width: 1280,
+          height: slideCount * 728,
+        });
         document.body.removeChild(tempContainer);
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF({ orientation: "l", unit: "px", format: [1280, 720] });
+
+        for (let i = 0; i < slideCount; i++) {
+          if (i > 0) pdf.addPage([1280, 720], "l");
+          pdf.addImage(imgData, "PNG", 0, -(i * 728), 1280, canvas.height);
+        }
+
+        pdf.save(`${proposal?.title || "proposta"}.pdf`);
+      } else {
+        const element = document.getElementById("proposal-preview-fallback");
+        if (!element) {
+          toast({ title: "Erro", description: "Conteúdo não encontrado", variant: "destructive" });
+          return;
+        }
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${proposal?.title || "proposta"}.pdf`);
       }
 
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      let heightLeft = pdfHeight;
-      let position = 0;
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft > 0) {
-        position -= pageHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-        heightLeft -= pageHeight;
-      }
-
-      pdf.save(`${proposal?.title || "proposta"}.pdf`);
       toast({ title: "PDF baixado com sucesso!" });
     } catch (err: any) {
       toast({ title: "Erro ao gerar PDF", description: err.message, variant: "destructive" });
@@ -252,9 +241,8 @@ export default function ProposalView() {
         <div className="lg:col-span-3">
           {hasHtmlContent ? (() => {
             const slideCount = (htmlContent.match(/class="slide"/g) || []).length || 9;
-            // Each slide is 720px + 8px gap. Scale iframe (1280px wide) to fit container (~560px).
             const scale = 0.44;
-            const iframeH = slideCount * 720 + (slideCount - 1) * 8 + 32;
+            const iframeH = slideCount * 728;
             const containerH = Math.round(iframeH * scale) + 32;
             return (
               <div
