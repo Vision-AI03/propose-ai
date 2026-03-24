@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -159,35 +159,49 @@ export default function NewProposal() {
 
       const { data: { session } } = await supabase.auth.getSession();
 
-      const { data: result, error: fnError } = await supabase.functions.invoke("generate-proposal", {
+      const payload = {
+        clientName,
+        clientCompany,
+        clientEmail,
+        clientPhone,
+        clientNiche,
+        clientPain,
+        clientGoal,
+        expectedMetrics,
+        templateId,
+        proposalTone,
+        niche: niche || profile?.niche || "",
+        serviceDescription,
+        deliverables,
+        deadlineDays: parseInt(deadlineDays) || 30,
+        totalValue: paymentTerms === "setup_mensal" ? 0 : parseCurrencyValue(totalValue),
+        setupValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(setupValue) : undefined,
+        monthlyValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(monthlyValue) : undefined,
+        paymentTerms: paymentLabels[paymentTerms] || paymentTerms,
+        validityDays: parseInt(validityDays) || 15,
+        additionalInfo,
+      };
+
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/generate-proposal`, {
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_PUBLISHABLE_KEY,
+          "Authorization": `Bearer ${session?.access_token || SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: {
-          clientName,
-          clientCompany,
-          clientEmail,
-          clientPhone,
-          clientNiche,
-          clientPain,
-          clientGoal,
-          expectedMetrics,
-          templateId,
-          proposalTone,
-          niche: niche || profile?.niche || "",
-          serviceDescription,
-          deliverables,
-          deadlineDays: parseInt(deadlineDays) || 30,
-          totalValue: paymentTerms === "setup_mensal" ? 0 : parseCurrencyValue(totalValue),
-          setupValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(setupValue) : undefined,
-          monthlyValue: paymentTerms === "setup_mensal" ? parseCurrencyValue(monthlyValue) : undefined,
-          paymentTerms: paymentLabels[paymentTerms] || paymentTerms,
-          validityDays: parseInt(validityDays) || 15,
-          additionalInfo,
-        },
+        body: JSON.stringify(payload),
       });
 
-      if (fnError) throw fnError;
+      if (!response.ok) {
+        let errMsg = `Erro ${response.status}`;
+        try {
+          const errBody = await response.json();
+          errMsg = errBody.error || errMsg;
+        } catch {}
+        throw new Error(errMsg);
+      }
+
+      const result = await response.json();
 
       if (result?.proposalId) {
         toast({ title: "Proposta gerada com sucesso!" });
