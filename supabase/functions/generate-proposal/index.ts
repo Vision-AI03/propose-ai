@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { decode } from 'https://deno.land/x/djwt@v2.8/mod.ts'
 import { DARK_PREMIUM, CORPORATE_BLUE, CLEAN_LIGHT, BOLD_IMPACT, GRADIENT_MODERN } from './templates.ts'
 
 const corsHeaders = {
@@ -93,10 +94,17 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     const authHeader = req.headers.get('authorization')
-    const token = authHeader?.replace('Bearer ', '') ?? ''
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    if (authError || !user) {
+    const token = authHeader.replace('Bearer ', '')
+    const [_header, payload] = decode(token)
+    const userId = (payload as any).sub
+
+    if (!userId) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
@@ -116,7 +124,7 @@ serve(async (req) => {
     const { data: profile } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', userId)
       .single()
 
     const companyName = profile?.company_name || 'Empresa'
@@ -133,7 +141,7 @@ serve(async (req) => {
     const { data: usage } = await supabase
       .from('user_usage')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .single()
 
     if (usage) {
@@ -144,7 +152,7 @@ serve(async (req) => {
       if (new Date(usage.period_start) < firstOfMonth) {
         await supabase.from('user_usage')
           .update({ proposals_count: 0, period_start: firstOfMonth.toISOString().split('T')[0] })
-          .eq('user_id', user.id)
+          .eq('user_id', userId)
         usage.proposals_count = 0
       }
 
@@ -421,7 +429,7 @@ ${templateBase}`
       const { data: newProposal, error: insertError } = await supabase
         .from('proposals')
         .insert({
-          user_id: user.id,
+          user_id: userId,
           title: copy.titulo || `Proposta para ${clientName}`,
           client_name: clientName,
           client_email: clientEmail,
@@ -456,7 +464,7 @@ ${templateBase}`
           proposals_count: (usage?.proposals_count || 0) + 1,
           updated_at: new Date().toISOString(),
         })
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
 
       return new Response(
         JSON.stringify({ success: true, proposalId: newProposal.id }),
@@ -469,7 +477,7 @@ ${templateBase}`
         proposals_count: (usage?.proposals_count || 0) + 1,
         updated_at: new Date().toISOString(),
       })
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
 
     return new Response(
       JSON.stringify({ success: true, proposalId: targetProposalId }),
