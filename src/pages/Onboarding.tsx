@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,7 @@ const NICHES = [
 export default function Onboarding() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -101,6 +103,9 @@ export default function Onboarding() {
         .eq("id", user.id);
 
       if (error) throw error;
+
+      // Invalida o cache do profile para o AppLayout ler o onboarding_completed atualizado
+      await queryClient.invalidateQueries({ queryKey: ["profile", user.id] });
 
       toast({ title: "Configuração concluída!", description: "Bem-vindo ao PropostaAI!" });
       navigate("/dashboard");

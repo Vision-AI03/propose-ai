@@ -20,7 +20,7 @@ export function AppLayout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const { data: profile, isSuccess: profileLoaded } = useQuery({
+  const { data: profile, isSuccess: profileLoaded, isFetching: profileFetching } = useQuery({
     queryKey: ["profile", user?.id],
     queryFn: async () => {
       const { data } = await supabase
@@ -46,8 +46,8 @@ export function AppLayout() {
     enabled: !!user,
   });
 
-  // Redireciona para onboarding se não completado
-  if (profileLoaded && profile && !profile.onboarding_completed) {
+  // Só redireciona para onboarding quando o profile está carregado E não está refetchando
+  if (profileLoaded && !profileFetching && profile && !profile.onboarding_completed) {
     return <Navigate to="/onboarding" replace />;
   }
 
