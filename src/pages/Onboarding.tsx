@@ -95,6 +95,7 @@ export default function Onboarding() {
           primary_color: primaryColor,
           secondary_color: secondaryColor,
           niche: selectedNiche,
+          onboarding_completed: true,
           updated_at: new Date().toISOString(),
         })
         .eq("id", user.id);
